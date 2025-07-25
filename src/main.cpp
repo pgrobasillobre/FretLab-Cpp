@@ -7,7 +7,7 @@
 //// #include "target.hpp"
 //// #include "algorithm.hpp"
 
-// #include <omp.h>  // Uncomment if/when using OpenMP
+// #include <omp.h> 
 
 //---------------------------------------------------------------------------
 //                     ______          __  __          __          
@@ -68,7 +68,7 @@ int main(int argc, char* argv[]) {
 
         // Finalize timing and output
         timer.finish("total");
-        timer.conclude(out.stream());
+        timer.conclude(out);
 
         out.close();
 

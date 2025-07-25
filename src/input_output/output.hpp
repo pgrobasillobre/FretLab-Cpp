@@ -28,11 +28,15 @@ public:
     /// @brief Prints FretLab banner.
     void print_banner();
 
+    /// @brief Horizontal line (80 dashes) separation output sections
+    const std::string sticks = std::string(80, '-'); 
+
     /// @brief Gets the internal output stream.
     /// @return Reference to the ofstream object for writing.
-    std::ofstream& stream();
+    std::ofstream& stream() const;
+  
 
-    /// Full path or name of the output file
+    /// Full path or name of the output file.
     std::string output_filename;
 
 private:

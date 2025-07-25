@@ -33,8 +33,8 @@ void Output::open() {
 }
 //----------------------------------------------------------------------
 /// @brief Gets the internal output stream.
-std::ofstream& Output::stream() {
-    return log_stream;
+std::ofstream& Output::stream() const {
+    return const_cast<std::ofstream&>(log_stream);
 }
 //----------------------------------------------------------------------
 /// @brief Closes the output file stream.
@@ -44,11 +44,11 @@ void Output::close() {
     }
 }
 //----------------------------------------------------------------------
-/// @brief Prints FretLab banner
+/// @brief Prints FretLab banner.
 void Output::print_banner() {
     const std::string indent = std::string(20, ' ');
 
-    log_stream << " " << std::string(80, '-') << "\n \n";
+    log_stream << " " << sticks << "\n \n";
 
     log_stream << indent << "    ______          __  __          __  \n";
     log_stream << indent << "   / ____/_______  / /_/ /   ____ _/ /_ \n";
@@ -57,9 +57,9 @@ void Output::print_banner() {
     log_stream << indent << "/_/   /_/   |___/ __/_____/__,_/_.___/  \n";
     log_stream << indent << "                                        \n";
 
-    log_stream << " \n " << std::string(80, '-') << "\n \n";
+    log_stream << " \n " << sticks << "\n \n";
     log_stream << std::string(25, ' ') << "Program by Pablo Grobas Illobre\n\n";
-    log_stream << " " << std::string(80, '-') << "\n\n";
+    log_stream << " " << sticks << "\n\n";
     log_stream.flush();
 }
 //----------------------------------------------------------------------

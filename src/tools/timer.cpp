@@ -1,4 +1,5 @@
 #include "timer.hpp"
+#include "output.hpp"
 #include <iomanip> 
 #include <stdexcept>
 #include <ctime>
@@ -53,8 +54,8 @@ void Timer::finish(const std::string& name) {
 /// Outputs elapsed wall-clock time for each completed timer, along with
 /// current date and time of program termination. Incomplete timers are noted.
 ///
-/// @param out Output stream to print the report to (default is std::cout).
-void Timer::conclude(std::ostream& out) {
+/// @param out Output instance to print the report (default is std::cout).
+void Timer::conclude(const Output& out) {
     using namespace std::chrono;
 
     const auto now = system_clock::now();
@@ -76,30 +77,30 @@ void Timer::conclude(std::ostream& out) {
     int seconds = static_cast<int>(elapsed_seconds % 60);
 
     // Header
-    out << " " << std::string(80, '-') << "\n\n";
-    out << std::setw(28) << " " << "We should translate this Fortran code into C++.\n\n";
-    out << std::setw(53) << " " << "-- P. Grobas Illobre\n\n";
-    out << " "  << std::string(80, '-') << "\n\n";
+    out.stream() << " " << out.sticks << "\n\n";
+    out.stream() << std::setw(28) << " " << "We should translate this Fortran code into C++.\n\n";
+    out.stream() << std::setw(53) << " " << "-- P. Grobas Illobre\n\n";
+    out.stream() << " "  << out.sticks << "\n\n";
 
     // Timing Info
-    out << std::setw(42) << " " << "CPU Time:    "
-        << std::setw(3) << hours << " h "
-        << std::setw(2) << minutes << " min "
-        << std::setw(2) << seconds << " sec\n";
+    out.stream() << std::setw(42) << " " << "CPU Time:    "
+               << std::setw(3) << hours << " h "
+               << std::setw(2) << minutes << " min "
+               << std::setw(2) << seconds << " sec\n";
 
-    out << std::setw(42) << " " << "Elapsed Time:"
-        << std::setw(3) << hours << " h "
-        << std::setw(2) << minutes << " min "
-        << std::setw(2) << seconds << " sec\n";
+    out.stream() << std::setw(42) << " " << "Elapsed Time:"
+               << std::setw(3) << hours << " h "
+               << std::setw(2) << minutes << " min "
+               << std::setw(2) << seconds << " sec\n";
 
-    out  << "\n " << std::string(80, '-') << "\n\n";
+    out.stream()  << "\n " << out.sticks << "\n\n";
 
     // Date/Time Stamp
-    out << std::setw(4) << " "
-        << "Normal Termination of FretLab program in date "
-        << std::put_time(tm_ptr, "%d/%m/%Y at %H:%M:%S") << "\n\n";
+    out.stream() << std::setw(4) << " "
+               << "Normal Termination of FretLab program in date "
+               << std::put_time(tm_ptr, "%d/%m/%Y at %H:%M:%S") << "\n\n";
 
-    out << " " << std::string(80, '-') << "\n";
+    out.stream() << " " << out.sticks << "\n";
 }
 //----------------------------------------------------------------------
 

@@ -1,6 +1,7 @@
 #ifndef TIMER_HPP
 #define TIMER_HPP
 
+#include "output.hpp"
 #include <string>
 #include <iostream>
 #include <unordered_map>
@@ -40,7 +41,7 @@ public:
     /// Also includes date/time and program termination message.
     ///
     /// @param out Output stream to write the report to (default is std::cout).
-    void conclude(std::ostream& out = std::cout);
+    void conclude(const Output& out);
 
     // TODO: Add finish() and conclude() methods for reporting.
 
