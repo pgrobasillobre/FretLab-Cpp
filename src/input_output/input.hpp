@@ -1,6 +1,7 @@
 #ifndef INPUT_HPP
 #define INPUT_HPP
 
+#include "output.hpp"
 #include <string>
 
 class Input {
@@ -12,6 +13,8 @@ public:
 //    void read();
 //    void print_input_info() const;
 
+    Output out;
+    
     std::string input_filename;
 
 private:
