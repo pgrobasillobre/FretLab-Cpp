@@ -46,6 +46,12 @@ fi
 # Run cmake
 cmake .. $cmake_args
 
+# Check if cmake succeeded
+if [ $? -ne 0 ]; then
+    echo "❌ CMake configuration failed. Check the errors above."
+    exit 1
+fi
+
 # Final user instructions
 echo ""
 echo "✅ CMake configuration complete."
