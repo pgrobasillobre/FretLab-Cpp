@@ -40,7 +40,7 @@ public:
     /// Prints elapsed time information for each timer to the provided output stream.
     /// Also includes date/time and program termination message.
     ///
-    /// @param out Output stream to write the report to (default is std::cout).
+    /// @param Output stream to write the report to (default is std::cout).
     void conclude(const Output& out);
 
     // TODO: Add finish() and conclude() methods for reporting.

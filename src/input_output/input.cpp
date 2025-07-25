@@ -42,12 +42,17 @@ void Input::parse_arguments(int argc, char* argv[], Output& out) {
 
 }
 //----------------------------------------------------------------------
-// void Input::check_input_file() const {
-//     std::ifstream file(input_filename);
-//     if (!file) {
-//         throw std::runtime_error("Input file not found: " + input_filename);
-//     }
-// }
+ void Input::check_input_file(const Output& out) {
+     std::ifstream file(input_filename);
+     if (!file) {
+         throw std::runtime_error("Input file not found: " + input_filename);
+     }
+
+
+    // TO BE COMPLETED
+
+
+ }
 //----------------------------------------------------------------------
 // void Input::read() {
 //     std::ifstream file(input_filename);

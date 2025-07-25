@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
         out.open();
         out.print_banner();
 
-        ////inp.check_input_file();
+        inp.check_input_file(out);
         ////inp.read();
         ////inp.print_input_info();
 

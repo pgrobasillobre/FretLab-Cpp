@@ -16,7 +16,13 @@ public:
     /// Parses command-line arguments to set input file name
     void get_arguments(int argc, char* argv[], Output& out);
 
-//    void check_input_file() const;
+    /// @brief Check input file consistence
+    ///
+    /// Check that given keywords match the accepted ones.
+    ///
+    /// @param Output stream to write the report to (default is std::cout).
+    void check_input_file(const Output& out);
+
 //    void read();
 //    void print_input_info() const;
 
