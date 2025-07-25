@@ -42,6 +42,8 @@ int main(int argc, char* argv[]) {
         ////// Optional: set OpenMP thread count
         ////// omp_set_num_threads(parallel.n_threads_OMP);
 
+        std::cout << "brooooooooo" << std::endl; 
+
         ////// Open output file
         ////out.open();
 
@@ -67,9 +69,9 @@ int main(int argc, char* argv[]) {
         //////     algorithm.aceptor_np_donor();
         ////// }
 
-        ////// Finalize timing and output
-        ////timer.finish("total");
-        ////timer.conclude();
+        // Finalize timing and output
+        timer.finish("total");
+        timer.conclude();
 
         ////out.close();
 
