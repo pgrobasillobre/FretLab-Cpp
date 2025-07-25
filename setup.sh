@@ -55,9 +55,10 @@ fi
 # Final user instructions
 echo ""
 echo "✅ CMake configuration complete."
+echo ""
 echo "To compile:"
 echo "$ cd $buildir"
-echo "$ make -j\$(nproc)"
+echo "$ make -j"
 echo ""
 echo "To test:"
 echo "$ cd $buildir"
