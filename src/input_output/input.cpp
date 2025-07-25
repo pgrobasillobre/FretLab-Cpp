@@ -3,13 +3,20 @@
 #include <fstream>
 #include <stdexcept>
 
-Input::Input() : input_filename("input.inp") {}  // default name
-
 //----------------------------------------------------------------------
+/// @brief Constructor: Initializes the default input file name to "input.inp"
+Input::Input() : input_filename("input.inp") {}  // default name
+//----------------------------------------------------------------------
+/// Delegates to private function for parsing command-line arguments.
 void Input::get_arguments(int argc, char* argv[]) {
     parse_arguments(argc, argv);
 }
 //----------------------------------------------------------------------
+/// Parses user-supplied command-line arguments and sets the input filename.
+/// Handles three cases:
+/// 1. One argument (input filename)
+/// 2. No arguments (ask user to type filename)
+/// 3. Too many arguments (throws error -- TODO)
 void Input::parse_arguments(int argc, char* argv[]) {
 
     // Normal case: one file passed as argument
@@ -23,7 +30,7 @@ void Input::parse_arguments(int argc, char* argv[]) {
     if (argc == 1) {
         std::cout << "   Type the input filename (e.g. filename.inp): ";
         std::getline(std::cin, input_filename);  // Read filename with spaces allowed
-        
+
         out.out_file_fill(input_filename);
         return;
     }
@@ -59,5 +66,6 @@ void Input::parse_arguments(int argc, char* argv[]) {
 //     // TODO: print parsed values here
 // }
 //----------------------------------------------------------------------
+
 
 

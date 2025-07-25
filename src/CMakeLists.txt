@@ -11,7 +11,7 @@ target_sources(FretLab
         ${CMAKE_CURRENT_SOURCE_DIR}/input_output/output.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/input_output/input.cpp
         #${CMAKE_CURRENT_SOURCE_DIR}/tools/string_manipulation.cpp
-        #${CMAKE_CURRENT_SOURCE_DIR}/tools/time.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/tools/timer.cpp
         #${CMAKE_CURRENT_SOURCE_DIR}/tools/parameters.cpp
         #${CMAKE_CURRENT_SOURCE_DIR}/target/target.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
@@ -22,5 +22,6 @@ target_include_directories(FretLab
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/input_output
+        ${CMAKE_CURRENT_SOURCE_DIR}/tools
 )
 

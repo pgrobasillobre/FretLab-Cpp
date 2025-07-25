@@ -3,7 +3,7 @@
 
 #include "input.hpp"
 //// #include "output.hpp"
-//// #include "timer.hpp"
+#include "timer.hpp"
 //// #include "target.hpp"
 //// #include "algorithm.hpp"
 
@@ -30,16 +30,14 @@ int main(int argc, char* argv[]) {
         // Instantiate components
         Input inp;
         ////Output out;
-        ////Timer timer;
+        Timer timer;
         ////Target target;
         ////Algorithm algorithm;
 
         // Parse input arguments
-        
         inp.get_arguments(argc, argv);
-        ////// Start timing
-        ////timer.initialize();
-        ////timer.start("total");
+        timer.initialize();
+        timer.start("total");
 
         ////// Optional: set OpenMP thread count
         ////// omp_set_num_threads(parallel.n_threads_OMP);
