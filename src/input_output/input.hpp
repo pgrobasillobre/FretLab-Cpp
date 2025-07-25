@@ -14,7 +14,7 @@ public:
     Input();
 
     /// Parses command-line arguments to set input file name
-    void get_arguments(int argc, char* argv[]);
+    void get_arguments(int argc, char* argv[], Output& out);
 
 //    void check_input_file() const;
 //    void read();
@@ -26,7 +26,7 @@ public:
 
 private:
     /// Internal parser for command-line arguments
-    void parse_arguments(int argc, char* argv[]);
+    void parse_arguments(int argc, char* argv[], Output& out);
 };
 
 #endif

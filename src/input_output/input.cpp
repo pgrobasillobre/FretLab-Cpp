@@ -8,8 +8,8 @@
 Input::Input() : input_filename("input.inp") {}  // default name
 //----------------------------------------------------------------------
 /// Delegates to private function for parsing command-line arguments.
-void Input::get_arguments(int argc, char* argv[]) {
-    parse_arguments(argc, argv);
+void Input::get_arguments(int argc, char* argv[], Output & out) {
+    parse_arguments(argc, argv, out);
 }
 //----------------------------------------------------------------------
 /// Parses user-supplied command-line arguments and sets the input filename.
@@ -17,14 +17,13 @@ void Input::get_arguments(int argc, char* argv[]) {
 /// 1. One argument (input filename)
 /// 2. No arguments (ask user to type filename)
 /// 3. Too many arguments (throws error -- TODO)
-void Input::parse_arguments(int argc, char* argv[]) {
+void Input::parse_arguments(int argc, char* argv[], Output& out) {
 
     // Normal case: one file passed as argument
     if (argc  == 2)
     input_filename = argv[1];
 
     out.out_file_fill(input_filename); // Create ouput file name
-
 
     // Allow user to type the filename
     if (argc == 1) {

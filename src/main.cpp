@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "input.hpp"
-//// #include "output.hpp"
+#include "output.hpp"
 #include "timer.hpp"
 //// #include "target.hpp"
 //// #include "algorithm.hpp"
@@ -29,26 +29,23 @@ int main(int argc, char* argv[]) {
     try {
         // Instantiate components
         Input inp;
-        ////Output out;
+        Output out;
         Timer timer;
         ////Target target;
         ////Algorithm algorithm;
 
         // Parse input arguments
-        inp.get_arguments(argc, argv);
+        inp.get_arguments(argc, argv, out);
         timer.initialize();
         timer.start("total");
 
         ////// Optional: set OpenMP thread count
         ////// omp_set_num_threads(parallel.n_threads_OMP);
 
-        std::cout << "brooooooooo" << std::endl; 
+        // Open output file and print banner
+        out.open();
+        out.print_banner();
 
-        ////// Open output file
-        ////out.open();
-
-        ////// Output startup info
-        ////out.print_banner();
         ////inp.check_input_file();
         ////inp.read();
         ////inp.print_input_info();
@@ -71,9 +68,9 @@ int main(int argc, char* argv[]) {
 
         // Finalize timing and output
         timer.finish("total");
-        timer.conclude();
+        timer.conclude(out.stream());
 
-        ////out.close();
+        out.close();
 
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
