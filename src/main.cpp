@@ -1,6 +1,7 @@
 #include <exception>
 #include <iostream>
-//// #include "input.hpp"
+
+#include "input.hpp"
 //// #include "output.hpp"
 //// #include "timer.hpp"
 //// #include "target.hpp"
@@ -24,18 +25,18 @@
 //   
 //---------------------------------------------------------------------------
 
-int main() {
+int main(int argc, char* argv[]) {
     try {
-        ////// Instantiate components
-        ////Input inp;
+        // Instantiate components
+        Input inp;
         ////Output out;
         ////Timer timer;
         ////Target target;
         ////Algorithm algorithm;
 
-        ////// Parse input arguments
-        ////inp.get_arguments();
-
+        // Parse input arguments
+        
+        inp.get_arguments(argc, argv);
         ////// Start timing
         ////timer.initialize();
         ////timer.start("total");
