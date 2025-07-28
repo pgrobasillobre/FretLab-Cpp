@@ -4,8 +4,7 @@
 #include "input.hpp"
 #include "output.hpp"
 #include "timer.hpp"
-//// #include "target.hpp"
-//// #include "algorithm.hpp"
+#include "algorithm.hpp"
 
 // #include <omp.h> 
 
@@ -33,7 +32,7 @@ int main(int argc, char* argv[]) {
         // Instantiate components
         Input inp;
         Timer timer;
-        ////Algorithm algorithm;
+        Algorithm algorithm;
 
         // Parse input arguments
         inp.get_arguments(argc, argv, out);
@@ -55,7 +54,7 @@ int main(int argc, char* argv[]) {
         
         switch (inp.target_mode) {
             case TargetMode::IntegrateCube:
-            //algorithm.integrate_density();
+            algorithm.integrate_density(inp);
             std::cout << " Inside HERE!!! "  << std::endl;
             break;
 

@@ -1,3 +1,5 @@
+#include "input.hpp"
+
 #include <iostream>
 #include <string>
 #include <filesystem>
@@ -7,8 +9,6 @@
 #include <functional>
 #include <algorithm> // for std::transform
 #include <stdexcept>
-
-#include "input.hpp"
 
 //----------------------------------------------------------------------
 /// @brief Constructor: Initializes the default input file name to "input.inp"

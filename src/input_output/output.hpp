@@ -35,7 +35,6 @@ public:
     /// @return Reference to the ofstream object for writing.
     std::ofstream& stream() const;
   
-
     /// Full path or name of the output file.
     std::string output_filename;
 
