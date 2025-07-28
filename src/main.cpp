@@ -51,7 +51,7 @@ int main(int argc, char* argv[]) {
         // Print banner, read input and print input info.
         out.print_banner();
 
-        ////inp.read();
+        inp.read();
         ////inp.print_input_info();
 
         //// debugpgi -> start with integrate density

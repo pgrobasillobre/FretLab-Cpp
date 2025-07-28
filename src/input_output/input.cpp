@@ -1,20 +1,25 @@
-#include "input.hpp"
 #include <iostream>
 #include <string>
+#include <filesystem>
 #include <fstream>
+#include <sstream>
+#include <unordered_map>
+#include <functional>
 #include <algorithm> // for std::transform
 #include <stdexcept>
+
+#include "input.hpp"
 
 //----------------------------------------------------------------------
 /// @brief Constructor: Initializes the default input file name to "input.inp"
 Input::Input() : input_filename("input.inp") {}  // default name
 //----------------------------------------------------------------------
-/// Delegates to private function for parsing command-line arguments.
+/// @brief Delegates to private function for parsing command-line arguments.
 void Input::get_arguments(int argc, char* argv[], Output & out) {
     parse_arguments(argc, argv, out);
 }
 //----------------------------------------------------------------------
-/// Parses user-supplied command-line arguments and sets the input filename.
+/// @brief Parses user-supplied command-line arguments and sets the input filename.
 /// Handles three cases:
 /// 1. One argument (input filename)
 /// 2. No arguments (ask user to type filename)
@@ -42,7 +47,7 @@ void Input::parse_arguments(int argc, char* argv[], Output& out) {
     }
 }
 //----------------------------------------------------------------------
-/// Check that files exists and has the supported extension (.inp).
+/// @brief Check that files exists and has the supported extension (.inp).
  void Input::check_input_file(const Output& out) {
     std::ifstream file(input_filename);
     if (!file) {
@@ -59,22 +64,99 @@ void Input::parse_arguments(int argc, char* argv[], Output& out) {
     }
  }
 //----------------------------------------------------------------------
-// void Input::read() {
-//     std::ifstream file(input_filename);
-//     std::string line;
-//     std::cout << "🔍 Reading input file:" << std::endl;
-//     while (std::getline(file, line)) {
-//         std::cout << "  >> " << line << std::endl;
-//         // TODO: parse values and store in members
-//     }
-// }
-// 
-//----------------------------------------------------------------------
-// void Input::print_input_info() const {
-//     std::cout << "📋 Parsed input filename: " << input_filename << std::endl;
-//     // TODO: print parsed values here
-// }
-//----------------------------------------------------------------------
+/// @brief Reads the input file and parses its content.
+void Input::read() {
 
+    // Open the input file
+    std::ifstream file(input_filename);
+    if (!file) {
+        throw std::runtime_error("Cannot open input file: " + input_filename);
+    }
+
+    // Step 1: Create a dispatch table (a keyword-to-function map)
+    std::unordered_map<std::string, std::function<void(const std::string&)>> handlers;
+
+    // Step 2: Define how each keyword should be handled
+    handlers["integrate cube file"] = [&](const std::string& value) {
+        check_and_store_file(value, density_file_integration_input, density_file_integration);
+    };
+
+    std::string line;
+    // Step 3: Read input file line-by-line
+    while (std::getline(file, line)) {
+        // Trim leading and trailing whitespace
+        line.erase(0, line.find_first_not_of(" \t\r\n"));
+        line.erase(line.find_last_not_of(" \t\r\n") + 1);
+
+        // Skip empty lines or comment lines (starting with '#' or '!')
+        if (line.empty() || line[0] == '#' || line[0] == '!') continue;
+
+        // Step 4: Split line into keyword and value using ':'
+        size_t colon_pos = line.find(':');
+        if (colon_pos == std::string::npos) {
+            continue;  // no colon found — skip or optionally throw an error
+        }
+
+        std::string key = line.substr(0, colon_pos);
+        std::string value = line.substr(colon_pos + 1);
+
+        // Trim whitespace from  both key andvalue
+        key.erase(0, key.find_first_not_of(" \t"));
+        key.erase(key.find_last_not_of(" \t") + 1);
+        value.erase(0, value.find_first_not_of(" \t"));
+        value.erase(value.find_last_not_of(" \t") + 1);
+
+        // Convert key to lowercase to make it case-insensitive
+        std::transform(key.begin(), key.end(), key.begin(), ::tolower);
+
+        // Step 5: Call the handler function if the key is recognized
+        if (handlers.contains(key)) {
+            handlers[key](value);  // call the lambda/function associated with this key
+        } else {
+            throw std::runtime_error("Unknown input keyword: '" + key + "'");
+        }
+    }
+
+}
+//----------------------------------------------------------------------
+/// @brief Resolves a file path relative to the input file location.
+/// @param relative_path Path from the input file (may be relative)
+/// @return Absolute path as a string
+std::string Input::resolve_relative_to_input(const std::string& relative_path) const {
+    namespace fs = std::filesystem;
+
+    // Get directory of the input file
+    fs::path input_dir = fs::absolute(input_filename).parent_path();
+
+    // Combine with the relative path and normalize
+    fs::path full_path = fs::absolute(input_dir / relative_path);
+
+    return full_path.string();
+}
+//----------------------------------------------------------------------
+/// @brief Checks if a file exists and throws an error if it does not.
+/// @param path The path to the file to check.
+void Input::file_exists(const std::string& path) const {
+    std::ifstream file(path);
+    if (!file) {
+        throw std::runtime_error("File " + path + " not found.");
+    }
+}
+//----------------------------------------------------------------------
+/// @brief Resolves a file path, checks its existence, and stores both raw and resolved paths.
+/// @param raw_input The file name as written in the input file (may be relative)
+/// @param input_field Reference to the variable that stores the raw input name
+/// @param resolved_field Reference to the variable that stores the resolved full path
+void Input::check_and_store_file(
+    const std::string& raw_input,
+    std::string& input_field,
+    std::string& resolved_field) const {
+
+    input_field = raw_input;
+    std::string full_path = resolve_relative_to_input(raw_input);
+    file_exists(full_path);
+    resolved_field = full_path;
+}
+//----------------------------------------------------------------------
 
 
