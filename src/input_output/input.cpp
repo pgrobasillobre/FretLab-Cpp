@@ -1,6 +1,8 @@
 #include "input.hpp"
 #include <iostream>
+#include <string>
 #include <fstream>
+#include <algorithm> // for std::transform
 #include <stdexcept>
 
 //----------------------------------------------------------------------
@@ -38,20 +40,23 @@ void Input::parse_arguments(int argc, char* argv[], Output& out) {
     if (argc > 2) {
         throw std::runtime_error("Too many arguments.\n ---> Only one input file is allowed per calculation.");
     }
-
-
 }
 //----------------------------------------------------------------------
+/// Check that files exists and has the supported extension (.inp).
  void Input::check_input_file(const Output& out) {
-     std::ifstream file(input_filename);
-     if (!file) {
-         throw std::runtime_error("Input file not found: " + input_filename);
-     }
+    std::ifstream file(input_filename);
+    if (!file) {
+        throw std::runtime_error("File " + input_filename + " does not exist. Check the file name and path.");
+    }
 
+    // Creates new string variable (lowercase) to check extension
+    std::string lower_filename = input_filename;
+    std::transform(lower_filename.begin(), lower_filename.end(), lower_filename.begin(), ::tolower);
 
-    // TO BE COMPLETED
-
-
+    // Check file extension is .inp
+    if (lower_filename.size() < 4 || lower_filename.substr(lower_filename.size() - 4) != ".inp") {
+        throw std::runtime_error("File " + input_filename + " does not have the supported extension (.inp).");
+    }
  }
 //----------------------------------------------------------------------
 // void Input::read() {

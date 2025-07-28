@@ -40,5 +40,7 @@
 # debug information files
 *.dwo
 
-# Building directory
+# Building directory and custom folders/files
 build/
+.vscode
+

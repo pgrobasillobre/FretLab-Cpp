@@ -26,10 +26,12 @@
 //---------------------------------------------------------------------------
 
 int main(int argc, char* argv[]) {
+
+    Output out;
+
     try {
         // Instantiate components
         Input inp;
-        Output out;
         Timer timer;
         ////Target target;
         ////Algorithm algorithm;
@@ -42,11 +44,13 @@ int main(int argc, char* argv[]) {
         ////// Optional: set OpenMP thread count
         ////// omp_set_num_threads(parallel.n_threads_OMP);
 
-        // Open output file and print banner
+        // Open output file. Check input file existence and extension
         out.open();
+        inp.check_input_file(out);
+
+        // Print banner, read input and print input info.
         out.print_banner();
 
-        inp.check_input_file(out);
         ////inp.read();
         ////inp.print_input_info();
 
@@ -73,7 +77,7 @@ int main(int argc, char* argv[]) {
         out.close();
 
     } catch (const std::exception& e) {
-        std::cerr << "Error: " << e.what() << std::endl;
+        out.stream() << "Error: " << e.what() << std::endl;
         return 1;
     }
 
