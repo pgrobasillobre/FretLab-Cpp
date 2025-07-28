@@ -1,4 +1,3 @@
-
 #ifndef INPUT_HPP
 #define INPUT_HPP
 
@@ -24,6 +23,9 @@ public:
     /// @brief Check input file existence and extension.
     /// @param Output stream to write the report to (default is std::cout).
     void check_input_file(const Output& out);
+
+    /// @brief Prints input file information to the output stream.
+    void print_input_info(const Output& out);
 
     /// @brief Reads the input file.
     void read(); 

@@ -67,8 +67,9 @@ void Input::parse_arguments(int argc, char* argv[], Output& out) {
 /// @brief Reads the input file and parses its content.
 void Input::read() {
 
-    // Open the input file (already checked for existence in check_input_file)
+    // Open the input file.
     std::ifstream file(input_filename);
+    file_exists(input_filename); // Check file existence
 
     // Step 1: Create a dispatch table (a keyword-to-function map)
     std::unordered_map<std::string, std::function<void(const std::string&)>> handlers;
@@ -156,5 +157,29 @@ void Input::check_and_store_file(
     resolved_field = full_path;
 }
 //----------------------------------------------------------------------
+/// @brief Prints input file information to the output stream.
+void Input::print_input_info(const Output& out) {
+    const std::string indent = std::string(23, ' ');
+
+        out.stream() << indent << "Input  File: " << input_filename << "\n";
+        out.stream() << indent << "Output File: " << out.output_filename << "\n\n";
+        out.stream() << indent << "OMP Threads: " << "1" << "\n"; // For the moment, running in serial
+        out.stream() << out.sticks << "\n";
+        out.stream() << "\n";
+
+    switch (target_mode) {
+        case TargetMode::IntegrateCube:
+            out.stream() << indent << "Calculation --> Integrate Cube Density\n\n";
+            out.stream() << indent << "Density File: " << density_file_integration_input << "\n\n";
+        break;
+
+        case TargetMode::None:
+        default:
+            throw std::runtime_error("No valid calculation target specified in input.");
+    }
+
+}
+//----------------------------------------------------------------------
+
 
 

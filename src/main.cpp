@@ -33,7 +33,6 @@ int main(int argc, char* argv[]) {
         // Instantiate components
         Input inp;
         Timer timer;
-        ////Target target;
         ////Algorithm algorithm;
 
         // Parse input arguments
@@ -52,7 +51,7 @@ int main(int argc, char* argv[]) {
         out.print_banner();
 
         inp.read();
-        ////inp.print_input_info();
+        inp.print_input_info(out);
         
         switch (inp.target_mode) {
             case TargetMode::IntegrateCube:

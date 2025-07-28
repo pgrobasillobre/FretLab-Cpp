@@ -58,8 +58,8 @@ void Output::print_banner() {
     log_stream << indent << "                                        \n";
 
     log_stream << " \n " << sticks << "\n \n";
-    log_stream << std::string(25, ' ') << "Program by Pablo Grobas Illobre\n\n";
-    log_stream << " " << sticks << "\n\n";
+    log_stream << std::string(25, ' ') << "Program by Pablo Grobas Illobre\n \n";
+    log_stream << " " << sticks << "\n \n";
     log_stream.flush();
 }
 //----------------------------------------------------------------------
