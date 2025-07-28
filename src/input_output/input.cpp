@@ -67,11 +67,8 @@ void Input::parse_arguments(int argc, char* argv[], Output& out) {
 /// @brief Reads the input file and parses its content.
 void Input::read() {
 
-    // Open the input file
+    // Open the input file (already checked for existence in check_input_file)
     std::ifstream file(input_filename);
-    if (!file) {
-        throw std::runtime_error("Cannot open input file: " + input_filename);
-    }
 
     // Step 1: Create a dispatch table (a keyword-to-function map)
     std::unordered_map<std::string, std::function<void(const std::string&)>> handlers;
@@ -79,6 +76,7 @@ void Input::read() {
     // Step 2: Define how each keyword should be handled
     handlers["integrate cube file"] = [&](const std::string& value) {
         check_and_store_file(value, density_file_integration_input, density_file_integration);
+        target_mode = TargetMode::IntegrateCube; 
     };
 
     std::string line;

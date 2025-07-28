@@ -53,6 +53,17 @@ int main(int argc, char* argv[]) {
 
         inp.read();
         ////inp.print_input_info();
+        
+        switch (inp.target_mode) {
+            case TargetMode::IntegrateCube:
+            //algorithm.integrate_density();
+            std::cout << " Inside HERE!!! "  << std::endl;
+            break;
+
+            case TargetMode::None:
+            default:
+                throw std::runtime_error("No valid calculation target specified in input.");
+        }
 
         //// debugpgi -> start with integrate density
         ////// Main computation switch

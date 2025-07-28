@@ -5,9 +5,14 @@
 #include "output.hpp"
 #include <string>
 
-/// @brief Handles input file reading
-///
-/// Input module for handling user input and arguments.
+
+/// @brief Enumeration for selecting the target task
+enum class TargetMode {
+    None,
+    IntegrateCube
+};
+
+/// @brief Input module for handling user input and arguments.
 class Input {
 public:
     /// Constructor: sets default input file name ("input.inp")
@@ -20,18 +25,16 @@ public:
     /// @param Output stream to write the report to (default is std::cout).
     void check_input_file(const Output& out);
 
-
     /// @brief Reads the input file.
     void read(); 
-
-//    void read();
-//    void print_input_info() const;
 
     Output out;
 
     std::string input_filename;
     std::string density_file_integration; ///< File for density integration (full path)
     std::string density_file_integration_input; /// File for density integration as named in input
+
+    TargetMode target_mode = TargetMode::None;  ///< Selected calculation target
 
 private:
     /// @brief Parses command-line arguments and sets the input filename.
