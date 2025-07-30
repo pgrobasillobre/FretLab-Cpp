@@ -55,7 +55,6 @@ int main(int argc, char* argv[]) {
         switch (inp.target_mode) {
             case TargetMode::IntegrateCube:
             algorithm.integrate_density(inp);
-            std::cout << " Inside HERE!!! "  << std::endl;
             break;
 
             case TargetMode::None:
@@ -86,7 +85,7 @@ int main(int argc, char* argv[]) {
         out.close();
 
     } catch (const std::exception& e) {
-        out.stream() << "Error: " << e.what() << std::endl;
+        out.stream() << " Error: " << e.what() << std::endl;
         return 1;
     }
 

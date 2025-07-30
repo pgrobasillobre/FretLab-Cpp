@@ -2,6 +2,7 @@
 #define ALGORITHM_HPP
 
 #include "input.hpp"
+#include "density.hpp"
 
 
 /// @brief Handles algorithmic operations.
@@ -14,6 +15,7 @@ public:
     void integrate_density(const Input& inp);
 
     Input inp;
+    Density density; 
 };
 
 #endif 

@@ -171,6 +171,7 @@ void Input::print_input_info(const Output& out) {
         case TargetMode::IntegrateCube:
             out.stream() << indent << "Calculation --> Integrate Cube Density\n\n";
             out.stream() << indent << "Density File: " << density_file_integration_input << "\n\n";
+            out.stream() << " " << out.sticks << "\n\n";
         break;
 
         case TargetMode::None:

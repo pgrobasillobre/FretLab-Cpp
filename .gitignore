@@ -44,3 +44,5 @@
 build/
 .vscode
 
+# Tests
+tests/*/*log
