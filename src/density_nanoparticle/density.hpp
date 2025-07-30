@@ -18,27 +18,26 @@ public:
     int natoms = 0, nx = 0, ny = 0, nz = 0;
     int n_points_reduced = 0, nelectrons = 0;
 
-    // Atomic data
+    // Cube file information
     std::vector<int> atomic_number;              ///< Atomic numbers of the atoms
     std::vector<std::string> atomic_label;       ///< Element symbols
     std::vector<double> atomic_charge;           ///< Atomic charges
     std::vector<double> x, y, z;                 ///< Atomic positions
 
-    // Grid origin and voxel vectors
     double xmin = 0.0, ymin = 0.0, zmin = 0.0;
     std::array<double, 3> dx{}, dy{}, dz{};      ///< Voxel vectors in each direction
 
-    // 3D density data
     std::vector<std::vector<std::vector<double>>> rho;
 
-    // Reduced density and corresponding coordinates
     std::vector<double> rho_reduced;
     std::vector<std::array<double, 3>> xyz;
 
-    // Geometry information
     double maxdens = 0.0, volume = 0.0;
     std::array<double, 3> geom_center{}, geom_center_mol{};
 
+    double integral = 0.0;  ///< Integral of the density over the full grid
+
+    // Functions to handle density data
     /**
      * @brief Reads cube file and loads density data.
      * @param filepath Path to the cube file.
@@ -47,6 +46,12 @@ public:
      */
     void read_density(const std::string& filepath, bool rotate = false, const std::string& what_dens = "");
 
+    /** 
+     * @brief Integrates the full density grid.
+     */
+    void int_density();
+
+
 private:
     /**
      * @brief Maps atomic number to corresponding element label.
@@ -54,6 +59,7 @@ private:
      * @return Element symbol as a string
      */
     std::string map_atomic_number_to_label(int Z) const;
+
 };
 
 #endif // DENSITY_HPP

@@ -2,6 +2,7 @@
 #define ALGORITHM_HPP
 
 #include "input.hpp"
+#include "output.hpp"
 #include "density.hpp"
 
 
@@ -15,7 +16,8 @@ public:
     void integrate_density(const Input& inp);
 
     Input inp;
-    Density density; 
+    Output out;
+    Density cube; 
 };
 
 #endif 

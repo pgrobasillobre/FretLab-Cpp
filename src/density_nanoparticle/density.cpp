@@ -93,3 +93,17 @@ void Density::read_density(const std::string& filepath, bool rotate, const std::
 
     infile.close();
 }
+
+///
+/// @brief Integrates the full density grid by summing all density values.
+///
+void Density::int_density() {
+    for (int i = 0; i < nx; ++i) {
+        for (int j = 0; j < ny; ++j) {
+            for (int k = 0; k < nz; ++k) {
+                integral += rho[i][j][k];
+            }
+        }
+    }
+}
+ 

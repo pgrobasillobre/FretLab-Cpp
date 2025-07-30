@@ -2,6 +2,7 @@
 #define INPUT_HPP
 
 #include "output.hpp"
+
 #include <string>
 
 
@@ -30,13 +31,13 @@ public:
     /// @brief Reads the input file.
     void read(); 
 
-    Output out;
-
     std::string input_filename;
     std::string density_file_integration; ///< File for density integration (full path)
     std::string density_file_integration_input; /// File for density integration as named in input
 
     TargetMode target_mode = TargetMode::None;  ///< Selected calculation target
+
+    Output out;
 
 private:
     /// @brief Parses command-line arguments and sets the input filename.

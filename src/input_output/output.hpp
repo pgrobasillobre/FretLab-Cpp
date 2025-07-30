@@ -1,12 +1,17 @@
 #ifndef OUTPUT_HPP
 #define OUTPUT_HPP
 
+#include "density.hpp"
+
+#include <optional>
 #include <string>
 #include<fstream>
 
 /// @brief Handles output file naming and writing.
 /// 
 /// This class is responsible for managing output operations.
+
+class Input; // Forward declaration of Input to avoid circular dependency
 
 class Output {
 public:
@@ -27,6 +32,13 @@ public:
 
     /// @brief Prints FretLab banner.
     void print_banner();
+
+    /// debugpgi
+    void print_density(
+        const Input& inp,
+        const Density& cube,
+        std::optional<std::string> header = std::nullopt 
+    );
 
     /// @brief Horizontal line (80 dashes) separation output sections
     const std::string sticks = std::string(80, '-'); 

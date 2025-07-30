@@ -1,5 +1,6 @@
 #include "algorithm.hpp"  
 #include "input.hpp"
+#include "output.hpp"
 #include "density.hpp"
 
 #include <iostream>
@@ -11,6 +12,10 @@ Algorithm::Algorithm() {}
 /// @brief Integrates the density of the input cube file.
 void Algorithm::integrate_density(const Input& inp) {
 
-    density.read_density(inp.density_file_integration, false, "");
+    cube.read_density(inp.density_file_integration, false, "");
+
+    cube.int_density();
+
+    out.print_density(inp, cube);
 }
 //----------------------------------------------------------------------

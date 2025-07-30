@@ -65,3 +65,11 @@ void Output::print_banner() {
 }
 //----------------------------------------------------------------------
 
+void Output::print_density(const Input& inp, const Density& cube, std::optional<std::string> header) {
+
+
+std::cout<< "carajo2" << std::endl;
+
+}
+
+
