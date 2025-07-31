@@ -10,13 +10,13 @@
 class Algorithm {
 public:
     /// Constructor
-    Algorithm();
+    Algorithm(Output& out);
 
     /// @brief Integrates density of input cube file.
     void integrate_density(const Input& inp);
 
-    Input inp;
-    Output out;
+private: 
+    Output& out;
     Density cube; 
 };
 

@@ -163,7 +163,7 @@ void Input::print_input_info(const Output& out) {
 
         out.stream() << indent << "Input  File: " << input_filename << "\n";
         out.stream() << indent << "Output File: " << out.output_filename << "\n\n";
-        out.stream() << indent << "OMP Threads: " << "1" << "\n"; // For the moment, running in serial
+        out.stream() << indent << "OMP Threads: " << "1" << "\n\n "; // For the moment, running in serial
         out.stream() << out.sticks << "\n";
         out.stream() << "\n";
 
@@ -171,7 +171,7 @@ void Input::print_input_info(const Output& out) {
         case TargetMode::IntegrateCube:
             out.stream() << indent << "Calculation --> Integrate Cube Density\n\n";
             out.stream() << indent << "Density File: " << density_file_integration_input << "\n\n";
-            out.stream() << " " << out.sticks << "\n\n";
+            out.stream() << " " << out.sticks << "\n \n";
         break;
 
         case TargetMode::None:

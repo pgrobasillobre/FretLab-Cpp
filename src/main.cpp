@@ -32,7 +32,6 @@ int main(int argc, char* argv[]) {
         // Instantiate components
         Input inp;
         Timer timer;
-        Algorithm algorithm;
 
         // Parse input arguments
         inp.get_arguments(argc, argv, out);
@@ -52,6 +51,9 @@ int main(int argc, char* argv[]) {
         inp.read();
         inp.print_input_info(out);
         
+        // Initialize algorithm instance with output reference.
+        Algorithm algorithm(out);
+
         switch (inp.target_mode) {
             case TargetMode::IntegrateCube:
             algorithm.integrate_density(inp);

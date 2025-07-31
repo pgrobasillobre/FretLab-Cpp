@@ -42,12 +42,6 @@ void Density::read_density(const std::string& filepath, bool rotate, const std::
     infile >> ny >> dy[0] >> dy[1] >> dy[2];
     infile >> nz >> dz[0] >> dz[1] >> dz[2];
 
-    // debugpgi
-    //std::cout << natoms << "  " << xmin << "  " << ymin << "  " << zmin << std::endl;
-    //std::cout << nx << "  " << dx[0] << "  " << dx[1] << "  " << dx[2] << std::endl;
-    //std::cout << ny << "  " << dy[0] << "  " << dy[1] << "  " << dy[2] << std::endl;
-    //std::cout << nz << "  " << dz[0] << "  " << dz[1] << "  " << dz[2] << std::endl;
-
     // Ensure voxel matrix is diagonal. Compute voxel volume.
     if (dx[1] != 0.0 || dx[2] != 0.0 ||
         dy[0] != 0.0 || dy[2] != 0.0 ||
@@ -86,8 +80,6 @@ void Density::read_density(const std::string& filepath, bool rotate, const std::
             }
         }
     }
-    // debugpgi
-    //std::cout << rho[nx-1][ny-1][nz-1] << std::endl;
 
     // NOTE: reduction, geometry center, and rotation will be added later
 

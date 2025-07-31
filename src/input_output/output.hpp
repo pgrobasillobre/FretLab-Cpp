@@ -6,6 +6,10 @@
 #include <optional>
 #include <string>
 #include<fstream>
+#include <stdexcept>
+#include <cstdio>
+#include <string>
+#include <ostream>
 
 /// @brief Handles output file naming and writing.
 /// 
@@ -35,7 +39,7 @@ public:
 
     /// debugpgi
     void print_density(
-        const Input& inp,
+        const std::string& filepath,
         const Density& cube,
         std::optional<std::string> header = std::nullopt 
     );
@@ -50,7 +54,29 @@ public:
     /// Full path or name of the output file.
     std::string output_filename;
 
+
+
 private:
+
+    /// @brief Prints a formatted line to the output stream.
+    /// @param out The output stream to write to.
+    /// @param i The first integer to format.
+    /// @param a The first double to format.
+    /// @param b The second double to format.
+    /// @param c The third double to format.
+    void print_formatted_line1(std::ostream& out, int i, double a, double b, double c);
+
+    /// @brief Prints a formatted line with atom information.
+    /// @param out The output stream to write to.
+    /// @param atom The atom label (e.g., "H", "O").
+    /// @param x The x-coordinate of the atom.
+    /// @param y The y-coordinate of the atom.
+    /// @param z The z-coordinate of the atom.
+    void print_formatted_line2(std::ostream& out, const std::string atom, double x, double y, double z);
+
+    // Define formats for output
+    std::string format1 = "   {:5d} {:15.7E} {:15.7E} {:15.7E}\n";
+
     std::ofstream log_stream; ///< The output file stream
 
 };
