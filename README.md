@@ -73,11 +73,12 @@ Where:
 FretLab requires the following dependencies:
 
 - CMake 3.14 or higher
+- C++20-compatible compiler (GCC 9.4.0 or higher recommended)
 - Python 3.8+
-- Fortran compiler (gfortran 9.3.0 or higher recommended)
 - LAPACK/BLAS libraries (MKL suggested)
 - Python `runtest` module (`pip install runtest`)
-- OpenMP support
+- OpenMP support (optional, enable with -DENABLE_OMP=ON)
+
 
 If using MKL (recommended), set the following environment variable:
 
@@ -90,7 +91,7 @@ export MATH_ROOT=/opt/intel/mkl/lib/intel64_lin
 To build FretLab, run:
 
 ```
-./setup.sh -omp -fc <fort-path>
+./setup.sh -omp 
 
 cd build/
 make
@@ -100,7 +101,6 @@ This will generate an executable named `FretLab` inside the `build/` directory.
 
 ### Options:
 - `-omp` : Enables OpenMP (recommended)
-- `-fc <fort-path>` : Path to the Fortran compiler (optional)
 
 
 ### Running Tests:
