@@ -1,7 +1,7 @@
 # FretLab – Electronic Energy Transfer Computation
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/pgrobasillobre/FretLab/main/docs/_static/FretLab.png" width="600">
+  <img src="https://raw.githubusercontent.com/pgrobasillobre/FretLab-Cpp/main/docs/_static/FretLab.png" width="600">
 </p>
 
 
@@ -144,5 +144,5 @@ FretLab has been developed as part of a collaborative scientific effort involvin
 For issues or contributions:
 
 - Email: **pgrobasillobre@gmail.com**
-- Github issues: https://github.com/pgrobasillobre/FretLab/issues
+- Github issues: https://github.com/pgrobasillobre/FretLab-Cpp/issues
 
