@@ -9,7 +9,7 @@ from runtest_config import configure
 
 f = [
     get_filter(from_string='Associated molecular coordinates',
-               to_string='Just me',
+               to_string='We should',
                rel_tolerance=1.0e-15)
 ]
 
