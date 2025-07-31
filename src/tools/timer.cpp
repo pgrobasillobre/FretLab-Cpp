@@ -6,6 +6,7 @@
 #include <ctime>
 
 //----------------------------------------------------------------------
+///
 /// @brief Initializes the timer module by setting up default timers.
 ///
 /// Adds the "total" timer to the internal map. This is analogous to
@@ -14,6 +15,7 @@ void Timer::initialize() {
     timers["total"] = TimeData{};
 }
 //----------------------------------------------------------------------
+///
 /// @brief Starts timing for a specified named section.
 ///
 /// If the timer has already been initialized, this function will record
@@ -33,6 +35,7 @@ void Timer::start(const std::string& name) {
     }
 }
 //----------------------------------------------------------------------
+///
 /// @brief Finishes timing for a specified named section.
 ///
 /// Records the current high-resolution end time. If the timer was
@@ -50,6 +53,7 @@ void Timer::finish(const std::string& name) {
     }
 }
 //----------------------------------------------------------------------
+///
 /// @brief Prints a summary report of all timers to the provided output stream.
 ///
 /// Outputs elapsed wall-clock time for each completed timer, along with

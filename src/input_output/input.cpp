@@ -11,19 +11,25 @@
 #include <stdexcept>
 
 //----------------------------------------------------------------------
+///
 /// @brief Constructor: Initializes the default input file name to "input.inp"
+///
 Input::Input() : input_filename("input.inp") {}  // default name
 //----------------------------------------------------------------------
+///
 /// @brief Delegates to private function for parsing command-line arguments.
+///
 void Input::get_arguments(int argc, char* argv[], Output & out) {
     parse_arguments(argc, argv, out);
 }
 //----------------------------------------------------------------------
+///
 /// @brief Parses user-supplied command-line arguments and sets the input filename.
 /// Handles three cases:
 /// 1. One argument (input filename)
 /// 2. No arguments (ask user to type filename)
 /// 3. Too many arguments (throws error -- TODO)
+///
 void Input::parse_arguments(int argc, char* argv[], Output& out) {
 
     // Normal case: one file passed as argument
@@ -47,8 +53,9 @@ void Input::parse_arguments(int argc, char* argv[], Output& out) {
     }
 }
 //----------------------------------------------------------------------
+///
 /// @brief Check that files exists and has the supported extension (.inp).
- void Input::check_input_file(const Output& out) {
+void Input::check_input_file(const Output& out) {
     std::ifstream file(input_filename);
     if (!file) {
         throw std::runtime_error("File " + input_filename + " does not exist. Check the file name and path.");
@@ -62,9 +69,11 @@ void Input::parse_arguments(int argc, char* argv[], Output& out) {
     if (lower_filename.size() < 4 || lower_filename.substr(lower_filename.size() - 4) != ".inp") {
         throw std::runtime_error("File " + input_filename + " does not have the supported extension (.inp).");
     }
- }
+}
 //----------------------------------------------------------------------
+///
 /// @brief Reads the input file and parses its content.
+///
 void Input::read() {
 
     // Open the input file.
@@ -118,9 +127,11 @@ void Input::read() {
 
 }
 //----------------------------------------------------------------------
+///
 /// @brief Resolves a file path relative to the input file location.
 /// @param relative_path Path from the input file (may be relative)
 /// @return Absolute path as a string
+///
 std::string Input::resolve_relative_to_input(const std::string& relative_path) const {
     namespace fs = std::filesystem;
 
@@ -133,8 +144,10 @@ std::string Input::resolve_relative_to_input(const std::string& relative_path) c
     return full_path.string();
 }
 //----------------------------------------------------------------------
+///
 /// @brief Checks if a file exists and throws an error if it does not.
 /// @param path The path to the file to check.
+///
 void Input::file_exists(const std::string& path) const {
     std::ifstream file(path);
     if (!file) {
@@ -142,10 +155,12 @@ void Input::file_exists(const std::string& path) const {
     }
 }
 //----------------------------------------------------------------------
+///
 /// @brief Resolves a file path, checks its existence, and stores both raw and resolved paths.
 /// @param raw_input The file name as written in the input file (may be relative)
 /// @param input_field Reference to the variable that stores the raw input name
 /// @param resolved_field Reference to the variable that stores the resolved full path
+///
 void Input::check_and_store_file(
     const std::string& raw_input,
     std::string& input_field,
@@ -157,7 +172,9 @@ void Input::check_and_store_file(
     resolved_field = full_path;
 }
 //----------------------------------------------------------------------
+///
 /// @brief Prints input file information to the output stream.
+///
 void Input::print_input_info(const Output& out) {
     const std::string indent = std::string(23, ' ');
 

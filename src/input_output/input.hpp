@@ -5,14 +5,18 @@
 
 #include <string>
 
-
+///
 /// @brief Enumeration for selecting the target task
+///
 enum class TargetMode {
     None,
     IntegrateCube
 };
 
+///
+/// @class Input
 /// @brief Input module for handling user input and arguments.
+///
 class Input {
 public:
     /// Constructor: sets default input file name ("input.inp")
@@ -40,12 +44,14 @@ public:
     Output out;
 
 private:
+
     /// @brief Parses command-line arguments and sets the input filename.
     /// @param argc Argument count from main()
     /// @param argv Argument vector from main()
     /// @param out Output object for logging or error reporting
     void parse_arguments(int argc, char* argv[], Output& out);
 
+    ///
     /// @brief Checks if the specified file exists.
     ///
     /// Throws a runtime error if the file is not accessible.

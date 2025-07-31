@@ -14,6 +14,9 @@
 Output::Output() {} 
 
 //----------------------------------------------------------------------
+///
+/// @brief Creates the output filename based on the input file name.
+///
 void Output::out_file_fill(const std::string& in_file) {
 
     /// @brief Generate the output filename based on the input filename.
@@ -30,7 +33,9 @@ void Output::out_file_fill(const std::string& in_file) {
     output_filename = in_file.substr(0, in_file.size() - 4) + ".log";
 }
 //----------------------------------------------------------------------
+///
 /// @brief Opens the output file for writing.
+///
 void Output::open() {
     log_stream.open(output_filename, std::ios::out);
     if (!log_stream.is_open()) {
@@ -38,19 +43,25 @@ void Output::open() {
     }
 }
 //----------------------------------------------------------------------
+///
 /// @brief Gets the internal output stream.
+///
 std::ofstream& Output::stream() const {
     return const_cast<std::ofstream&>(log_stream);
 }
 //----------------------------------------------------------------------
+///
 /// @brief Closes the output file stream.
+///
 void Output::close() {
     if (log_stream.is_open()) {
         log_stream.close();
     }
 }
 //----------------------------------------------------------------------
+///
 /// @brief Prints FretLab banner.
+///
 void Output::print_banner() {
     const std::string indent = std::string(20, ' ');
 
@@ -69,6 +80,9 @@ void Output::print_banner() {
     log_stream.flush();
 }
 //----------------------------------------------------------------------
+///
+/// @brief Fills the output file with density information.
+///
 void Output::print_density(const std::string& filepath, const Density& cube, std::optional<std::string> header) {
 
     // Extract the filename from the full path
@@ -113,12 +127,18 @@ void Output::print_density(const std::string& filepath, const Density& cube, std
 }
 
 //----------------------------------------------------------------------
+///
+/// @brief Prints a formatted line with cube information to the output stream.
+///
 void Output::print_formatted_line1(std::ostream& out, int i, double a, double b, double c) {
     char line[100];
     std::snprintf(line, sizeof(line), "   %5d %15.7E %15.7E %15.7E\n", i, a, b, c);
     out << line;
 }
 // ----------------------------------------------------------------------
+///
+/// @brief Prints a formatted line with atom information to the output stream.
+//
 void Output::print_formatted_line2(std::ostream& out, const std::string atom, double x, double y, double z) {
     char line[100];
     std::snprintf(line, sizeof(line), "       %-2s  %12.6f  %12.6f  %12.6f\n", atom.c_str(), x, y, z);

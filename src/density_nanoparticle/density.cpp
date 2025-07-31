@@ -9,6 +9,7 @@
 
 ///
 /// @brief Returns the element label (e.g., "H", "C") for a given atomic number.
+///
 std::string Density::map_atomic_number_to_label(int Z) const {
     static const std::vector<std::string> periodic_table = {
         "", "H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne",

@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <chrono>
 
+/// @class Timer
 /// @brief Handles performance timing for labeled code sections.
 /// 
 /// This class allows measuring the elapsed wall-clock time of specific

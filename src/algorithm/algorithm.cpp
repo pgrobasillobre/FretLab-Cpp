@@ -5,11 +5,15 @@
 
 #include <iostream>
 
+///
 /// @brief Constructor for Algorithm.
+///
 Algorithm::Algorithm(Output& out) : out(out) {}
 
 //----------------------------------------------------------------------
+///
 /// @brief Integrates the density of the input cube file.
+///
 void Algorithm::integrate_density(const Input& inp) {
 
     cube.read_density(inp.density_file_integration, false, "");
