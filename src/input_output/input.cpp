@@ -1,4 +1,5 @@
 #include "input.hpp"
+#include "string_manipulation.hpp"
 
 #include <iostream>
 #include <string>
@@ -84,10 +85,42 @@ void Input::read() {
     std::unordered_map<std::string, std::function<void(const std::string&)>> handlers;
 
     // Step 2: Define how each keyword should be handled
+    // ========
     handlers["integrate cube file"] = [&](const std::string& value) {
         check_and_store_file(value, density_file_integration_input, density_file_integration);
         target_mode = TargetMode::IntegrateCube; 
     };
+    // ========
+    handlers["acceptor density"] = [&](const std::string& value) {
+        check_and_store_file(value, acceptor_density_input_file, acceptor_density_file);
+        is_acceptor_density_present = true;
+        std::cout << "oli 1" << std::endl;
+    };
+    // ========
+    handlers["donor density"] = [&](const std::string& value) {
+        check_and_store_file(value, donor_density_input_file, donor_density_file);
+        is_donor_density_present = true;
+        std::cout << "oli 2" << std::endl;
+    };
+    // ========
+    handlers["cutoff"] = [&](const std::string& value) {
+        str_manipulation.string_to_float(value, cutoff);
+        is_cutoff_present = true;
+        std::cout << "oli 3  " << cutoff << std::endl;
+    };
+    // ========
+    handlers["spectral overlap"] = [&](const std::string& value) {
+        str_manipulation.string_to_float(value, spectral_overlap);
+        is_spectral_overlap_present = true;
+        std::cout << "oli 4  " << spectral_overlap << std::endl;
+    };
+    // ========
+
+
+
+
+
+
 
     std::string line;
     // Step 3: Read input file line-by-line

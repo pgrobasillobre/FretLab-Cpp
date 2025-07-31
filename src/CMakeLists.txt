@@ -10,7 +10,7 @@ target_sources(FretLab
         ${CMAKE_CURRENT_SOURCE_DIR}/density_nanoparticle/density.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/input_output/output.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/input_output/input.cpp
-        #${CMAKE_CURRENT_SOURCE_DIR}/tools/string_manipulation.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/tools/string_manipulation.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/tools/timer.cpp
         #${CMAKE_CURRENT_SOURCE_DIR}/tools/parameters.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
