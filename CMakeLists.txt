@@ -54,13 +54,13 @@ endif()
 # TESTING CONFIGURATION
 # ========================
 # Includes optional ConfigTesting.cmake if it exists
-## include(ConfigTesting) # debugpgi
+include(ConfigTesting) 
 
 # Set language bindings and detect math libraries via a custom CMake module
 set(BLAS_LANG "CXX")
 set(LAPACK_LANG "CXX")
 set(MKL_COMPILER_BINDINGS ${CMAKE_CXX_COMPILER_ID})
-## include(ConfigMath) # debugpgi
+include(ConfigMath) 
 
 # Save combined LAPACK/BLAS libraries into a variable
 if(LAPACK_FOUND AND BLAS_FOUND)
