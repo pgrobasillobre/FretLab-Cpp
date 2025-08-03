@@ -9,31 +9,31 @@
 struct Target {
     TargetMode mode = TargetMode::None;
 
-    // Input files
-    std::string density_file;
-    std::string acceptor_density_file;
-    std::string donor_density_file;
+    // Density integration
+    std::string input_filename;
+    std::string density_file_integration; ///< File for density integration (full path)
+    std::string density_file_integration_input; /// File for density integration as named in input
 
-    // Numeric parameters
-    double cutoff = 0.0;
-    double omega_0 = 0.0;
+    // Acceptor 
+    bool is_acceptor_density_present = false;
+
+    std::string acceptor_density_file; ///< File for acceptor density (full path)
+    std::string acceptor_density_input_file; /// File for acceptor density as named in input
+
+    // Donor
+    bool is_donor_density_present = false;
+
+    std::string donor_density_file; ///< File for donor density (full path)
+    std::string donor_density_input_file; /// File for donoe density as named in input
+
+    // Target + other options
+    TargetMode target_mode = TargetMode::None;  ///< Selected calculation target
+
+    bool is_cutoff_present = false;
+    double cutoff = 0.0; 
+
+    bool is_spectral_overlap_present = false;
     double spectral_overlap = 0.0;
-
-    // Rotation, vectors
-    double acceptor_rotation_angle = 0.0;
-    std::array<double, 3> acceptor_transdip{};
-    std::array<double, 3> acceptor_ref_vector{};
-    std::array<double, 3> donor_transdip{};
-    std::array<double, 3> donor_ref_vector{};
-    std::string rotation_axis;
-
-    // Flags
-    bool rotate_acceptor = false;
-    bool rotate_donor = false;
-    bool align_acceptor = false;
-    bool align_donor = false;
-
-    int debug_level = 0;
 };
 
 #endif // TARGET_HPP

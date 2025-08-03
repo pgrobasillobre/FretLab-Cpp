@@ -1,7 +1,7 @@
 #ifndef ALGORITHM_HPP
 #define ALGORITHM_HPP
 
-#include "input.hpp"
+#include "target.hpp"
 #include "output.hpp"
 #include "density.hpp"
 
@@ -17,7 +17,7 @@ public:
     ///
     /// @brief Integrates density of input cube file.
     /// 
-    void integrate_density(const Input& inp);
+    void integrate_density(const Target& target);
 
 private: 
     Output& out;

@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
         Timer timer;
 
         // Parse input arguments
-        inp.get_arguments(argc, argv, out);
+        inp.get_arguments(argc, argv, out, target);
         timer.initialize();
         timer.start("total");
 
@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
 
         switch (target.mode) {
             case TargetMode::IntegrateCube:
-            algorithm.integrate_density(inp);
+            algorithm.integrate_density(target);
             break;
 
             case TargetMode::None:

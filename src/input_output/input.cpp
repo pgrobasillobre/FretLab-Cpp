@@ -21,8 +21,9 @@ Input::Input() : input_filename("input.inp") {}  // default name
 ///
 /// @brief Delegates to private function for parsing command-line arguments.
 ///
-void Input::get_arguments(int argc, char* argv[], Output & out) {
+void Input::get_arguments(int argc, char* argv[], Output & out, Target& target) {
     parse_arguments(argc, argv, out);
+    target.input_filename = input_filename; // Assign variable to target class 
 }
 //----------------------------------------------------------------------
 ///
@@ -88,32 +89,31 @@ void Input::read(Target& target) {
     // Step 2: Define how each keyword should be handled
     // ========
     handlers["integrate cube file"] = [&](const std::string& value) {
-        check_and_store_file(value, density_file_integration_input, density_file_integration);
+        check_and_store_file(value, target.density_file_integration_input, target.density_file_integration);
         target.mode = TargetMode::IntegrateCube; 
     };
     // ========
     handlers["acceptor density"] = [&](const std::string& value) {
-        check_and_store_file(value, acceptor_density_input_file, acceptor_density_file);
-        is_acceptor_density_present = true;
+        check_and_store_file(value, target.acceptor_density_input_file, target.acceptor_density_file);
+        target.is_acceptor_density_present = true;
     };
     // ========
     handlers["donor density"] = [&](const std::string& value) {
-        check_and_store_file(value, donor_density_input_file, donor_density_file);
-        is_donor_density_present = true;
+        check_and_store_file(value, target.donor_density_input_file, target.donor_density_file);
+        target.is_donor_density_present = true;
     };
     // ========
     handlers["cutoff"] = [&](const std::string& value) {
-        str_manipulation.string_to_float(value, cutoff);
-        is_cutoff_present = true;
-        if (cutoff < 0.0) {
+        str_manipulation.string_to_float(value, target.cutoff);
+        if (target.cutoff < 0.0) {
             throw std::runtime_error("Cutoff cannot be negative.");
         }
-        target.cutoff = cutoff;
+        target.is_cutoff_present = true;
     };
     // ========
     handlers["spectral overlap"] = [&](const std::string& value) {
-        str_manipulation.string_to_float(value, spectral_overlap);
-        is_spectral_overlap_present = true;
+        str_manipulation.string_to_float(value, target.spectral_overlap);
+        target.is_spectral_overlap_present = true;
     };
     // ========
 
@@ -165,12 +165,6 @@ void Input::read(Target& target) {
 }
 //----------------------------------------------------------------------
 void Input::get_target(Target& target) {
-    //if (is_cutoff_present) {
-    //    if (cutoff < 0.0)
-    //        throw std::runtime_error("Cutoff cannot be negative.");
-    //    target.cutoff = cutoff;
-    //}
-
     //if (is_acceptor_density_present)
     //    target.acceptor_density_file = acceptor_density_file;
 
@@ -244,7 +238,7 @@ void Input::check_and_store_file(
 void Input::print_input_info(const Output& out, const Target& target) {
     const std::string indent = std::string(23, ' ');
 
-        out.stream() << indent << "Input  File: " << input_filename << "\n";
+        out.stream() << indent << "Input  File: " << target.input_filename << "\n";
         out.stream() << indent << "Output File: " << out.output_filename << "\n\n";
         out.stream() << indent << "OMP Threads: " << "1" << "\n\n "; // For the moment, running in serial
         out.stream() << out.sticks << "\n";
@@ -253,7 +247,7 @@ void Input::print_input_info(const Output& out, const Target& target) {
     switch (target.mode) {
         case TargetMode::IntegrateCube:
             out.stream() << indent << "Calculation --> Integrate Cube Density\n\n";
-            out.stream() << indent << "Density File: " << density_file_integration_input << "\n\n";
+            out.stream() << indent << "Density File: " << target.density_file_integration_input << "\n\n";
             out.stream() << " " << out.sticks << "\n \n";
         break;
 
