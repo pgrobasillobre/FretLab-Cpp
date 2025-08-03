@@ -90,7 +90,7 @@ void Input::read(Target& target) {
     // ========
     handlers["integrate cube file"] = [&](const std::string& value) {
         check_and_store_file(value, target.density_file_integration_input, target.density_file_integration);
-        target.mode = TargetMode::IntegrateCube; 
+        target.integrate_density = true;
     };
     // ========
     handlers["acceptor density"] = [&](const std::string& value) {
@@ -105,15 +105,20 @@ void Input::read(Target& target) {
     // ========
     handlers["cutoff"] = [&](const std::string& value) {
         str_manipulation.string_to_float(value, target.cutoff);
-        if (target.cutoff < 0.0) {
-            throw std::runtime_error("Cutoff cannot be negative.");
-        }
+        if (target.cutoff < 0.0) throw std::runtime_error("Cutoff cannot be negative.");
         target.is_cutoff_present = true;
     };
     // ========
     handlers["spectral overlap"] = [&](const std::string& value) {
         str_manipulation.string_to_float(value, target.spectral_overlap);
         target.is_spectral_overlap_present = true;
+        if (target.spectral_overlap < 0.0) throw std::runtime_error("Spectral overlap cannot be negative.");
+    };
+    // ========
+    handlers["omega_0"] = [&](const std::string& value) {
+        str_manipulation.string_to_float(value, target.omega_0);
+        target.is_omega_0_present = true;
+        if (target.omega_0 < 0.0) throw std::runtime_error("omega_0 cannot be negative");
     };
     // ========
 
@@ -164,7 +169,119 @@ void Input::read(Target& target) {
 
 }
 //----------------------------------------------------------------------
+// debugpgi
 void Input::get_target(Target& target) {
+    //
+    // Assign the different targets.
+    //
+    if (!target.is_cutoff_present &&
+        !target.omega_0           &&
+        !target.integrate_density ) {
+
+        throw std::runtime_error("Cutoff needed in input.");
+
+    } else if (target.integrate_density &&
+        (target.is_acceptor_density_present || target.is_donor_density_present || target.is_nanoparticle_present)) {
+        
+        throw std::runtime_error("You are requesting a cube integration with another type of calculation.");
+
+    } else if (target.integrate_density) {
+    
+        target.mode = TargetMode::IntegrateCube;
+
+    } else if (target.is_acceptor_density_present && 
+               target.is_donor_density_present    && 
+               !target.is_nanoparticle_present) {
+
+        if (target.is_omega_0_present) target.calc_overlap_int = true; 
+        if (!target.is_spectral_overlap_present) throw std::runtime_error("Aceptor-donor calculation requested but no spectral overlap in input.");
+
+        target.mode = TargetMode::Acceptor_Donor; 
+
+    } else {
+        target.mode = TargetMode::None;
+    }
+
+
+
+
+
+
+//!
+//     elseif(aceptor_density .and. nanoparticle .and. .not. donor_density) then
+//!
+//        target_%name_ = "aceptor_np"
+//!
+//     elseif(aceptor_density .and. nanoparticle .and. donor_density) then
+//!
+//        target_%name_ = "aceptor_np_donor"
+//        if (target_%omega_0 < zero) call out_%error("Omega_0 cannot be negative")
+//        if (target_%omega_0 > 1.0E-15) target_%calc_overlap_int = .true.
+//        !if (target_%omega_0 < 1E-14) call out_%error("Aceptor-NP-donor calculation requested but no Omega_0 in input")
+//!
+//        if (target_%spectral_overlap < zero) call out_%error("Spectral overlap cannot be negative")
+//        if (target_%spectral_overlap < 1E-14)&
+//           call out_%error("Aceptor-NP-donor calculation requested but no spectral overlap in input")
+
+
+
+
+//!
+//!    Create folder to store debug quantities
+//!
+//     if (target_%debug.ge.1) then
+//        if (file_exists("debug")) call execute_command_line("rm -rf debug")
+//        call execute_command_line("mkdir debug")
+//     endif
+//!
+//!    assign the different targets
+//!
+//     elseif(integrate_cube .and. aceptor_density .or. &
+//            integrate_cube .and. donor_density   .or. &
+//            integrate_cube .and. nanoparticle) then
+//!
+//        call out_%error( "You are requesting a cube integration with other type of calculation")
+//!
+//     elseif(integrate_cube) then
+//!
+//        target_%name_ = "integrate_density"
+//!
+//     elseif(donor_density .and. aceptor_density .and. .not. nanoparticle) then
+//!
+//        target_%name_ = "aceptor_donor"
+//        if (target_%omega_0 < zero) call out_%error("Omega_0 cannot be negative")
+//        if (target_%omega_0 > 1.0E-15) target_%calc_overlap_int = .true.
+//        !if (target_%omega_0 < 1E-14) call out_%error("Aceptor-donor calculation requested but no Omega_0 in input")
+//!
+//        if (target_%spectral_overlap < zero) call out_%error("Spectral overlap cannot be negative")
+//        if (target_%spectral_overlap < 1E-14)&
+//           call out_%error("Aceptor-donor calculation requested but no spectral overlap in input")
+//!
+//     elseif(aceptor_density .and. nanoparticle .and. .not. donor_density) then
+//!
+//        target_%name_ = "aceptor_np"
+//!
+//     elseif(aceptor_density .and. nanoparticle .and. donor_density) then
+//!
+//        target_%name_ = "aceptor_np_donor"
+//        if (target_%omega_0 < zero) call out_%error("Omega_0 cannot be negative")
+//        if (target_%omega_0 > 1.0E-15) target_%calc_overlap_int = .true.
+//        !if (target_%omega_0 < 1E-14) call out_%error("Aceptor-NP-donor calculation requested but no Omega_0 in input")
+//!
+//        if (target_%spectral_overlap < zero) call out_%error("Spectral overlap cannot be negative")
+//        if (target_%spectral_overlap < 1E-14)&
+//           call out_%error("Aceptor-NP-donor calculation requested but no spectral overlap in input")
+//!
+//     else
+//!
+//        call out_%error( "You are requesting an unkown calculation")
+//!
+//     endif
+//!
+
+
+
+
     //if (is_acceptor_density_present)
     //    target.acceptor_density_file = acceptor_density_file;
 

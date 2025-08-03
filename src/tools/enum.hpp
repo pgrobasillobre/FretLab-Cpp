@@ -5,6 +5,7 @@
 enum class TargetMode {
     None,            ///< No calculation selected
     IntegrateCube,   ///< Electron density integration
+    Acceptor_Donor
 };
 
 #endif // ENUMS_HPP
