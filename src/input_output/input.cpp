@@ -1,5 +1,6 @@
 #include "input.hpp"
 #include "string_manipulation.hpp"
+#include "target.hpp"
 
 #include <iostream>
 #include <string>
@@ -75,7 +76,7 @@ void Input::check_input_file(const Output& out) {
 ///
 /// @brief Reads the input file and parses its content.
 ///
-void Input::read() {
+void Input::read(Target& target) {
 
     // Open the input file.
     std::ifstream file(input_filename);
@@ -88,31 +89,31 @@ void Input::read() {
     // ========
     handlers["integrate cube file"] = [&](const std::string& value) {
         check_and_store_file(value, density_file_integration_input, density_file_integration);
-        target_mode = TargetMode::IntegrateCube; 
+        target.mode = TargetMode::IntegrateCube; 
     };
     // ========
     handlers["acceptor density"] = [&](const std::string& value) {
         check_and_store_file(value, acceptor_density_input_file, acceptor_density_file);
         is_acceptor_density_present = true;
-        std::cout << "oli 1" << std::endl;
     };
     // ========
     handlers["donor density"] = [&](const std::string& value) {
         check_and_store_file(value, donor_density_input_file, donor_density_file);
         is_donor_density_present = true;
-        std::cout << "oli 2" << std::endl;
     };
     // ========
     handlers["cutoff"] = [&](const std::string& value) {
         str_manipulation.string_to_float(value, cutoff);
         is_cutoff_present = true;
-        std::cout << "oli 3  " << cutoff << std::endl;
+        if (cutoff < 0.0) {
+            throw std::runtime_error("Cutoff cannot be negative.");
+        }
+        target.cutoff = cutoff;
     };
     // ========
     handlers["spectral overlap"] = [&](const std::string& value) {
         str_manipulation.string_to_float(value, spectral_overlap);
         is_spectral_overlap_present = true;
-        std::cout << "oli 4  " << spectral_overlap << std::endl;
     };
     // ========
 
@@ -158,6 +159,38 @@ void Input::read() {
         }
     }
 
+    // Step 6: Determine the target calculation based on input.
+    get_target(target);
+
+}
+//----------------------------------------------------------------------
+void Input::get_target(Target& target) {
+    //if (is_cutoff_present) {
+    //    if (cutoff < 0.0)
+    //        throw std::runtime_error("Cutoff cannot be negative.");
+    //    target.cutoff = cutoff;
+    //}
+
+    //if (is_acceptor_density_present)
+    //    target.acceptor_density_file = acceptor_density_file;
+
+    //if (is_donor_density_present)
+    //    target.donor_density_file = donor_density_file;
+
+    //if (acceptor_density_rotate || acceptor_transdip_rotate)
+    //    target.rotate_acceptor = true;
+
+    //if (donor_density_rotate || donor_transdip_rotate)
+    //    target.rotate_donor = true;
+
+    //// Consistency checks
+    //if (target.rotate_acceptor && rotation_axis.empty())
+    //    throw std::runtime_error("Acceptor rotation requested but no rotation axis given.");
+
+    //if (acceptor_transdip_rotate && !acceptor_align_with && !acceptor_density_rotate)
+    //    throw std::runtime_error("Acceptor dipole rotation requires alignment vector or angle.");
+
+    // ... etc., just like your Fortran checks
 }
 //----------------------------------------------------------------------
 ///
@@ -208,7 +241,7 @@ void Input::check_and_store_file(
 ///
 /// @brief Prints input file information to the output stream.
 ///
-void Input::print_input_info(const Output& out) {
+void Input::print_input_info(const Output& out, const Target& target) {
     const std::string indent = std::string(23, ' ');
 
         out.stream() << indent << "Input  File: " << input_filename << "\n";
@@ -217,7 +250,7 @@ void Input::print_input_info(const Output& out) {
         out.stream() << out.sticks << "\n";
         out.stream() << "\n";
 
-    switch (target_mode) {
+    switch (target.mode) {
         case TargetMode::IntegrateCube:
             out.stream() << indent << "Calculation --> Integrate Cube Density\n\n";
             out.stream() << indent << "Density File: " << density_file_integration_input << "\n\n";

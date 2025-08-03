@@ -1,6 +1,7 @@
 #include <exception>
 #include <iostream>
 
+#include "target.hpp"
 #include "input.hpp"
 #include "output.hpp"
 #include "timer.hpp"
@@ -31,6 +32,7 @@ int main(int argc, char* argv[]) {
     try {
         // Instantiate components
         Input inp;
+        Target target;
         Timer timer;
 
         // Parse input arguments
@@ -48,13 +50,13 @@ int main(int argc, char* argv[]) {
         // Print banner, read input and print input info.
         out.print_banner();
 
-        inp.read();
-        inp.print_input_info(out);
+        inp.read(target);
+        inp.print_input_info(out, target);
         
         // Initialize algorithm instance with output reference.
         Algorithm algorithm(out);
 
-        switch (inp.target_mode) {
+        switch (target.mode) {
             case TargetMode::IntegrateCube:
             algorithm.integrate_density(inp);
             break;

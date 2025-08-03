@@ -3,16 +3,10 @@
 
 #include "output.hpp"
 #include "string_manipulation.hpp"
+#include "target.hpp"
 
 #include <string>
 
-///
-/// @brief Enumeration for selecting the target task
-///
-enum class TargetMode {
-    None,
-    IntegrateCube
-};
 
 ///
 /// @class Input
@@ -31,10 +25,13 @@ public:
     void check_input_file(const Output& out);
 
     /// @brief Prints input file information to the output stream.
-    void print_input_info(const Output& out);
+    void print_input_info(const Output& out, const Target& target);
 
     /// @brief Reads the input file.
-    void read(); 
+    void read(Target& target); 
+
+    /// @brief Determine the target calculation based on input
+    void get_target(Target& target);
 
     // Density integration
     std::string input_filename;
@@ -63,6 +60,7 @@ public:
     double spectral_overlap = 0.0;
 
     Output out;
+    Target target;
     String_manipulation str_manipulation;
 
 private:
