@@ -9,8 +9,10 @@
 #include <sstream>
 #include <unordered_map>
 #include <functional>
-#include <algorithm> // for std::transform
+#include <algorithm> 
 #include <stdexcept>
+
+namespace fs = std::filesystem;
 
 //----------------------------------------------------------------------
 ///
@@ -115,6 +117,12 @@ void Input::read(Target& target) {
         if (target.spectral_overlap < 0.0) throw std::runtime_error("Spectral overlap cannot be negative.");
     };
     // ========
+    handlers["debug"] = [&](const std::string& value) {
+        str_manipulation.string_to_int(value, target.debug);
+        target.is_debug_present = true;
+        if (target.debug < 0.0) throw std::runtime_error("Debug mode must be equal or higher than 0.");
+    };
+    // ========
     handlers["omega_0"] = [&](const std::string& value) {
         str_manipulation.string_to_float(value, target.omega_0);
         target.is_omega_0_present = true;
@@ -172,6 +180,16 @@ void Input::read(Target& target) {
 // debugpgi
 void Input::get_target(Target& target) {
     //
+    // Create debug folder
+    //
+    if (target.is_debug_present && target.debug > 0) { 
+       if (fs::exists("debug")) {
+           fs::remove_all("debug");  // Equivalent of 'rm -rf debug'
+       }
+       fs::create_directory("debug");
+    }
+
+    //
     // Assign the different targets.
     //
     if (!target.is_cutoff_present &&
@@ -198,30 +216,27 @@ void Input::get_target(Target& target) {
 
         target.mode = TargetMode::Acceptor_Donor; 
 
+    } else if (target.is_acceptor_density_present && 
+               target.is_nanoparticle_present     &&
+               !target.is_donor_density_present) {
+
+        target.mode = TargetMode::Acceptor_NP;
+
+    } else if (target.is_acceptor_density_present &&
+               target.is_nanoparticle_present     &&
+               target.is_donor_density_present) {
+
+        if (target.is_omega_0_present) target.calc_overlap_int = true;
+
+        target.mode = TargetMode::Acceptor_NP_Donor;
+        if (!target.is_spectral_overlap_present) throw std::runtime_error("Aceptor-NP-donor calculation requested but no spectral overlap in input.");
+
     } else {
         target.mode = TargetMode::None;
     }
 
 
 
-
-
-
-//!
-//     elseif(aceptor_density .and. nanoparticle .and. .not. donor_density) then
-//!
-//        target_%name_ = "aceptor_np"
-//!
-//     elseif(aceptor_density .and. nanoparticle .and. donor_density) then
-//!
-//        target_%name_ = "aceptor_np_donor"
-//        if (target_%omega_0 < zero) call out_%error("Omega_0 cannot be negative")
-//        if (target_%omega_0 > 1.0E-15) target_%calc_overlap_int = .true.
-//        !if (target_%omega_0 < 1E-14) call out_%error("Aceptor-NP-donor calculation requested but no Omega_0 in input")
-//!
-//        if (target_%spectral_overlap < zero) call out_%error("Spectral overlap cannot be negative")
-//        if (target_%spectral_overlap < 1E-14)&
-//           call out_%error("Aceptor-NP-donor calculation requested but no spectral overlap in input")
 
 
 
@@ -310,7 +325,6 @@ void Input::get_target(Target& target) {
 /// @return Absolute path as a string
 ///
 std::string Input::resolve_relative_to_input(const std::string& relative_path) const {
-    namespace fs = std::filesystem;
 
     // Get directory of the input file
     fs::path input_dir = fs::absolute(input_filename).parent_path();

@@ -12,6 +12,8 @@ public:
     void initialize();
 
     void string_to_float(const std::string& str, double& out); 
+
+    void string_to_int(const std::string& str, int& out);
 };
 
 #endif 

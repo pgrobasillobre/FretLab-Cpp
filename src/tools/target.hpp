@@ -46,9 +46,12 @@ struct Target {
     double omega_0 = 0.0; 
 
 
-
     bool is_spectral_overlap_present = false;
     double spectral_overlap = 0.0;
+
+    bool is_debug_present;
+    int debug = 0;
+
 };
 
 #endif // TARGET_HPP
