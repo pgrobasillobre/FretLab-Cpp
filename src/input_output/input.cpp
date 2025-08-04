@@ -130,12 +130,6 @@ void Input::read(Target& target) {
     };
     // ========
 
-
-
-
-
-
-
     std::string line;
     // Step 3: Read input file line-by-line
     while (std::getline(file, line)) {
@@ -174,7 +168,6 @@ void Input::read(Target& target) {
 
     // Step 6: Determine the target calculation based on input.
     get_target(target);
-
 }
 //----------------------------------------------------------------------
 // debugpgi
@@ -188,7 +181,6 @@ void Input::get_target(Target& target) {
        }
        fs::create_directory("debug");
     }
-
     //
     // Assign the different targets.
     //
@@ -227,96 +219,13 @@ void Input::get_target(Target& target) {
                target.is_donor_density_present) {
 
         if (target.is_omega_0_present) target.calc_overlap_int = true;
+        if (!target.is_spectral_overlap_present) throw std::runtime_error("Aceptor-NP-donor calculation requested but no spectral overlap in input.");
 
         target.mode = TargetMode::Acceptor_NP_Donor;
-        if (!target.is_spectral_overlap_present) throw std::runtime_error("Aceptor-NP-donor calculation requested but no spectral overlap in input.");
 
     } else {
         target.mode = TargetMode::None;
     }
-
-
-
-
-
-
-
-//!
-//!    Create folder to store debug quantities
-//!
-//     if (target_%debug.ge.1) then
-//        if (file_exists("debug")) call execute_command_line("rm -rf debug")
-//        call execute_command_line("mkdir debug")
-//     endif
-//!
-//!    assign the different targets
-//!
-//     elseif(integrate_cube .and. aceptor_density .or. &
-//            integrate_cube .and. donor_density   .or. &
-//            integrate_cube .and. nanoparticle) then
-//!
-//        call out_%error( "You are requesting a cube integration with other type of calculation")
-//!
-//     elseif(integrate_cube) then
-//!
-//        target_%name_ = "integrate_density"
-//!
-//     elseif(donor_density .and. aceptor_density .and. .not. nanoparticle) then
-//!
-//        target_%name_ = "aceptor_donor"
-//        if (target_%omega_0 < zero) call out_%error("Omega_0 cannot be negative")
-//        if (target_%omega_0 > 1.0E-15) target_%calc_overlap_int = .true.
-//        !if (target_%omega_0 < 1E-14) call out_%error("Aceptor-donor calculation requested but no Omega_0 in input")
-//!
-//        if (target_%spectral_overlap < zero) call out_%error("Spectral overlap cannot be negative")
-//        if (target_%spectral_overlap < 1E-14)&
-//           call out_%error("Aceptor-donor calculation requested but no spectral overlap in input")
-//!
-//     elseif(aceptor_density .and. nanoparticle .and. .not. donor_density) then
-//!
-//        target_%name_ = "aceptor_np"
-//!
-//     elseif(aceptor_density .and. nanoparticle .and. donor_density) then
-//!
-//        target_%name_ = "aceptor_np_donor"
-//        if (target_%omega_0 < zero) call out_%error("Omega_0 cannot be negative")
-//        if (target_%omega_0 > 1.0E-15) target_%calc_overlap_int = .true.
-//        !if (target_%omega_0 < 1E-14) call out_%error("Aceptor-NP-donor calculation requested but no Omega_0 in input")
-//!
-//        if (target_%spectral_overlap < zero) call out_%error("Spectral overlap cannot be negative")
-//        if (target_%spectral_overlap < 1E-14)&
-//           call out_%error("Aceptor-NP-donor calculation requested but no spectral overlap in input")
-//!
-//     else
-//!
-//        call out_%error( "You are requesting an unkown calculation")
-//!
-//     endif
-//!
-
-
-
-
-    //if (is_acceptor_density_present)
-    //    target.acceptor_density_file = acceptor_density_file;
-
-    //if (is_donor_density_present)
-    //    target.donor_density_file = donor_density_file;
-
-    //if (acceptor_density_rotate || acceptor_transdip_rotate)
-    //    target.rotate_acceptor = true;
-
-    //if (donor_density_rotate || donor_transdip_rotate)
-    //    target.rotate_donor = true;
-
-    //// Consistency checks
-    //if (target.rotate_acceptor && rotation_axis.empty())
-    //    throw std::runtime_error("Acceptor rotation requested but no rotation axis given.");
-
-    //if (acceptor_transdip_rotate && !acceptor_align_with && !acceptor_density_rotate)
-    //    throw std::runtime_error("Acceptor dipole rotation requires alignment vector or angle.");
-
-    // ... etc., just like your Fortran checks
 }
 //----------------------------------------------------------------------
 ///
