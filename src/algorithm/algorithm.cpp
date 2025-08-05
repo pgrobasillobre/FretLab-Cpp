@@ -1,6 +1,7 @@
 #include "algorithm.hpp"  
 #include "output.hpp"
 #include "density.hpp"
+#include "parameters.hpp"
 
 #include <iostream>
 
@@ -26,11 +27,22 @@ void Algorithm::integrate_density(const Target& target) {
 /// @brief Compute electronic energy transfer rate between donor and acceptor. 
 ///
 void Algorithm::acceptor_donor(const Target& target) {
+//
+//  Read input files
+//
+    cube_acceptor.read_density(target.acceptor_density_file, false, "Acceptor");
 
-    //cube.read_density(target.density_file_integration, false, "");
+    cube_donor.read_density(target.donor_density_file, false, "Donor");
+//
+//   Print acceptor / donor density characteristics
+//
+    out.print_density(target.acceptor_density_file, cube_acceptor, Parameters::acceptor_header);
 
-    std::cout << "within algorithm acceptor donor" << std::endl;
+    out.print_density(target.donor_density_file, cube_donor, Parameters::donor_header);
 
-    //out.print_density(target.density_file_integration, cube);
+
+
+
+
 }
 //----------------------------------------------------------------------

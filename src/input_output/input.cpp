@@ -343,14 +343,17 @@ void Input::print_input_info(const Output &out, const Target &target)
         if (!target.calc_overlap_int)
         {
             out.stream() << indent << "Overlap Integral     : No\n";
-            out.stream() << indent << "Cutoff               : " << target.cutoff << "\n\n";
+            out.stream() << indent << "Cutoff               : " << target.cutoff << "   a.u.\n";
+            out.stream() << indent << "Spectral Overlap     : " << target.spectral_overlap << "   a.u.\n\n";
         }
         else
         {
             out.stream() << indent << "Overlap Integral     : Yes\n";
             out.stream() << indent << "Cutoff               : No\n";
-            out.stream() << indent << "Omega_0              : " << target.omega_0 << "\n\n";
+            out.stream() << indent << "Spectral Overlap     : " << target.spectral_overlap << "   a.u.\n";
+            out.stream() << indent << "Omega_0              : " << target.omega_0 << "   a.u.\n\n";
         }
+        out.stream() << " " << out.sticks << "\n \n";
 
         break;
 
@@ -360,7 +363,8 @@ void Input::print_input_info(const Output &out, const Target &target)
         out.stream() << indent << "Nanoparticle File    : " << target.nanoparticle_input_file << "\n\n";
 
         out.stream() << indent << "Overlap Integral     : No\n";
-        out.stream() << indent << "Cutoff               : " << target.cutoff << "\n\n";
+        out.stream() << indent << "Cutoff               : " << target.cutoff << "   a.u.\n\n";
+        out.stream() << " " << out.sticks << "\n \n";
 
         if (target.calc_overlap_int) throw std::runtime_error("Overlap integral can't be computed for Acceptor - NP option.");
 
@@ -374,16 +378,17 @@ void Input::print_input_info(const Output &out, const Target &target)
         if (!target.calc_overlap_int)
         {
             out.stream() << indent << "Overlap Integral     : No\n";
-            out.stream() << indent << "Cutoff               : " << target.cutoff << "\n";
-            out.stream() << indent << "Spectral Overlap     : " << target.spectral_overlap << "\n\n";
+            out.stream() << indent << "Cutoff               : " << target.cutoff << "   a.u.\n";
+            out.stream() << indent << "Spectral Overlap     : " << target.spectral_overlap << "   a.u.\n\n";
         }
         else
         {
             out.stream() << indent << "Overlap Integral     : Yes\n";
             out.stream() << indent << "Cutoff               : No\n";
-            out.stream() << indent << "Omega_0              : " << target.omega_0 << "\n";
-            out.stream() << indent << "Spectral Overlap     : " << target.spectral_overlap << "\n\n";
+            out.stream() << indent << "Omega_0              : " << target.omega_0 << "   a.u.\n";
+            out.stream() << indent << "Spectral Overlap     : " << target.spectral_overlap << "   a.u.\n\n";
         }
+        out.stream() << " " << out.sticks << "\n \n";
 
         break;
 

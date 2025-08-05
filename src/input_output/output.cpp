@@ -89,9 +89,7 @@ void Output::print_density(const std::string& filepath, const Density& cube, std
     std::string filename = std::filesystem::path(filepath).filename().string();
 
     if (header.has_value()) {
-        std::cout << "2" << std::endl;
-        log_stream << " Header present option not yet implemented.\n";
-        std::exit(1);
+        log_stream << header.value() << "\n \n";
     } else {
         log_stream << std::string(29, ' ') << "Density Information                    \n \n";
     }
@@ -113,17 +111,20 @@ void Output::print_density(const std::string& filepath, const Density& cube, std
 
     log_stream << std::string(3, ' ') << "Associated molecular coordinates (Å): \n \n";
     for (int i = 0; i < cube.natoms; ++i) {
-        print_formatted_line2(log_stream, std::string(cube.atomic_label[i]), cube.x[i] * ToAng, cube.y[i] * ToAng, cube.z[i] * ToAng);
+        print_formatted_line2(log_stream, std::string(cube.atomic_label[i]), 
+                                          cube.x[i] * Parameters::ToAng, 
+                                          cube.y[i] * Parameters::ToAng, 
+                                          cube.z[i] * Parameters::ToAng);
     }
 
     if (cube.integral > 0.0) {
         log_stream << " \n";
         log_stream << "    ============================================================\n";   
         log_stream << "     Integrated electron density -->    " << std::fixed << std::setprecision(14) << cube.integral << "\n";
-        log_stream << "    ============================================================\n\n";
+        log_stream << "    ============================================================\n";
     } 
 
-
+    log_stream << " \n " << sticks << "\n\n";
 }
 
 //----------------------------------------------------------------------

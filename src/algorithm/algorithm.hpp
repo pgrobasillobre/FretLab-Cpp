@@ -27,6 +27,8 @@ public:
 private: 
     Output& out;
     Density cube; 
+    Density cube_acceptor;
+    Density cube_donor;
 };
 
 #endif 

@@ -82,7 +82,7 @@ void Timer::conclude(const Output& out) {
     int seconds = static_cast<int>(elapsed_seconds % 60);
 
     // Header
-    out.stream() << " " << out.sticks << "\n\n";
+    //out.stream() << " " << out.sticks << "\n\n";
     out.stream() << std::setw(28) << " " << "We should translate this Fortran code into C++.\n\n";
     out.stream() << std::setw(53) << " " << "-- P. Grobas Illobre\n\n";
     out.stream() << " "  << out.sticks << "\n\n";
