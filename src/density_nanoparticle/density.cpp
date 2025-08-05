@@ -1,4 +1,6 @@
 #include "density.hpp"
+#include "parameters.hpp"
+#include "target.hpp"
 
 #include <fstream>
 #include <sstream>
@@ -27,7 +29,24 @@ std::string Density::map_atomic_number_to_label(int Z) const {
 ///
 /// @brief Loads a cube file and initializes the density grid and atomic data.
 ///
-void Density::read_density(const std::string& filepath, bool rotate, const std::string& what_dens) {
+//void Density::read_density(const std::string& filepath, bool rotate, const std::string& what_dens) {
+void Density::read_density(const Target& target, bool rotate, const std::string& what_dens) {
+
+
+    // Check density file final purpose: cube integration, acceptor, or donor density.
+    std::string filepath;
+
+    if (what_dens=="Cube"){
+       filepath = target.density_file_integration;
+    } else if (what_dens=="Acceptor"){
+       filepath = target.acceptor_density_file;
+    } else if (what_dens=="Donor"){
+       filepath = target.donor_density_file;
+    } else {
+        throw std::runtime_error("Unknown density file mode to read.");
+    }
+
+    // Check file existance.
     std::ifstream infile(filepath);
     if (!infile) {
         throw std::runtime_error("File: " + filepath + "not found.");
@@ -83,6 +102,42 @@ void Density::read_density(const std::string& filepath, bool rotate, const std::
     }
 
     // NOTE: reduction, geometry center, and rotation will be added later
+    // 
+    // debugpgi
+    // Save reducde density of the cube, and calculate associated coordinates
+    //
+    if (!target.integrate_density) {
+        rho_reduced.resize(Parameters::ncellmax);
+        xyz.resize(Parameters::ncellmax);
+    
+        double x_tmp = 0.0, y_tmp = 0.0, z_tmp = 0.0;
+    
+        for (int i = 0; i < nx; ++i) {
+            x_tmp = xmin + dx[1] * i;
+    
+            for (int j = 0; j < ny; ++j) {
+                y_tmp = ymin + dy[2] * j;
+    
+                for (int k = 0; k < nz; ++k) {
+                    z_tmp = zmin + dz[3] * k;
+    
+                    if (std::abs(rho[i][j][k]) > maxdens * target.cutoff || target.calc_overlap_int) {
+                        ++n_points_reduced;  // n_points_reduced initialized to -1
+    
+                        if (n_points_reduced > Parameters::ncellmax) throw std::runtime_error("Increase cutoff. " + what_dens + " density file too big.");
+                        
+    
+                        rho_reduced[n_points_reduced] = rho[i][j][k];
+    
+                        xyz[n_points_reduced][0] = x_tmp; 
+                        xyz[n_points_reduced][1] = y_tmp;
+                        xyz[n_points_reduced][2] = z_tmp;
+                    }
+                }
+            }
+        }
+    }
+
 
     infile.close();
 }

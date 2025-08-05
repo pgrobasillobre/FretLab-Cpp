@@ -12,7 +12,7 @@
 class Algorithm {
 public:
     /// Constructor
-    Algorithm(Output& out);
+    Algorithm(Output& out, Target& target);
 
     ///
     /// @brief Integrates density of input cube file.
@@ -26,6 +26,7 @@ public:
 
 private: 
     Output& out;
+    Target& target;
     Density cube; 
     Density cube_acceptor;
     Density cube_donor;

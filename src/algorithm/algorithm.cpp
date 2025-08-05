@@ -1,5 +1,6 @@
 #include "algorithm.hpp"  
 #include "output.hpp"
+#include "target.hpp"
 #include "density.hpp"
 #include "parameters.hpp"
 
@@ -8,7 +9,8 @@
 ///
 /// @brief Constructor for Algorithm.
 ///
-Algorithm::Algorithm(Output& out) : out(out) {}
+Algorithm::Algorithm(Output& out, Target& target): out(out), target(target) {}
+
 
 //----------------------------------------------------------------------
 ///
@@ -16,7 +18,7 @@ Algorithm::Algorithm(Output& out) : out(out) {}
 ///
 void Algorithm::integrate_density(const Target& target) {
 
-    cube.read_density(target.density_file_integration, false, "");
+    cube.read_density(target, false, "Cube");
 
     cube.int_density();
 
@@ -30,9 +32,9 @@ void Algorithm::acceptor_donor(const Target& target) {
 //
 //  Read input files
 //
-    cube_acceptor.read_density(target.acceptor_density_file, false, "Acceptor");
+    cube_acceptor.read_density(target, false, "Acceptor");
 
-    cube_donor.read_density(target.donor_density_file, false, "Donor");
+    cube_donor.read_density(target, false, "Donor");
 //
 //   Print acceptor / donor density characteristics
 //

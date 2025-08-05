@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
         inp.print_input_info(out, target);
         
         // Initialize algorithm instance with output reference.
-        Algorithm algorithm(out);
+        Algorithm algorithm(out, target);
 
         switch (target.mode) {
             case TargetMode::IntegrateCube:

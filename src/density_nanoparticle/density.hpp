@@ -1,6 +1,8 @@
 #ifndef DENSITY_HPP
 #define DENSITY_HPP
 
+#include "target.hpp"
+
 #include <string>
 #include <vector>
 #include <array>
@@ -16,7 +18,8 @@ public:
 
     // Grid and atom metadata
     int natoms = 0, nx = 0, ny = 0, nz = 0;
-    int n_points_reduced = 0, nelectrons = 0;
+    int nelectrons = 0;
+    int n_points_reduced = -1;
 
     // Cube file information
     std::vector<int> atomic_number;              ///< Atomic numbers of the atoms
@@ -44,7 +47,9 @@ public:
      * @param rotate Whether to apply coordinate rotation (not yet implemented).
      * @param what_dens Specifies the density role (e.g., "acceptor", "donor").
      */
-    void read_density(const std::string& filepath, bool rotate = false, const std::string& what_dens = "");
+    //void read_density(const std::string& filepath, bool rotate = false, const std::string& what_dens = "");
+    void read_density(const Target& target,        bool rotate = false, const std::string& what_dens = "");
+
 
     /** 
      * @brief Integrates the full density grid.

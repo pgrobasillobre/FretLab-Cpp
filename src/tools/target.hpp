@@ -7,7 +7,8 @@
 #include <array>
 
 struct Target {
-    TargetMode mode = TargetMode::None;
+
+    TargetMode mode = TargetMode::None;  ///< Selected calculation target
 
     // Density integration
     std::string input_filename;

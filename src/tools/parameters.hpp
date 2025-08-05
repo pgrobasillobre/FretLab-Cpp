@@ -16,6 +16,9 @@ namespace Parameters {
     constexpr double ToBohr = 1.8897261254578281;      // Conversion from Angstrom to Bohr
     constexpr double ToAng = 1.0 / ToBohr;              // Conversion from Bohr to Angstrom
 
+    // Constraint for reduce density file
+    constexpr int ncellmax = 10000000;
+
     // Header strings (declared here, defined in parameters.cpp)
     extern const std::string acceptor_header;
     extern const std::string donor_header;

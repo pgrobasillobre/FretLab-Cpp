@@ -102,8 +102,12 @@ void Output::print_density(const std::string& filepath, const Density& cube, std
     print_formatted_line1(log_stream, cube.ny, cube.dy[0], cube.dy[1], cube.dy[2]);
     print_formatted_line1(log_stream, cube.nz, cube.dz[0], cube.dz[1], cube.dz[2]);
     log_stream << " \n";
-    log_stream << "     Total number of grid points: " << cube.nx * cube.ny * cube.nz << "\n \n";
-
+    log_stream << "     Total number of grid points: " << cube.nx * cube.ny * cube.nz << "\n";
+    if (!header.has_value()) {
+        log_stream << " \n"; // Integrate cube case
+    } else if (header.has_value()) {
+        log_stream << "     ---> Reduced density points: " << cube.n_points_reduced << "\n \n"; // Integrate cube case 
+    }
     
     //If (target_%name_ .ne. "integrate_density") then
     //   Write(out_%iunit,*)     "    ---> Reduced density points:", cube%n_points_reduced
