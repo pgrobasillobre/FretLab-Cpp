@@ -29,8 +29,8 @@ struct Target {
     // Nanoparticle
     bool is_nanoparticle_present = false;
 
-    std::string nanoparticle_density_file; ///< File for nanoparticle (full path)
-    std::string nanoparticle_density_input_file; /// File for nanoparticle as named in input
+    std::string nanoparticle_file; ///< File for nanoparticle (full path)
+    std::string nanoparticle_input_file; /// File for nanoparticle as named in input
 
     // Target + other options
     TargetMode target_mode = TargetMode::None;  ///< Selected calculation target

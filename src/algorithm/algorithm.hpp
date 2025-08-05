@@ -19,6 +19,11 @@ public:
     /// 
     void integrate_density(const Target& target);
 
+    ///
+    /// @brief Compute electronic energy transfer rate between donor and acceptor.
+    ///
+    void acceptor_donor(const Target& target);
+
 private: 
     Output& out;
     Density cube; 

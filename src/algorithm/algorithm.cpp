@@ -22,3 +22,15 @@ void Algorithm::integrate_density(const Target& target) {
     out.print_density(target.density_file_integration, cube);
 }
 //----------------------------------------------------------------------
+///
+/// @brief Compute electronic energy transfer rate between donor and acceptor. 
+///
+void Algorithm::acceptor_donor(const Target& target) {
+
+    //cube.read_density(target.density_file_integration, false, "");
+
+    std::cout << "within algorithm acceptor donor" << std::endl;
+
+    //out.print_density(target.density_file_integration, cube);
+}
+//----------------------------------------------------------------------

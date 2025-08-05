@@ -61,6 +61,10 @@ int main(int argc, char* argv[]) {
             algorithm.integrate_density(target);
             break;
 
+            case TargetMode::Acceptor_Donor:
+            algorithm.acceptor_donor(target);
+            break;
+
             case TargetMode::None:
             default:
                 throw std::runtime_error("No valid calculation target specified in input.");
