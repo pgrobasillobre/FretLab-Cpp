@@ -3,6 +3,7 @@
 #include "target.hpp"
 #include "density.hpp"
 #include "parameters.hpp"
+#include "integrals.hpp"
 
 #include <iostream>
 
@@ -41,10 +42,14 @@ void Algorithm::acceptor_donor(const Target& target) {
     out.print_density(target.acceptor_density_file, cube_acceptor, Parameters::acceptor_header);
 
     out.print_density(target.donor_density_file, cube_donor, Parameters::donor_header);
-
-
-
-
+//
+//  Compute integrals
+//
+    integrals.acceptor_donor(target, cube_acceptor, cube_donor);
+//
+//  Print results
+//
+    out.print_results_integrals(target, integrals);
 
 }
 //----------------------------------------------------------------------

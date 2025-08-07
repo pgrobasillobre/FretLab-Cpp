@@ -2,6 +2,8 @@
 #define OUTPUT_HPP
 
 #include "density.hpp"
+#include "integrals.hpp"
+
 
 #include <optional>
 #include <string>
@@ -43,6 +45,9 @@ public:
         const Density& cube,
         std::optional<std::string> header = std::nullopt 
     );
+
+    /// @brief Prints integrals' results
+    void print_results_integrals(const Target& target, const Integrals& integrals);
 
     /// @brief Horizontal line (80 dashes) separation output sections
     const std::string sticks = std::string(80, '-'); 

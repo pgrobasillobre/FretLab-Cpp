@@ -4,6 +4,7 @@
 #include "target.hpp"
 #include "output.hpp"
 #include "density.hpp"
+#include "integrals.hpp"
 
 ///
 /// @class Algorithm
@@ -30,6 +31,7 @@ private:
     Density cube; 
     Density cube_acceptor;
     Density cube_donor;
+    Integrals integrals;
 };
 
 #endif 

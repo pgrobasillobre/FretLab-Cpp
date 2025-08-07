@@ -32,7 +32,6 @@ std::string Density::map_atomic_number_to_label(int Z) const {
 //void Density::read_density(const std::string& filepath, bool rotate, const std::string& what_dens) {
 void Density::read_density(const Target& target, bool rotate, const std::string& what_dens) {
 
-
     // Check density file final purpose: cube integration, acceptor, or donor density.
     std::string filepath;
 
@@ -113,31 +112,31 @@ void Density::read_density(const Target& target, bool rotate, const std::string&
         double x_tmp = 0.0, y_tmp = 0.0, z_tmp = 0.0;
     
         for (int i = 0; i < nx; ++i) {
-            x_tmp = xmin + dx[1] * i;
+            x_tmp = xmin + dx[0] * i;
     
             for (int j = 0; j < ny; ++j) {
-                y_tmp = ymin + dy[2] * j;
+                y_tmp = ymin + dy[1] * j;
     
                 for (int k = 0; k < nz; ++k) {
-                    z_tmp = zmin + dz[3] * k;
+                    z_tmp = zmin + dz[2] * k;
     
                     if (std::abs(rho[i][j][k]) > maxdens * target.cutoff || target.calc_overlap_int) {
-                        ++n_points_reduced;  // n_points_reduced initialized to -1
-    
-                        if (n_points_reduced > Parameters::ncellmax) throw std::runtime_error("Increase cutoff. " + what_dens + " density file too big.");
-                        
-    
+
+                        if (n_points_reduced >= Parameters::ncellmax) {
+                            throw std::runtime_error("Too many points (" + std::to_string(n_points_reduced) + ") in " + what_dens + " density file. Increase cutoff or ncellmax.");
+                        }
                         rho_reduced[n_points_reduced] = rho[i][j][k];
-    
-                        xyz[n_points_reduced][0] = x_tmp; 
-                        xyz[n_points_reduced][1] = y_tmp;
-                        xyz[n_points_reduced][2] = z_tmp;
+                        xyz[n_points_reduced] = {x_tmp, y_tmp, z_tmp};
+                        ++n_points_reduced;
                     }
                 }
             }
         }
     }
 
+    // Resize vectors to actual number of points
+    rho_reduced.resize(n_points_reduced);
+    xyz.resize(n_points_reduced);
 
     infile.close();
 }

@@ -1,5 +1,6 @@
 #include "output.hpp"  
 #include "parameters.hpp"
+#include "integrals.hpp"
 
 #include <iostream>
 #include <filesystem>
@@ -148,4 +149,68 @@ void Output::print_formatted_line2(std::ostream& out, const std::string atom, do
     char line[100];
     std::snprintf(line, sizeof(line), "       %-2s  %12.6f  %12.6f  %12.6f\n", atom.c_str(), x, y, z);
     out << line;
+}
+
+//----------------------------------------------------------------------
+///
+/// @brief Prints the results of the integrals to the output stream.
+///
+void Output::print_results_integrals(const Target &target, const Integrals &integrals) {
+    std::array<double, 2> v_tot = {0.0, 0.0};
+    double v_mod = 0.0;
+
+    // Print header
+    log_stream << std::string(36, ' ') << "RESULTS\n\n";
+    log_stream << " " << sticks << " \n\n";
+
+    //    // Acceptor–Donor
+    //    if (has_acceptor_donor)
+    //    {
+    //        out.print("     Acceptor–Donor Coulomb : ", coulomb_acceptor_donor, "  a.u.");
+    //        if (target.calc_overlap_int)
+    //        {
+    //            out.print("     Acceptor–Donor Overlap : ", overlap_acceptor_donor, "  a.u.");
+    //        }
+    //        v_tot[0] = coulomb_acceptor_donor + overlap_acceptor_donor;
+    //    }
+    //
+    //    // Acceptor–NP interaction (complex)
+    //    if (has_acceptor_np)
+    //    {
+    //        out.print("     Acceptor–NP Interaction:  ", -acceptor_np_int[0], "    + ", -acceptor_np_int[1], " i  a.u.");
+    //        v_tot[0] -= acceptor_np_int[0];
+    //        v_tot[1] -= acceptor_np_int[1];
+    //    }
+    //
+    //    // Modulus
+    //    v_mod = std::sqrt(v_tot[0] * v_tot[0] + v_tot[1] * v_tot[1]);
+    //
+    //    if (target.name != "aceptor_np")
+    //    {
+    //        if (target.name == "aceptor_np_donor")
+    //        {
+    //            out.println("                                  -------------------------------------------------------------");
+    //            out.print("     Total Potential       :  ", v_tot[0], "    + ", v_tot[1], " i  a.u.");
+    //        }
+    //        else if (target.name == "aceptor_donor")
+    //        {
+    //            out.println("                                   --------------------------");
+    //            out.print("     Total Potential       :  ", v_tot[0], "  a.u.");
+    //        }
+    //
+    //        out.println("");
+    //        out.print("     Total Potential Modulus: ", v_mod, "  a.u.");
+    //        out.println("");
+    //    }
+    //
+    //    // Final KEET
+    //    if (target.name != "aceptor_np")
+    //    {
+    //        double keet = 2.0 * M_PI * (v_mod * v_mod) * target.spectral_overlap;
+    //        out.print("     Keet: ", keet, "  a.u.");
+    //        out.println("");
+    //    }
+    //
+    //    out.print_line();
+    //    out.flush();
 }

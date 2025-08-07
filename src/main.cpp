@@ -31,9 +31,9 @@ int main(int argc, char* argv[]) {
 
     try {
         // Instantiate components
+        Timer timer;
         Input inp;
         Target target;
-        Timer timer;
 
         // Parse input arguments
         inp.get_arguments(argc, argv, out, target);
