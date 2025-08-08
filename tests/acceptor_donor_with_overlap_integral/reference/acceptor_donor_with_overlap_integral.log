@@ -2,10 +2,10 @@
  
                         ______          __  __          __  
                        / ____/_______  / /_/ /   ____ _/ /_ 
-                      / /_  / ___/ _ \/ __/ /   / __ `/ __ \
+                      / /_  / ___/ _  / __/ /   / __ `/ __ |
                      / __/ / /  /  __/ /_/ /___/ /_/ / /_/ /
-                    /_/   /_/   \___/\__/_____/\__,_/_.___/ 
-                                                             
+                    /_/   /_/   |___/ __/_____/__,_/_.___/  
+                                                            
  
  --------------------------------------------------------------------------------
  
@@ -16,36 +16,37 @@
                        Input  File: acceptor_donor_with_overlap_integral.inp
                        Output File: acceptor_donor_with_overlap_integral.log
 
-                       OMP Threads:    32
+                       OMP Threads: 1
 
  --------------------------------------------------------------------------------
 
-                       Calculation --> aceptor_donor
+                       Calculation --> Acceptor - Donor
 
-                       Aceptor Density : densities/aceptor_coarse.cub
-                       Donor   Density : densities/donor_coarse.cub
+                       Acceptor Density File: densities/aceptor_coarse.cub
+                       Donor    Density File: densities/donor_coarse.cub
 
-                       Cutoff            =  0.1000E-01
-                       Omega_0          =  0.8499E-01
-                       Spectral Overlap =  0.4921E+05
+                       Overlap Integral     : Yes
+                       Cutoff               : No
+                       Spectral Overlap     : 49210.5   a.u.
+                       Omega_0              : 0.0849888   a.u.
 
  --------------------------------------------------------------------------------
  
-                         Aceptor Density Information
+                         Acceptor Density Information
  
  --------------------------------------------------------------------------------
  
-   Density File: densities/aceptor_coarse.cub
+   Density File: aceptor_coarse.cub
  
    Density Grid (CUBE format): 
  
-      46   0.2028410E+03  -0.1023279E+02  -0.5501820E+01
-      73   0.5000000E+00   0.0000000E+00   0.0000000E+00
-      42   0.0000000E+00   0.5000000E+00   0.0000000E+00
-      23   0.0000000E+00   0.0000000E+00   0.5000000E+00
+      46   2.0284100E+02  -1.0232791E+01  -5.5018200E+00
+      73   5.0000000E-01   0.0000000E+00   0.0000000E+00
+      42   0.0000000E+00   5.0000000E-01   0.0000000E+00
+      23   0.0000000E+00   0.0000000E+00   5.0000000E-01
  
-     Total number of grid points:        70518
-     ---> Reduced density points:       70518
+     Total number of grid points: 70518
+     ---> Reduced density points: 70518
  
    Associated molecular coordinates (Å): 
  
@@ -97,22 +98,22 @@
        H     124.364609     -0.571536      0.885837
  
  --------------------------------------------------------------------------------
- 
-                          Donor Density Information
+
+                         Donor Density Information
  
  --------------------------------------------------------------------------------
  
-   Density File: densities/donor_coarse.cub
+   Density File: donor_coarse.cub
  
    Density Grid (CUBE format): 
  
-      46  -0.2397912E+03  -0.1023612E+02  -0.5502162E+01
-      73   0.5000000E+00   0.0000000E+00   0.0000000E+00
-      42   0.0000000E+00   0.5000000E+00   0.0000000E+00
-      23   0.0000000E+00   0.0000000E+00   0.5000000E+00
+      46  -2.3979123E+02  -1.0236116E+01  -5.5021620E+00
+      73   5.0000000E-01   0.0000000E+00   0.0000000E+00
+      42   0.0000000E+00   5.0000000E-01   0.0000000E+00
+      23   0.0000000E+00   0.0000000E+00   5.0000000E-01
  
-     Total number of grid points:        70518
-     ---> Reduced density points:       70518
+     Total number of grid points: 70518
+     ---> Reduced density points: 70518
  
    Associated molecular coordinates (Å): 
  
@@ -164,33 +165,33 @@
        H    -109.884194     -0.563105      0.887432
  
  --------------------------------------------------------------------------------
- 
-                                    RESULTS                    
- 
- --------------------------------------------------------------------------------
- 
-     Aceptor-Donor Coulomb :         0.0000002488480348  a.u.
-     Aceptor-Donor Overlap :         0.0000231727110782  a.u.
-                                    --------------------------
-     Total Potential       :         0.0000234215591130  a.u.
- 
-     Total Potential Modulus:       0.0000234215591130 a.u.
- 
-     Keet:       0.0001696169086394  a.u.
- 
+
+                                    RESULTS
+
+ -------------------------------------------------------------------------------- 
+
+     Acceptor-Donor Coulomb  :        0.0000002488480348  a.u.
+     Acceptor-Donor Overlap  :        0.0000231727110782  a.u.
+                                     --------------------------
+     Total Potential         :        0.0000234215591131  a.u.
+
+     Total Potential Modulus :        0.0000234215591131  a.u.
+
+     Keet :       0.0001696169086394  a.u.
+
  --------------------------------------------------------------------------------
 
-                         No AI, no shortcuts. Just me, and the code.
+                            We should translate this Fortran code into C++.
 
                                                      -- P. Grobas Illobre
 
  --------------------------------------------------------------------------------
 
-                                                CPU Time:     0 h  0 min 58 sec
-                                            Elapsed Time:     0 h  0 min  2 sec
+                                          CPU Time:      0 h  0 min 31 sec
+                                          Elapsed Time:  0 h  0 min 31 sec
 
  --------------------------------------------------------------------------------
 
-    Normal Termination of FretLab program in date 23/05/2025 at 13:29:41  
+    Normal Termination of FretLab program in date 08/08/2025 at 13:07:45
 
  --------------------------------------------------------------------------------
