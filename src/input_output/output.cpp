@@ -1,32 +1,35 @@
-#include "output.hpp"  
+#include "output.hpp"
 #include "parameters.hpp"
 #include "integrals.hpp"
 
 #include <iostream>
 #include <filesystem>
-#include <iomanip> 
+#include <iomanip>
 #include <fstream>
 #include <stdexcept>
 #include <cstdio>
 #include <string>
 #include <ostream>
+#include <numeric>
+#include <cmath>
 
 /// @brief Constructor for Output.
-Output::Output() {} 
+Output::Output() {}
 
 //----------------------------------------------------------------------
 ///
 /// @brief Creates the output filename based on the input file name.
 ///
-void Output::out_file_fill(const std::string& in_file) {
+void Output::out_file_fill(const std::string &in_file)
+{
 
     /// @brief Generate the output filename based on the input filename.
-    /// 
+    ///
     /// This function removes the last 4 characters of the input filename
     /// (typically ".inp") and replaces them with ".log". For example:
     /// - input: "test.inp"
     /// - output: "test.log"
-    /// 
+    ///
     /// It also prints the new output filename to the console.
     ///
     /// @param in_file Name of the input file
@@ -37,9 +40,11 @@ void Output::out_file_fill(const std::string& in_file) {
 ///
 /// @brief Opens the output file for writing.
 ///
-void Output::open() {
+void Output::open()
+{
     log_stream.open(output_filename, std::ios::out);
-    if (!log_stream.is_open()) {
+    if (!log_stream.is_open())
+    {
         throw std::runtime_error("Failed to open output file: " + output_filename);
     }
 }
@@ -47,15 +52,18 @@ void Output::open() {
 ///
 /// @brief Gets the internal output stream.
 ///
-std::ofstream& Output::stream() const {
-    return const_cast<std::ofstream&>(log_stream);
+std::ofstream &Output::stream() const
+{
+    return const_cast<std::ofstream &>(log_stream);
 }
 //----------------------------------------------------------------------
 ///
 /// @brief Closes the output file stream.
 ///
-void Output::close() {
-    if (log_stream.is_open()) {
+void Output::close()
+{
+    if (log_stream.is_open())
+    {
         log_stream.close();
     }
 }
@@ -63,7 +71,8 @@ void Output::close() {
 ///
 /// @brief Prints FretLab banner.
 ///
-void Output::print_banner() {
+void Output::print_banner()
+{
     const std::string indent = std::string(20, ' ');
 
     log_stream << " " << sticks << "\n \n";
@@ -84,50 +93,59 @@ void Output::print_banner() {
 ///
 /// @brief Fills the output file with density information.
 ///
-void Output::print_density(const std::string& filepath, const Density& cube, std::optional<std::string> header) {
+void Output::print_density(const std::string &filepath, const Density &cube, std::optional<std::string> header)
+{
 
     // Extract the filename from the full path
     std::string filename = std::filesystem::path(filepath).filename().string();
 
-    if (header.has_value()) {
+    if (header.has_value())
+    {
         log_stream << header.value() << "\n \n";
-    } else {
+    }
+    else
+    {
         log_stream << std::string(29, ' ') << "Density Information                    \n \n";
     }
     log_stream << " " << sticks << "\n \n";
     log_stream << std::string(3, ' ') << "Density File: " << filename << "\n \n";
     log_stream << std::string(3, ' ') << "Density Grid (CUBE format): \n \n";
-    
+
     print_formatted_line1(log_stream, cube.natoms, cube.xmin, cube.ymin, cube.zmin);
     print_formatted_line1(log_stream, cube.nx, cube.dx[0], cube.dx[1], cube.dx[2]);
     print_formatted_line1(log_stream, cube.ny, cube.dy[0], cube.dy[1], cube.dy[2]);
     print_formatted_line1(log_stream, cube.nz, cube.dz[0], cube.dz[1], cube.dz[2]);
     log_stream << " \n";
     log_stream << "     Total number of grid points: " << cube.nx * cube.ny * cube.nz << "\n";
-    if (!header.has_value()) {
+    if (!header.has_value())
+    {
         log_stream << " \n"; // Integrate cube case
-    } else if (header.has_value()) {
-        log_stream << "     ---> Reduced density points: " << cube.n_points_reduced << "\n \n"; // Integrate cube case 
     }
-    
-    //If (target_%name_ .ne. "integrate_density") then
-    //   Write(out_%iunit,*)     "    ---> Reduced density points:", cube%n_points_reduced
-    //Endif
+    else if (header.has_value())
+    {
+        log_stream << "     ---> Reduced density points: " << cube.n_points_reduced << "\n \n"; // Integrate cube case
+    }
+
+    // If (target_%name_ .ne. "integrate_density") then
+    //    Write(out_%iunit,*)     "    ---> Reduced density points:", cube%n_points_reduced
+    // Endif
 
     log_stream << std::string(3, ' ') << "Associated molecular coordinates (Å): \n \n";
-    for (int i = 0; i < cube.natoms; ++i) {
-        print_formatted_line2(log_stream, std::string(cube.atomic_label[i]), 
-                                          cube.x[i] * Parameters::ToAng, 
-                                          cube.y[i] * Parameters::ToAng, 
-                                          cube.z[i] * Parameters::ToAng);
+    for (int i = 0; i < cube.natoms; ++i)
+    {
+        print_formatted_line2(log_stream, std::string(cube.atomic_label[i]),
+                              cube.x[i] * Parameters::ToAng,
+                              cube.y[i] * Parameters::ToAng,
+                              cube.z[i] * Parameters::ToAng);
     }
 
-    if (cube.integral > 0.0) {
+    if (cube.integral > 0.0)
+    {
         log_stream << " \n";
-        log_stream << "    ============================================================\n";   
+        log_stream << "    ============================================================\n";
         log_stream << "     Integrated electron density -->    " << std::fixed << std::setprecision(14) << cube.integral << "\n";
         log_stream << "    ============================================================\n";
-    } 
+    }
 
     log_stream << " \n " << sticks << "\n\n";
 }
@@ -136,7 +154,8 @@ void Output::print_density(const std::string& filepath, const Density& cube, std
 ///
 /// @brief Prints a formatted line with cube information to the output stream.
 ///
-void Output::print_formatted_line1(std::ostream& out, int i, double a, double b, double c) {
+void Output::print_formatted_line1(std::ostream &out, int i, double a, double b, double c)
+{
     char line[100];
     std::snprintf(line, sizeof(line), "   %5d %15.7E %15.7E %15.7E\n", i, a, b, c);
     out << line;
@@ -145,7 +164,8 @@ void Output::print_formatted_line1(std::ostream& out, int i, double a, double b,
 ///
 /// @brief Prints a formatted line with atom information to the output stream.
 //
-void Output::print_formatted_line2(std::ostream& out, const std::string atom, double x, double y, double z) {
+void Output::print_formatted_line2(std::ostream &out, const std::string atom, double x, double y, double z)
+{
     char line[100];
     std::snprintf(line, sizeof(line), "       %-2s  %12.6f  %12.6f  %12.6f\n", atom.c_str(), x, y, z);
     out << line;
@@ -155,7 +175,8 @@ void Output::print_formatted_line2(std::ostream& out, const std::string atom, do
 ///
 /// @brief Prints the results of the integrals to the output stream.
 ///
-void Output::print_results_integrals(const Target &target, const Integrals &integrals) {
+void Output::print_results_integrals(const Target &target, const Integrals &integrals)
+{
     std::array<double, 2> v_tot = {0.0, 0.0};
     double v_mod = 0.0;
 
@@ -163,54 +184,36 @@ void Output::print_results_integrals(const Target &target, const Integrals &inte
     log_stream << std::string(36, ' ') << "RESULTS\n\n";
     log_stream << " " << sticks << " \n\n";
 
-    //    // Acceptor–Donor
-    //    if (has_acceptor_donor)
-    //    {
-    //        out.print("     Acceptor–Donor Coulomb : ", coulomb_acceptor_donor, "  a.u.");
-    //        if (target.calc_overlap_int)
-    //        {
-    //            out.print("     Acceptor–Donor Overlap : ", overlap_acceptor_donor, "  a.u.");
-    //        }
-    //        v_tot[0] = coulomb_acceptor_donor + overlap_acceptor_donor;
-    //    }
-    //
-    //    // Acceptor–NP interaction (complex)
-    //    if (has_acceptor_np)
-    //    {
-    //        out.print("     Acceptor–NP Interaction:  ", -acceptor_np_int[0], "    + ", -acceptor_np_int[1], " i  a.u.");
-    //        v_tot[0] -= acceptor_np_int[0];
-    //        v_tot[1] -= acceptor_np_int[1];
-    //    }
-    //
-    //    // Modulus
-    //    v_mod = std::sqrt(v_tot[0] * v_tot[0] + v_tot[1] * v_tot[1]);
-    //
-    //    if (target.name != "aceptor_np")
-    //    {
-    //        if (target.name == "aceptor_np_donor")
-    //        {
-    //            out.println("                                  -------------------------------------------------------------");
-    //            out.print("     Total Potential       :  ", v_tot[0], "    + ", v_tot[1], " i  a.u.");
-    //        }
-    //        else if (target.name == "aceptor_donor")
-    //        {
-    //            out.println("                                   --------------------------");
-    //            out.print("     Total Potential       :  ", v_tot[0], "  a.u.");
-    //        }
-    //
-    //        out.println("");
-    //        out.print("     Total Potential Modulus: ", v_mod, "  a.u.");
-    //        out.println("");
-    //    }
-    //
-    //    // Final KEET
-    //    if (target.name != "aceptor_np")
-    //    {
-    //        double keet = 2.0 * M_PI * (v_mod * v_mod) * target.spectral_overlap;
-    //        out.print("     Keet: ", keet, "  a.u.");
-    //        out.println("");
-    //    }
-    //
-    //    out.print_line();
-    //    out.flush();
+    switch (target.mode)
+    {
+
+    case TargetMode::Acceptor_Donor:
+
+        log_stream << std::string(5, ' ') << "Acceptor-Donor Coulomb  : " << std::fixed << std::setw(25) << std::setprecision(16) << integrals.coulomb_acceptor_donor << "  a.u.\n";
+        if (target.calc_overlap_int)
+        {
+            log_stream << std::string(5, ' ') << "Acceptor-Donor Overlap  : " << std::fixed << std::setw(25) << std::setprecision(16) << integrals.overlap_acceptor_donor << "  a.u.\n";
+        }
+        v_tot[0] = integrals.coulomb_acceptor_donor + integrals.overlap_acceptor_donor;
+
+        v_mod = std::sqrt(std::inner_product(v_tot.begin(), v_tot.end(), v_tot.begin(), 0.0));
+
+        log_stream << std::string(37, ' ') << std::string(26, '-') << "\n";
+        log_stream
+            << std::string(5, ' ') << "Total Potential         : " << std::fixed << std::setw(25) << std::setprecision(16) << v_tot[0] << "  a.u.\n\n";
+        log_stream << std::string(5, ' ') << "Total Potential Modulus : " << std::fixed << std::setw(25) << std::setprecision(16) << v_mod << "  a.u.\n\n";
+
+        log_stream << std::string(5, ' ') << "Keet :" << std::fixed << std::setw(25) << std::setprecision(16)
+                   << 2.0 * Parameters::pi * (v_mod * v_mod) * target.spectral_overlap << "  a.u.\n\n";
+
+        log_stream << " " << sticks << "\n\n";
+        log_stream.flush();
+
+        break;
+
+    case TargetMode::None:
+    default:
+        throw std::runtime_error("No valid calculation target specified in input.");
+    }
+
 }

@@ -19,7 +19,7 @@ options = cli()
 ierr=0
 ierr += run(options,
             configure,
-            input_files=['acceptor_donor_coulomb.inp'],
+            input_files=['acceptor_donor_with_overlap_integral.inp'],
             filters={'log':f})
 
 sys.exit(ierr)
