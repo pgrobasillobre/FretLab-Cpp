@@ -3,8 +3,6 @@
 #include "density.hpp"
 #include "parameters.hpp"
 
-#include <cmath>
-
 ///
 /// @brief Computes the Coulomb and overlap integrals between acceptor and donor densities.
 ///
