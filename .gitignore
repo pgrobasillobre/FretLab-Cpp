@@ -46,3 +46,4 @@ build/
 
 # Tests
 tests/*/*log
+.DS_Store

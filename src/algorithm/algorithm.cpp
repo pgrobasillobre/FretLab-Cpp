@@ -50,6 +50,5 @@ void Algorithm::acceptor_donor(const Target& target) {
 //  Print results
 //
     out.print_results_integrals(target, integrals);
-
 }
 //----------------------------------------------------------------------
