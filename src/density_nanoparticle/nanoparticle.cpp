@@ -52,7 +52,7 @@ void Nanoparticle::read_nanoparticle(const Target &target)
     throw std::runtime_error("Expected header line with charges or charges and dipoles, got: " + line);
   }
 
-  // Read charges / charges and dipoles
+  // Read charges / charges and dipoles.
   while (std::getline(infile, line))
   {
     if (line == Parameters::fret_end)
@@ -78,4 +78,18 @@ void Nanoparticle::read_nanoparticle(const Target &target)
 
     xyz.push_back(coords);
   }
+  natoms = xyz.size();
+
+  // Compute geometrical center
+  for (const auto& coord : xyz)
+  {
+    geom_center[0] += coord[0];
+    geom_center[1] += coord[1];
+    geom_center[2] += coord[2];
+  }
+  geom_center[0] /= natoms;
+  geom_center[1] /= natoms;
+  geom_center[2] /= natoms;
+
+  std::cout << "Geometrical center: (" << geom_center[0] << ", " << geom_center[1] << ", " << geom_center[2] << ")" << std::endl;
 }
