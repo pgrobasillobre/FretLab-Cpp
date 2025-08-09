@@ -60,6 +60,10 @@ int main(int argc, char* argv[]) {
             algorithm.acceptor_donor(target);
             break;
 
+            case TargetMode::Acceptor_NP:
+            algorithm.acceptor_np(target);
+            break;
+
             case TargetMode::None:
             default:
                 throw std::runtime_error("No valid calculation target specified in input.");

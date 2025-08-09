@@ -52,3 +52,27 @@ void Algorithm::acceptor_donor(const Target& target) {
     out.print_results_integrals(target, integrals);
 }
 //----------------------------------------------------------------------
+///
+/// @brief Compute acceptor - nanoparticle coupling.
+///
+void Algorithm::acceptor_np(const Target &target)
+{
+    //
+    //  Read input files
+    //
+    cube_acceptor.read_density(target, false, "Acceptor");
+    //
+    //   Print acceptor / donor density characteristics
+    //
+    out.print_density(target.acceptor_density_file, cube_acceptor, Parameters::acceptor_header);
+
+    //
+    //  Compute integrals
+    //
+    //integrals.acceptor_np(target, cube_acceptor, cube_np);
+    //
+    //  Print results
+    //
+    //out.print_results_integrals(target, integrals);
+}
+//----------------------------------------------------------------------

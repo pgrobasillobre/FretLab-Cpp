@@ -28,55 +28,64 @@ Input::Input() : input_filename("input.inp") {} // default name
 ///
 void Input::get_arguments(int argc, char *argv[], Output &out, Target &target)
 {
-    try {
+    try
+    {
         // Parse filename etc.
         parse_arguments(argc, argv, out);
         target.input_filename = input_filename;
 
-    #ifdef _OPENMP
+#ifdef _OPENMP
         bool saw_omp_flag = false;
         target.n_threads_OMP = 1; // placeholder until we decide
-    #else
+#else
         target.n_threads_OMP = 1; // always 1 without OpenMP
-    #endif
+#endif
 
         // Scan for -omp N (allowed anywhere)
-        for (int i = 1; i < argc; ++i) {
+        for (int i = 1; i < argc; ++i)
+        {
             std::string a = argv[i];
-            if (a == "-omp") {
-                if (i + 1 >= argc) {
+            if (a == "-omp")
+            {
+                if (i + 1 >= argc)
+                {
                     throw std::runtime_error("Missing value for -omp: you must specify an integer after -omp");
                 }
 
-            #ifdef _OPENMP
+#ifdef _OPENMP
                 saw_omp_flag = true;
                 str_manipulation.string_to_int(argv[i + 1], target.n_threads_OMP);
-                if (target.n_threads_OMP < 1) {
+                if (target.n_threads_OMP < 1)
+                {
                     throw std::runtime_error("Value for -omp must be >= 1");
-                } 
-                else if (target.n_threads_OMP > omp_get_max_threads()) {
+                }
+                else if (target.n_threads_OMP > omp_get_max_threads())
+                {
                     target.n_threads_OMP = omp_get_max_threads();
                 }
-            #else
+#else
                 // Optional: warn user it’s ignored when OpenMP is off
-                std::cout << "\n Warning: -omp ignored; binary built without OpenMP.\n" << std::endl;
-            #endif
+                std::cout << "\n Warning: -omp ignored; binary built without OpenMP.\n"
+                          << std::endl;
+#endif
                 ++i; // skip value
             }
         }
 
-    #ifdef _OPENMP
+#ifdef _OPENMP
         // If no -omp provided, use all available threads
-        if (!saw_omp_flag) {
+        if (!saw_omp_flag)
+        {
             target.n_threads_OMP = omp_get_max_threads();
         }
         omp_set_num_threads(std::max(1, target.n_threads_OMP));
-    #endif
-
+#endif
     }
-    catch (const std::exception &e) {
+    catch (const std::exception &e)
+    {
         // Log the error before stopping
-        std::cout << "\n ERROR: " << e.what() << "\n" << std::endl;
+        std::cout << "\n ERROR: " << e.what() << "\n"
+                  << std::endl;
         throw; // rethrow so main() or caller can terminate the program
     }
 }
@@ -188,6 +197,12 @@ void Input::read(Target &target)
     {
         check_and_store_file(value, target.donor_density_input_file, target.donor_density_file);
         target.is_donor_density_present = true;
+    };
+    // ========
+    handlers["nanoparticle"] = [&](const std::string &value)
+    {
+        check_and_store_file(value, target.nanoparticle_input_file, target.nanoparticle_file);
+        target.is_nanoparticle_present = true;
     };
     // ========
     handlers["cutoff"] = [&](const std::string &value)

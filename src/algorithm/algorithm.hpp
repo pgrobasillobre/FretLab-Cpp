@@ -25,6 +25,11 @@ public:
     ///
     void acceptor_donor(const Target& target);
 
+    ///
+    /// @brief Compute acceptor - nanoparticle coupling.
+    ///
+    void acceptor_np(const Target &target);
+
 private: 
     Output& out;
     Target& target;
