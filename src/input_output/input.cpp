@@ -11,6 +11,9 @@
 #include <functional>
 #include <algorithm>
 #include <stdexcept>
+#include <cstdlib>
+
+#include <omp.h>
 
 namespace fs = std::filesystem;
 
@@ -25,8 +28,57 @@ Input::Input() : input_filename("input.inp") {} // default name
 ///
 void Input::get_arguments(int argc, char *argv[], Output &out, Target &target)
 {
-    parse_arguments(argc, argv, out);
-    target.input_filename = input_filename; // Assign variable to target class
+    try {
+        // Parse filename etc.
+        parse_arguments(argc, argv, out);
+        target.input_filename = input_filename;
+
+    #ifdef _OPENMP
+        bool saw_omp_flag = false;
+        target.n_threads_OMP = 1; // placeholder until we decide
+    #else
+        target.n_threads_OMP = 1; // always 1 without OpenMP
+    #endif
+
+        // Scan for -omp N (allowed anywhere)
+        for (int i = 1; i < argc; ++i) {
+            std::string a = argv[i];
+            if (a == "-omp") {
+                if (i + 1 >= argc) {
+                    throw std::runtime_error("Missing value for -omp: you must specify an integer after -omp");
+                }
+
+            #ifdef _OPENMP
+                saw_omp_flag = true;
+                str_manipulation.string_to_int(argv[i + 1], target.n_threads_OMP);
+                if (target.n_threads_OMP < 1) {
+                    throw std::runtime_error("Value for -omp must be >= 1");
+                } 
+                else if (target.n_threads_OMP > omp_get_max_threads()) {
+                    target.n_threads_OMP = omp_get_max_threads();
+                }
+            #else
+                // Optional: warn user it’s ignored when OpenMP is off
+                std::cout << "\n Warning: -omp ignored; binary built without OpenMP.\n" << std::endl;
+            #endif
+                ++i; // skip value
+            }
+        }
+
+    #ifdef _OPENMP
+        // If no -omp provided, use all available threads
+        if (!saw_omp_flag) {
+            target.n_threads_OMP = omp_get_max_threads();
+        }
+        omp_set_num_threads(std::max(1, target.n_threads_OMP));
+    #endif
+
+    }
+    catch (const std::exception &e) {
+        // Log the error before stopping
+        std::cout << "\n ERROR: " << e.what() << "\n" << std::endl;
+        throw; // rethrow so main() or caller can terminate the program
+    }
 }
 //----------------------------------------------------------------------
 ///
@@ -38,32 +90,54 @@ void Input::get_arguments(int argc, char *argv[], Output &out, Target &target)
 ///
 void Input::parse_arguments(int argc, char *argv[], Output &out)
 {
+    input_filename.clear();
 
-    // Normal case: one file passed as argument
-    if (argc == 2)
-        input_filename = argv[1];
-
-    out.out_file_fill(input_filename); // Create ouput file name
-
-    // Allow user to type the filename
+    // No args: interactive prompt
     if (argc == 1)
     {
         std::cout << "   Type the input filename (e.g. filename.inp): ";
-        std::getline(std::cin, input_filename); // Read filename with spaces allowed
-
+        std::getline(std::cin, input_filename);
         out.out_file_fill(input_filename);
         return;
     }
 
-    // To be done for parsing -omp option
-    if (argc > 2)
+    // Walk args, allow: program [input.inp] [-omp N] in any order
+    for (int i = 1; i < argc; ++i)
     {
-        throw std::runtime_error("Too many arguments.\n ---> Only one input file is allowed per calculation.");
+        std::string a = argv[i];
+        if (a == "-omp")
+        {
+            // skip value here; get_arguments will process it
+            if (i + 1 >= argc)
+                throw std::runtime_error("Missing value for -omp");
+            ++i;
+            continue;
+        }
+        if (!a.empty() && a[0] == '-')
+        {
+            throw std::runtime_error("Unknown option: " + a);
+        }
+        if (input_filename.empty())
+        {
+            input_filename = a; // first non-option = filename
+        }
+        else
+        {
+            throw std::runtime_error("Too many arguments. Provide only one input file (plus optional -omp N).");
+        }
     }
+
+    if (input_filename.empty())
+    {
+        throw std::runtime_error("No input file provided. Usage: program input.inp [-omp N]");
+    }
+
+    out.out_file_fill(input_filename); // create output filename(s)
 }
 //----------------------------------------------------------------------
 ///
 /// @brief Check that files exists and has the supported extension (.inp).
+///
 void Input::check_input_file(const Output &out)
 {
     std::ifstream file(input_filename);
@@ -324,7 +398,7 @@ void Input::print_input_info(const Output &out, const Target &target)
 
     out.stream() << indent << "Input  File: " << target.input_filename << "\n";
     out.stream() << indent << "Output File: " << out.output_filename << "\n\n";
-    out.stream() << indent << "OMP Threads: " << "1" << "\n\n "; // For the moment, running in serial
+    out.stream() << indent << "OMP Threads: " << target.n_threads_OMP << "\n\n ";
     out.stream() << out.sticks << "\n";
     out.stream() << "\n";
 
@@ -366,7 +440,8 @@ void Input::print_input_info(const Output &out, const Target &target)
         out.stream() << indent << "Cutoff               : " << target.cutoff << "   a.u.\n\n";
         out.stream() << " " << out.sticks << "\n \n";
 
-        if (target.calc_overlap_int) throw std::runtime_error("Overlap integral can't be computed for Acceptor - NP option.");
+        if (target.calc_overlap_int)
+            throw std::runtime_error("Overlap integral can't be computed for Acceptor - NP option.");
 
         break;
 

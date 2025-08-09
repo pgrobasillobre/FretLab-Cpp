@@ -46,13 +46,13 @@ struct Target {
     bool is_omega_0_present = false;
     double omega_0 = 0.0; 
 
-
     bool is_spectral_overlap_present = false;
     double spectral_overlap = 0.0;
 
     bool is_debug_present;
     int debug = 0;
 
+    int n_threads_OMP = 1; ///< Number of threads for OpenMP
 };
 
 #endif // TARGET_HPP
