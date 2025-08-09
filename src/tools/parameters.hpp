@@ -28,7 +28,7 @@ namespace Parameters {
     extern const std::string fret_end;
 
     extern const std::string charges_header;
-    extern const std::string dipoles_header;
+    extern const std::string charges_and_dipoles_header;
 
 } // namespace Parameters
 

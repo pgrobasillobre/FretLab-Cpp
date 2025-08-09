@@ -52,7 +52,7 @@ struct Target {
     bool is_debug_present;
     int debug = 0;
 
-    int n_threads_OMP = 1; ///< Number of threads for OpenMP
+    int n_threads_OMP = 1;
 };
 
 #endif // TARGET_HPP

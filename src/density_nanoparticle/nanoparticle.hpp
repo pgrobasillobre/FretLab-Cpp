@@ -17,6 +17,8 @@ public:
 
   int natoms = 0;
 
+  bool charges = false, charges_and_dipoles = false; 
+
   std::array<double, 3> geom_center; 
 
   std::vector<std::array<double, 2>> q;    // Charges with real + imaginary part
