@@ -10,7 +10,8 @@ from runtest_config import configure
 f = [
     get_filter(from_string='RESULTS',
                to_string='We should',
-               rel_tolerance=1.0e-11)
+               abs_tolerance=1.0e-15) #,
+               #rel_tolerance=1.0e-11)
 ]
 
 # invoke the command line interface parser which returns options
