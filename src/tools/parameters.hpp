@@ -24,6 +24,12 @@ namespace Parameters {
     extern const std::string acceptor_header;
     extern const std::string donor_header;
 
+    extern const std::string fret_start;
+    extern const std::string fret_end;
+
+    extern const std::string charges_header;
+    extern const std::string dipoles_header;
+
 } // namespace Parameters
 
 #endif // PARAMETERS_HPP

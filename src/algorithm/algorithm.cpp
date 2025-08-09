@@ -4,6 +4,7 @@
 #include "density.hpp"
 #include "parameters.hpp"
 #include "integrals.hpp"
+#include "nanoparticle.hpp"
 
 #include <iostream>
 
@@ -60,6 +61,8 @@ void Algorithm::acceptor_np(const Target &target)
     //
     //  Read input files
     //
+    np.read_nanoparticle(target);
+
     cube_acceptor.read_density(target, false, "Acceptor");
     //
     //   Print acceptor / donor density characteristics
