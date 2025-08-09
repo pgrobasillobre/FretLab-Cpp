@@ -7,8 +7,6 @@
 #include "timer.hpp"
 #include "algorithm.hpp"
 
-// #include <omp.h> 
-
 //---------------------------------------------------------------------------
 //                     ______          __  __          __          
 //                    / ____/_______  / /_/ /   ____ _/ /__         
@@ -40,9 +38,6 @@ int main(int argc, char* argv[]) {
         timer.initialize();
         timer.start("total");
 
-        ////// Optional: set OpenMP thread count
-        ////// omp_set_num_threads(parallel.n_threads_OMP);
-
         // Open output file. Check input file existence and extension
         out.open();
         inp.check_input_file(out);
@@ -53,7 +48,7 @@ int main(int argc, char* argv[]) {
         inp.read(target);
         inp.print_input_info(out, target);
         
-        // Initialize algorithm instance with output reference.
+        // Initialize algorithm instance with output and target references.
         Algorithm algorithm(out, target);
 
         switch (target.mode) {
@@ -69,22 +64,6 @@ int main(int argc, char* argv[]) {
             default:
                 throw std::runtime_error("No valid calculation target specified in input.");
         }
-
-        //// debugpgi -> start with integrate density
-        ////// Main computation switch
-        ////if (target.name == "integrate_density") {
-        ////    algorithm.integrate_density();
-        ////}
-        ////// Uncomment and implement later:
-        ////// else if (target.name == "aceptor_donor") {
-        //////     algorithm.eet_aceptor_donor();
-        ////// }
-        ////// else if (target.name == "aceptor_np") {
-        //////     algorithm.aceptor_np_interaction();
-        ////// }
-        ////// else if (target.name == "aceptor_np_donor") {
-        //////     algorithm.aceptor_np_donor();
-        ////// }
 
         // Finalize timing and output
         timer.finish("total");
