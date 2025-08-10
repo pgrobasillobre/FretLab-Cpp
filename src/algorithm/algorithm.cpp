@@ -1,4 +1,4 @@
-#include "algorithm.hpp"  
+#include "algorithm.hpp"
 #include "output.hpp"
 #include "target.hpp"
 #include "density.hpp"
@@ -11,14 +11,14 @@
 ///
 /// @brief Constructor for Algorithm.
 ///
-Algorithm::Algorithm(Output& out, Target& target): out(out), target(target) {}
-
+Algorithm::Algorithm(Output &out, Target &target) : out(out), target(target) {}
 
 //----------------------------------------------------------------------
 ///
 /// @brief Integrates the density of the input cube file.
 ///
-void Algorithm::integrate_density(const Target& target) {
+void Algorithm::integrate_density(const Target &target)
+{
 
     cube.read_density(target, false, "Cube");
 
@@ -28,28 +28,29 @@ void Algorithm::integrate_density(const Target& target) {
 }
 //----------------------------------------------------------------------
 ///
-/// @brief Compute electronic energy transfer rate between donor and acceptor. 
+/// @brief Compute electronic energy transfer rate between donor and acceptor.
 ///
-void Algorithm::acceptor_donor(const Target& target) {
-//
-//  Read input files
-//
+void Algorithm::acceptor_donor(const Target &target)
+{
+    //
+    //  Read input files
+    //
     cube_acceptor.read_density(target, false, "Acceptor");
 
     cube_donor.read_density(target, false, "Donor");
-//
-//   Print acceptor / donor density characteristics
-//
+    //
+    //   Print acceptor / donor density characteristics
+    //
     out.print_density(target.acceptor_density_file, cube_acceptor, Parameters::acceptor_header);
 
     out.print_density(target.donor_density_file, cube_donor, Parameters::donor_header);
-//
-//  Compute integrals
-//
+    //
+    //  Compute integrals
+    //
     integrals.acceptor_donor(target, cube_acceptor, cube_donor);
-//
-//  Print results
-//
+    //
+    //  Print results
+    //
     out.print_results_integrals(target, integrals);
 }
 //----------------------------------------------------------------------
@@ -65,19 +66,18 @@ void Algorithm::acceptor_np(const Target &target)
 
     cube_acceptor.read_density(target, false, "Acceptor");
     //
-    //   Print acceptor / donor density characteristics
+    //  Print acceptor / donor density characteristics
     //
     out.print_nanoparticle(np);
 
     out.print_density(target.acceptor_density_file, cube_acceptor, Parameters::acceptor_header);
-
     //
     //  Compute integrals
     //
-    //integrals.acceptor_np(target, cube_acceptor, cube_np);
+    integrals.acceptor_np(target, cube_acceptor, np);
     //
     //  Print results
     //
-    //out.print_results_integrals(target, integrals);
+    // out.print_results_integrals(target, integrals);
 }
 //----------------------------------------------------------------------
