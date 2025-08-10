@@ -1,6 +1,7 @@
 #include "output.hpp"
 #include "parameters.hpp"
 #include "integrals.hpp"
+#include "nanoparticle.hpp"
 
 #include <iostream>
 #include <filesystem>
@@ -149,7 +150,30 @@ void Output::print_density(const std::string &filepath, const Density &cube, std
 
     log_stream << " \n " << sticks << "\n\n";
 }
+//----------------------------------------------------------------------
+///
+///
+///
+void Output::print_nanoparticle(const Nanoparticle &np)
+{
+    log_stream << std::string(23, ' ') << "Nanoparticle Model   : " << np.nanoparticle_model << "\n\n";
+    log_stream << sticks << "\n\n";
+    log_stream << std::string(28, ' ') << "Nanoparticle Geometry (Å)                    \n \n";
+    log_stream << " " << sticks << "\n \n";
+    log_stream << std::string(13, ' ') << "Atom" << std::string(15, ' ') << "X" << std::string(19, ' ') << "Y" << std::string(19, ' ') << "Z" << "\n";
+    log_stream << " " << sticks << "\n \n";
 
+    // Print nanoparticle properties
+    for (int i = 0; i < np.natoms; ++i)
+    {
+        print_formatted_line3(log_stream, std::string("Xx"),
+                              np.xyz[i][0] * Parameters::ToAng,
+                              np.xyz[i][1] * Parameters::ToAng,
+                              np.xyz[i][2] * Parameters::ToAng);
+    }
+
+    log_stream << " \n " << sticks << "\n\n";
+}
 //----------------------------------------------------------------------
 ///
 /// @brief Prints a formatted line with cube information to the output stream.
@@ -170,7 +194,16 @@ void Output::print_formatted_line2(std::ostream &out, const std::string atom, do
     std::snprintf(line, sizeof(line), "       %-2s  %12.6f  %12.6f  %12.6f\n", atom.c_str(), x, y, z);
     out << line;
 }
-
+// ----------------------------------------------------------------------
+///
+/// @brief Prints a formatted line with nanoparticle information to the output stream.
+//
+void Output::print_formatted_line3(std::ostream &out, const std::string atom, double x, double y, double z)
+{
+    char line[100];
+    std::snprintf(line, sizeof(line), "              %-2s  %19.6f %19.6f %19.6f\n", atom.c_str(), x, y, z);
+    out << line;
+}
 //----------------------------------------------------------------------
 ///
 /// @brief Prints the results of the integrals to the output stream.
@@ -215,5 +248,4 @@ void Output::print_results_integrals(const Target &target, const Integrals &inte
     default:
         throw std::runtime_error("No valid calculation target specified in input.");
     }
-
 }

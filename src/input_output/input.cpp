@@ -453,7 +453,6 @@ void Input::print_input_info(const Output &out, const Target &target)
 
         out.stream() << indent << "Overlap Integral     : No\n";
         out.stream() << indent << "Cutoff               : " << target.cutoff << "   a.u.\n\n";
-        out.stream() << " " << out.sticks << "\n \n";
 
         if (target.calc_overlap_int)
             throw std::runtime_error("Overlap integral can't be computed for Acceptor - NP option.");

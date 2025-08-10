@@ -67,8 +67,8 @@ void Algorithm::acceptor_np(const Target &target)
     //
     //   Print acceptor / donor density characteristics
     //
+    out.print_nanoparticle(np);
 
-    
     out.print_density(target.acceptor_density_file, cube_acceptor, Parameters::acceptor_header);
 
     //

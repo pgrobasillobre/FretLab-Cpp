@@ -42,10 +42,12 @@ void Nanoparticle::read_nanoparticle(const Target &target)
   if (line == Parameters::charges_header)
   {
     charges = true;
+    nanoparticle_model = "charges";
   }
   else if (line == Parameters::charges_and_dipoles_header)
   {
     charges_and_dipoles = true;
+    nanoparticle_model = "charges + dipoles";
   }
   else
   {
@@ -81,7 +83,7 @@ void Nanoparticle::read_nanoparticle(const Target &target)
   natoms = xyz.size();
 
   // Compute geometrical center
-  for (const auto& coord : xyz)
+  for (const auto &coord : xyz)
   {
     geom_center[0] += coord[0];
     geom_center[1] += coord[1];
@@ -90,6 +92,4 @@ void Nanoparticle::read_nanoparticle(const Target &target)
   geom_center[0] /= natoms;
   geom_center[1] /= natoms;
   geom_center[2] /= natoms;
-
-  std::cout << "Geometrical center: (" << geom_center[0] << ", " << geom_center[1] << ", " << geom_center[2] << ")" << std::endl;
 }
