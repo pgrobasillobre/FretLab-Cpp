@@ -244,6 +244,13 @@ void Output::print_results_integrals(const Target &target, const Integrals &inte
 
         break;
 
+    case TargetMode::Acceptor_NP:
+
+        log_stream << std::string(5, ' ') << "Acceptor-NP Interaction : " << std::fixed << std::setw(25) << std::setprecision(16) << integrals.overlap_acceptor_nanoparticle[0] << " + " << integrals.overlap_acceptor_nanoparticle[1] << " i  a.u.\n\n";
+        log_stream << " " << sticks << "\n\n";
+        log_stream.flush();
+        break;
+
     case TargetMode::None:
     default:
         throw std::runtime_error("No valid calculation target specified in input.");

@@ -2,10 +2,10 @@
  
                         ______          __  __          __  
                        / ____/_______  / /_/ /   ____ _/ /_ 
-                      / /_  / ___/ _ \/ __/ /   / __ `/ __ \
+                      / /_  / ___/ _  / __/ /   / __ `/ __ |
                      / __/ / /  /  __/ /_/ /___/ /_/ / /_/ /
-                    /_/   /_/   \___/\__/_____/\__,_/_.___/ 
-                                                             
+                    /_/   /_/   |___/ __/_____/__,_/_.___/  
+                                                            
  
  --------------------------------------------------------------------------------
  
@@ -16,24 +16,26 @@
                        Input  File: acceptor_np_charges.inp
                        Output File: acceptor_np_charges.log
 
-                       OMP Threads:    32
+                       OMP Threads: 32
 
  --------------------------------------------------------------------------------
 
-                       Calculation --> aceptor_np
+                       Calculation --> Acceptor - NP
 
-                       Aceptor Density  : densities/aceptor_coarse.cub
-                       Nanoparticle File: nanoparticle/donor.log
+                       Acceptor Density File: densities/aceptor_coarse.cub
+                       Nanoparticle File    : nanoparticle/donor.log
 
-                       Cutoff            =  0.1000E-01
+                       Overlap Integral     : No
+                       Cutoff               : 0.01   a.u.
 
-                       NP model = charges
- 
- --------------------------------------------------------------------------------
- 
+                       Nanoparticle Model   : charges
+
+--------------------------------------------------------------------------------
+
                             Nanoparticle Geometry (Å)                    
  
  --------------------------------------------------------------------------------
+ 
              Atom               X                   Y                   Z
  --------------------------------------------------------------------------------
  
@@ -5997,22 +5999,22 @@
               Xx            22.261646            7.295762           97.151406
  
  --------------------------------------------------------------------------------
- 
-                         Aceptor Density Information
+
+                         Acceptor Density Information
  
  --------------------------------------------------------------------------------
  
-   Density File: densities/aceptor_coarse.cub
+   Density File: aceptor_coarse.cub
  
    Density Grid (CUBE format): 
  
-      46   0.2028410E+03  -0.1023279E+02  -0.5501820E+01
-      73   0.5000000E+00   0.0000000E+00   0.0000000E+00
-      42   0.0000000E+00   0.5000000E+00   0.0000000E+00
-      23   0.0000000E+00   0.0000000E+00   0.5000000E+00
+      46   2.0284100E+02  -1.0232791E+01  -5.5018200E+00
+      73   5.0000000E-01   0.0000000E+00   0.0000000E+00
+      42   0.0000000E+00   5.0000000E-01   0.0000000E+00
+      23   0.0000000E+00   0.0000000E+00   5.0000000E-01
  
-     Total number of grid points:        70518
-     ---> Reduced density points:       12841
+     Total number of grid points: 70518
+     ---> Reduced density points: 12841
  
    Associated molecular coordinates (Å): 
  
@@ -6064,26 +6066,26 @@
        H     124.364609     -0.571536      0.885837
  
  --------------------------------------------------------------------------------
- 
-                                    RESULTS                    
- 
- --------------------------------------------------------------------------------
- 
-     Aceptor-NP Interaction:         0.0000011291394128    +        0.0000000169406234 i  a.u.
- 
+
+                                    RESULTS
+
+ -------------------------------------------------------------------------------- 
+
+     Acceptor-NP Interaction :        0.0000011291394128 + 0.0000000169406234 i  a.u.
+
  --------------------------------------------------------------------------------
 
-                         No AI, no shortcuts. Just me, and the code.
+                            We should translate this Fortran code into C++.
 
                                                      -- P. Grobas Illobre
 
  --------------------------------------------------------------------------------
 
-                                                CPU Time:     0 h  0 min  3 sec
-                                            Elapsed Time:     0 h  0 min  0 sec
+                                          CPU Time:      0 h  0 min  0 sec
+                                          Elapsed Time:  0 h  0 min  0 sec
 
  --------------------------------------------------------------------------------
 
-    Normal Termination of FretLab program in date 23/05/2025 at 13:30:08  
+    Normal Termination of FretLab program in date 15/08/2025 at 20:05:20
 
  --------------------------------------------------------------------------------

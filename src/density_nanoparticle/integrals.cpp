@@ -80,7 +80,6 @@ void Integrals::acceptor_np(const Target &target, const Density &acceptor, const
 
   const double inv_QMscrnFact = 1.0 / Parameters::QMscrnFact;
 
-  std::cout << "Computing acceptor-nanoparticle integral..." << std::endl;
   if (np.charges)
   {
     const auto &mm_q = np.q; // vector<array<double,2>>
@@ -136,8 +135,6 @@ void Integrals::acceptor_np(const Target &target, const Density &acceptor, const
   else
   {
     throw std::runtime_error(
-        "Nanoparticle model not recognized. Check input file: " +
-        target.nanoparticle_input_file);
+        "Nanoparticle model not recognized. Check input file: " + target.nanoparticle_input_file);
   }
-  std::cout << "Computed integral = " << overlap_acceptor_nanoparticle[0] << " + " << overlap_acceptor_nanoparticle[1] << "i" << std::endl;
 }

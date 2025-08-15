@@ -78,6 +78,6 @@ void Algorithm::acceptor_np(const Target &target)
     //
     //  Print results
     //
-    // out.print_results_integrals(target, integrals);
+    out.print_results_integrals(target, integrals);
 }
 //----------------------------------------------------------------------
