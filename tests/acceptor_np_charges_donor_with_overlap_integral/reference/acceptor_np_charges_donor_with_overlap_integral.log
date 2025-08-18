@@ -22,7 +22,7 @@
 
                        Calculation --> Acceptor - NP - Donor
 
-                       Acceptor Density File: densities/aceptor_coarse.cub
+                       Acceptor Density File: densities/acceptor_coarse.cub
                        Donor    Density File: densities/donor_coarse.cub
                        Nanoparticle File    : nanoparticle/donor.log
 
@@ -40,7 +40,7 @@
                             Nanoparticle Geometry (Å)                    
  
  --------------------------------------------------------------------------------
-              Atom               X                   Y                   Z
+             Atom               X                   Y                   Z
  --------------------------------------------------------------------------------
  
               Xx            67.304853           54.890144          -49.370852
@@ -6008,7 +6008,7 @@
  
  --------------------------------------------------------------------------------
  
-   Density File: aceptor_coarse.cub
+   Density File: acceptor_coarse.cub
  
    Density Grid (CUBE format): 
  
@@ -6165,6 +6165,6 @@
 
  --------------------------------------------------------------------------------
 
-    Normal Termination of FretLab program in date 18/08/2025 at 11:35:21
+    Normal Termination of FretLab program in date 18/08/2025 at 11:46:08
 
  --------------------------------------------------------------------------------

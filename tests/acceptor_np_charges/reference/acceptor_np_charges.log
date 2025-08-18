@@ -22,7 +22,7 @@
 
                        Calculation --> Acceptor - NP
 
-                       Acceptor Density File: densities/aceptor_coarse.cub
+                       Acceptor Density File: densities/acceptor_coarse.cub
                        Nanoparticle File    : nanoparticle/donor.log
 
                        Overlap Integral     : No
@@ -35,7 +35,6 @@
                             Nanoparticle Geometry (Å)                    
  
  --------------------------------------------------------------------------------
- 
              Atom               X                   Y                   Z
  --------------------------------------------------------------------------------
  
@@ -6004,7 +6003,7 @@
  
  --------------------------------------------------------------------------------
  
-   Density File: aceptor_coarse.cub
+   Density File: acceptor_coarse.cub
  
    Density Grid (CUBE format): 
  
@@ -6086,6 +6085,6 @@
 
  --------------------------------------------------------------------------------
 
-    Normal Termination of FretLab program in date 15/08/2025 at 20:05:20
+    Normal Termination of FretLab program in date 18/08/2025 at 11:44:20
 
  --------------------------------------------------------------------------------

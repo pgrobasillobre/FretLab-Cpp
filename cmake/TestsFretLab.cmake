@@ -7,10 +7,7 @@ macro(add_FretLab_runtest _name _labels)
     endif()
 endmacro()
 
-# All tests here should contain the label "FretLab"
-
-# Add a keyword for the length of the test: 
-# 
+# Tests launched with "FretLab"
 add_FretLab_runtest(integrate_density                                "FretLab;Integrate Cube File")
 add_FretLab_runtest(acceptor_donor_coulomb                           "FretLab;Acceptor - Donor Coulomb;")
 add_FretLab_runtest(acceptor_donor_with_overlap_integral             "FretLab;Acceptor - Donor Coulomb + Overlap;")

@@ -16,13 +16,13 @@
                        Input  File: acceptor_donor_with_overlap_integral.inp
                        Output File: acceptor_donor_with_overlap_integral.log
 
-                       OMP Threads: 1
+                       OMP Threads: 32
 
  --------------------------------------------------------------------------------
 
                        Calculation --> Acceptor - Donor
 
-                       Acceptor Density File: densities/aceptor_coarse.cub
+                       Acceptor Density File: densities/acceptor_coarse.cub
                        Donor    Density File: densities/donor_coarse.cub
 
                        Overlap Integral     : Yes
@@ -36,7 +36,7 @@
  
  --------------------------------------------------------------------------------
  
-   Density File: aceptor_coarse.cub
+   Density File: acceptor_coarse.cub
  
    Density Grid (CUBE format): 
  
@@ -173,9 +173,9 @@
      Acceptor-Donor Coulomb  :        0.0000002488480348  a.u.
      Acceptor-Donor Overlap  :        0.0000231727110782  a.u.
                                      --------------------------
-     Total Potential         :        0.0000234215591131  a.u.
+     Total Potential         :        0.0000234215591130  a.u.
 
-     Total Potential Modulus :        0.0000234215591131  a.u.
+     Total Potential Modulus :        0.0000234215591130  a.u.
 
      Keet :       0.0001696169086394  a.u.
 
@@ -187,11 +187,11 @@
 
  --------------------------------------------------------------------------------
 
-                                          CPU Time:      0 h  0 min 31 sec
-                                          Elapsed Time:  0 h  0 min 31 sec
+                                          CPU Time:      0 h  0 min  2 sec
+                                          Elapsed Time:  0 h  0 min  2 sec
 
  --------------------------------------------------------------------------------
 
-    Normal Termination of FretLab program in date 08/08/2025 at 13:07:45
+    Normal Termination of FretLab program in date 18/08/2025 at 11:43:53
 
  --------------------------------------------------------------------------------

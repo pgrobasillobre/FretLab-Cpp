@@ -1,4 +1,4 @@
-acceptor density: densities/aceptor_coarse.cub 
+acceptor density: densities/acceptor_coarse.cub 
 donor density: densities/donor_coarse.cub 
 cutoff: 1.0e-02
 omega_0: 0.08498876753462517
