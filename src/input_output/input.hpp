@@ -78,6 +78,11 @@ private:
     void check_and_store_file(const std::string& raw_input,
                               std::string& input_field,
                               std::string& resolved_field) const;
+
+    /// @brief Checks and stores the transition dipole moment from the input.
+    void check_and_store_transition_dipole(const std::string& raw_input,
+                                           std::array<double, 
+                                           3>& transdip) const;
                               
 };
 

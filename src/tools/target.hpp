@@ -18,15 +18,25 @@ struct Target
 
     // Acceptor
     bool is_acceptor_density_present = false;
+    bool is_acceptor_transition_dipole_present = false;
+    bool is_acceptor_transition_dipole_align_present = false;
 
     std::string acceptor_density_file;       ///< File for acceptor density (full path)
     std::string acceptor_density_input_file; /// File for acceptor density as named in input
 
+    std::array<double, 3> acceptor_transdip = {0.0, 0.0, 0.0}; ///< Transition dipole moment of the acceptor
+    std::array<double, 3> acceptor_ref_vector = {0.0, 0.0, 0.0}; ///< Reference vector for acceptor alignment
+
     // Donor
     bool is_donor_density_present = false;
+    bool is_donor_transition_dipole_present = false;
+    bool is_donor_transition_dipole_align_present = false;
 
     std::string donor_density_file;       ///< File for donor density (full path)
     std::string donor_density_input_file; /// File for donor density as named in input
+
+    std::array<double, 3> donor_transdip = {0.0, 0.0, 0.0}; ///< Transition dipole moment of the donor
+    std::array<double, 3> donor_ref_vector = {0.0, 0.0, 0.0}; ///< Reference vector for donor alignment 
 
     // Nanoparticle
     bool is_nanoparticle_present = false;
@@ -37,11 +47,15 @@ struct Target
     // Target + other options
     TargetMode target_mode = TargetMode::None; ///< Selected calculation target
 
+    std::string rotation_axys;
+    bool is_rotation_axys_present = false;
+
     bool integrate_density = false;
 
     bool calc_overlap_int = false;
 
     bool is_cutoff_present = false;
+
     double cutoff = 0.0;
 
     bool is_omega_0_present = false;

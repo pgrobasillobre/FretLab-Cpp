@@ -186,16 +186,54 @@ void Input::read(Target &target)
         target.integrate_density = true;
     };
     // ========
+    handlers["rotation axys"] = [&](const std::string &value)
+    {
+        target.is_rotation_axys_present = true;
+        target.rotation_axys = value;
+
+        // Lowercase the rotation axys and check validity
+        std::transform(target.rotation_axys.begin(), target.rotation_axys.end(), target.rotation_axys.begin(), ::tolower);    
+
+        if (target.rotation_axys != "x" && target.rotation_axys != "y" && target.rotation_axys != "z")
+        {
+            throw std::runtime_error("Rotation axys must be one of: x, y, z");
+        }
+    };
+    // ========
     handlers["acceptor density"] = [&](const std::string &value)
     {
         check_and_store_file(value, target.acceptor_density_input_file, target.acceptor_density_file);
         target.is_acceptor_density_present = true;
     };
     // ========
+    handlers["acceptor transition dipole"] = [&](const std::string &value)
+    {
+        target.is_acceptor_transition_dipole_present = true;
+        check_and_store_transition_dipole(value, target.acceptor_transdip);
+    };
+    // ========
+    handlers["acceptor transition dipole align with"] = [&](const std::string &value)
+    {
+        target.is_acceptor_transition_dipole_align_present = true;
+        check_and_store_transition_dipole(value, target.acceptor_ref_vector);
+    };
+    // ========
     handlers["donor density"] = [&](const std::string &value)
     {
         check_and_store_file(value, target.donor_density_input_file, target.donor_density_file);
         target.is_donor_density_present = true;
+    };
+    // ========
+    handlers["donor transition dipole"] = [&](const std::string &value)
+    {
+        target.is_donor_transition_dipole_present = true;
+        check_and_store_transition_dipole(value, target.donor_transdip);
+    };
+        // ========
+    handlers["donor transition dipole align with"] = [&](const std::string &value)
+    {
+        target.is_donor_transition_dipole_align_present = true;
+        check_and_store_transition_dipole(value, target.donor_ref_vector);
     };
     // ========
     handlers["nanoparticle"] = [&](const std::string &value)
@@ -401,6 +439,32 @@ void Input::check_and_store_file(
     std::string full_path = resolve_relative_to_input(raw_input);
     file_exists(full_path);
     resolved_field = full_path;
+}
+//----------------------------------------------------------------------
+///
+/// @brief Checks and stores the transition dipole moment from the input.
+///
+void Input::check_and_store_transition_dipole(const std::string &raw_input,
+                                              std::array<double, 
+                                              3> &transdip) const
+{
+    std::istringstream iss(raw_input);
+    double x, y, z;
+
+    if (!(iss >> x >> y >> z)) {
+        throw std::runtime_error(
+            "Invalid transition dipole format: '" + raw_input +
+            "'. Expected three floating-point numbers.");
+    }
+
+    // check for trailing garbage
+    std::string leftover;
+    if (iss >> leftover) {
+        throw std::runtime_error(
+            "Too many values for transition dipole: '" + raw_input + "'");
+    }
+
+    transdip = {x, y, z};
 }
 //----------------------------------------------------------------------
 ///
