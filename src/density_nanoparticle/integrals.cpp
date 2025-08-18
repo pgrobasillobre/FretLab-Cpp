@@ -9,6 +9,7 @@
 #include <stdexcept>
 #include <iostream>
 
+
 ///
 /// @brief Computes the Coulomb and overlap integrals between acceptor and donor densities.
 ///
@@ -31,8 +32,8 @@ void Integrals::acceptor_donor(const Target &target, const Density &acceptor, co
   // QMscrnFact is a constant defined in Parameters
   const double inv_QMscrnFact = 1.0 / Parameters::QMscrnFact;
 
-// For parallel computation if OMP is ON
-#pragma omp parallel for reduction(+ : int_coulomb, int_overlap) schedule(static)
+  // For parallel computation if OMP is ON
+  #pragma omp parallel for reduction(+ : int_coulomb, int_overlap) schedule(static)
   for (int i = 0; i < n_acc; ++i)
   {
     for (int j = 0; j < n_don; ++j)
@@ -88,7 +89,10 @@ void Integrals::acceptor_np(const Target &target, const Density &acceptor, const
     double acceptor_np_int_re_q = 0.0;
     double acceptor_np_int_im_q = 0.0;
 
-    // #pragma omp parallel for reduction(+ : acceptor_np_int_re_q, acceptor_np_int_im_q) schedule(static)
+    // Parallel computation of the integrals
+    #pragma omp parallel for collapse(2) schedule(static) default(none) \
+            shared(n_acc, n_np, xyz_acc, xyz_np, rho_acc, mm_q, inv_QMscrnFact) \
+            reduction(+ : acceptor_np_int_re_q, acceptor_np_int_im_q)
     for (int i = 0; i < n_acc; ++i)
     {
       for (int j = 0; j < n_np; ++j)
@@ -127,7 +131,11 @@ void Integrals::acceptor_np(const Target &target, const Density &acceptor, const
     double acceptor_np_int_re_mu = 0.0;
     double acceptor_np_int_im_mu = 0.0;
 
-    // #pragma omp parallel for reduction(+ : acceptor_np_int_re_q, acceptor_np_int_im_q) schedule(static)
+    // Parallel computation of the integrals
+    #pragma omp parallel for collapse(2) schedule(static) default(none) \
+            shared(n_acc, n_np, xyz_acc, xyz_np, rho_acc, mm_q, inv_QMscrnFact, sqrt_pi, mm_mu) \
+            reduction(+:acceptor_np_int_re_q, acceptor_np_int_im_q, \
+                        acceptor_np_int_re_mu, acceptor_np_int_im_mu)
     for (int i = 0; i < n_acc; ++i)
     {
       for (int j = 0; j < n_np; ++j)
@@ -173,3 +181,4 @@ void Integrals::acceptor_np(const Target &target, const Density &acceptor, const
         "Nanoparticle model not recognized. Check input file: " + target.nanoparticle_input_file);
   }
 }
+//----------------------------------------------------------------------
