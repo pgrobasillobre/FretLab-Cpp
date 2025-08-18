@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include <string_view>
 
+//----------------------------------------------------------------------
 /// @class String manipulation
 /// debugpgi
 class String_manipulation
@@ -18,8 +19,7 @@ public:
 
     void string_to_int(const std::string &str, int &out);
 };
-
-
+//----------------------------------------------------------------------
 // Returns true if marker was found (stream positioned on the line AFTER it).
 // If not found, returns false and the stream will be at EOF.
 inline bool go_to_string(std::istream &in, std::string_view marker)

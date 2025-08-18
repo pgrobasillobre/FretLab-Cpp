@@ -8,6 +8,7 @@
 
 #include <iostream>
 
+//----------------------------------------------------------------------
 ///
 /// @brief Constructor for Algorithm.
 ///

@@ -7,6 +7,7 @@
 #include "integrals.hpp"
 #include "nanoparticle.hpp"
 
+//----------------------------------------------------------------------
 ///
 /// @class Algorithm
 /// @brief Handles algorithmic operations.

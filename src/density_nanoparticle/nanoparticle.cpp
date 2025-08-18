@@ -8,6 +8,7 @@
 #include <sstream>
 #include <iomanip>
 
+//----------------------------------------------------------------------
 ///
 /// @brief Loads a cube file and initializes the density grid and atomic data.
 ///

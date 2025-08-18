@@ -7,7 +7,7 @@
 
 #include <string>
 
-
+//----------------------------------------------------------------------
 ///
 /// @class Input
 /// @brief Input module for handling user input and arguments.

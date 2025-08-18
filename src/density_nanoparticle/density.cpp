@@ -9,6 +9,7 @@
 #include <stdexcept>
 #include <iomanip>
 
+//----------------------------------------------------------------------
 ///
 /// @brief Returns the element label (e.g., "H", "C") for a given atomic number.
 ///
@@ -25,7 +26,7 @@ std::string Density::map_atomic_number_to_label(int Z) const {
     };
     return (Z > 0 && Z < (int)periodic_table.size()) ? periodic_table[Z] : "X";
 }
-
+//----------------------------------------------------------------------
 ///
 /// @brief Loads a cube file and initializes the density grid and atomic data.
 ///
@@ -140,7 +141,7 @@ void Density::read_density(const Target& target, bool rotate, const std::string&
 
     infile.close();
 }
-
+//----------------------------------------------------------------------
 ///
 /// @brief Integrates the full density grid by summing all density values.
 ///
@@ -153,4 +154,4 @@ void Density::int_density() {
         }
     }
 }
- 
+//---------------------------------------------------------------------- 

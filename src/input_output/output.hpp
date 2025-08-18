@@ -13,13 +13,14 @@
 #include <string>
 #include <ostream>
 
+//----------------------------------------------------------------------
 /// @class Output
 /// @brief Handles output file naming and writing.
 ///
 /// This class is responsible for managing output operations.
 
 class Input; // Forward declaration of Input to avoid circular dependency
-
+//----------------------------------------------------------------------
 class Output
 {
 public:

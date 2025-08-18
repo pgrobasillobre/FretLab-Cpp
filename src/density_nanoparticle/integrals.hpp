@@ -5,6 +5,7 @@
 #include "density.hpp"
 #include "nanoparticle.hpp"
 
+//----------------------------------------------------------------------
 ///
 /// @class Integrals
 /// @brief Define functions to compute integrals and store results.

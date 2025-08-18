@@ -9,7 +9,7 @@
 #include <stdexcept>
 #include <iostream>
 
-
+//----------------------------------------------------------------------
 ///
 /// @brief Computes the Coulomb and overlap integrals between acceptor and donor densities.
 ///

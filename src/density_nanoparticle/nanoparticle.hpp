@@ -7,6 +7,7 @@
 #include <vector>
 #include <array>
 
+//----------------------------------------------------------------------
 ///
 /// @class Nanoparticle
 /// @brief Represents and processes nanoparticle's charges and dipoles data from file.

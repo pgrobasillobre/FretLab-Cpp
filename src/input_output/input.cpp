@@ -34,12 +34,12 @@ void Input::get_arguments(int argc, char *argv[], Output &out, Target &target)
         parse_arguments(argc, argv, out);
         target.input_filename = input_filename;
 
-#ifdef _OPENMP
-        bool saw_omp_flag = false;
-        target.n_threads_OMP = 1; // placeholder until we decide
-#else
-        target.n_threads_OMP = 1; // always 1 without OpenMP
-#endif
+        #ifdef _OPENMP
+            bool saw_omp_flag = false;
+            target.n_threads_OMP = 1; // placeholder until we decide
+        #else
+            target.n_threads_OMP = 1; // always 1 without OpenMP
+        #endif
 
         // Scan for -omp N (allowed anywhere)
         for (int i = 1; i < argc; ++i)
@@ -52,34 +52,33 @@ void Input::get_arguments(int argc, char *argv[], Output &out, Target &target)
                     throw std::runtime_error("Missing value for -omp: you must specify an integer after -omp");
                 }
 
-#ifdef _OPENMP
-                saw_omp_flag = true;
-                str_manipulation.string_to_int(argv[i + 1], target.n_threads_OMP);
-                if (target.n_threads_OMP < 1)
-                {
-                    throw std::runtime_error("Value for -omp must be >= 1");
-                }
-                else if (target.n_threads_OMP > omp_get_max_threads())
-                {
-                    target.n_threads_OMP = omp_get_max_threads();
-                }
-#else
-                // Optional: warn user it’s ignored when OpenMP is off
-                std::cout << "\n Warning: -omp ignored; binary built without OpenMP.\n"
-                          << std::endl;
-#endif
+                #ifdef _OPENMP
+                    saw_omp_flag = true;
+                    str_manipulation.string_to_int(argv[i + 1], target.n_threads_OMP);
+                    if (target.n_threads_OMP < 1)
+                    {
+                        throw std::runtime_error("Value for -omp must be >= 1");
+                    }
+                    else if (target.n_threads_OMP > omp_get_max_threads())
+                    {
+                        target.n_threads_OMP = omp_get_max_threads();
+                    }
+                #else
+                    // Warn user it’s ignored when OpenMP is off
+                    std::cout << "\n Warning: -omp ignored; binary built without OpenMP.\n" << std::endl;
+                #endif
                 ++i; // skip value
             }
         }
 
-#ifdef _OPENMP
-        // If no -omp provided, use all available threads
-        if (!saw_omp_flag)
-        {
-            target.n_threads_OMP = omp_get_max_threads();
-        }
-        omp_set_num_threads(std::max(1, target.n_threads_OMP));
-#endif
+        #ifdef _OPENMP
+            // If no -omp provided, use all available threads
+            if (!saw_omp_flag)
+            {
+                target.n_threads_OMP = omp_get_max_threads();
+            }
+            omp_set_num_threads(std::max(1, target.n_threads_OMP));
+        #endif
     }
     catch (const std::exception &e)
     {

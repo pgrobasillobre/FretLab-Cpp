@@ -7,6 +7,7 @@
 #include <vector>
 #include <array>
 
+//----------------------------------------------------------------------
 ///
 /// @class Density
 /// @brief Represents and processes electron density data from a cube file.
