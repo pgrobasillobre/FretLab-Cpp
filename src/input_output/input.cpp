@@ -345,6 +345,60 @@ void Input::get_target(Target &target)
 
         throw std::runtime_error("Cutoff needed in input.");
     }
+    else if (target.is_rotation_axys_present &&
+             target.rotation_axys.empty())
+    {
+
+        throw std::runtime_error("Rotation axys is present but empty. \n"
+                                 "Please specify the rotation axys (x, y, or z).");
+    }
+    else if ((target.is_acceptor_transition_dipole_present ||
+              target.is_donor_transition_dipole_present)   && 
+              !target.is_rotation_axys_present)
+    {
+        throw std::runtime_error("Transition dipole present but no rotation axys specified. \n"
+                                 "Please specify the rotation axys (x, y, or z).");
+    }
+
+
+    else if (target.is_acceptor_transition_dipole_present &&
+             !target.is_acceptor_transition_dipole_align_present)
+    {
+        throw std::runtime_error("Acceptor transition dipole present but no alignment vector specified.");
+    }
+    else if (target.is_acceptor_transition_dipole_align_present &&
+             !target.is_acceptor_transition_dipole_present)
+    {
+        throw std::runtime_error("Acceptor transition dipole alignment vector present but no transition dipole specified.");
+    }
+
+
+    else if (target.is_donor_transition_dipole_present &&
+             !target.is_donor_transition_dipole_align_present)
+    {
+        throw std::runtime_error("Donor transition dipole present but no alignment vector specified.");
+    }
+    else if (target.is_donor_transition_dipole_align_present &&
+             !target.is_donor_transition_dipole_present)
+    {
+        throw std::runtime_error("Donor transition dipole alignment vector present but no transition dipole specified.");
+    }
+
+
+
+    else if (target.is_rotation_axys_present &&
+             !target.is_acceptor_density_present &&
+             !target.is_donor_density_present &&
+             !target.is_nanoparticle_present)
+    {
+
+        throw std::runtime_error("Rotation axys is present but no acceptor, donor, or nanoparticle density provided.");
+    }
+    else if (target.is_cutoff_present && target.cutoff < 0.0)
+    {
+
+        throw std::runtime_error("Cutoff cannot be negative.");
+    }
     else if (target.integrate_density &&
              (target.is_acceptor_density_present || target.is_donor_density_present || target.is_nanoparticle_present))
     {
