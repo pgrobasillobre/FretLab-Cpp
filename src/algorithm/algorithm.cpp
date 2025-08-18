@@ -21,7 +21,7 @@ Algorithm::Algorithm(Output &out, Target &target) : out(out), target(target) {}
 void Algorithm::integrate_density(const Target &target)
 {
 
-    cube.read_density(target, false, "Cube");
+    cube.read_density(target, "Cube");
 
     cube.int_density();
 
@@ -36,9 +36,9 @@ void Algorithm::acceptor_donor(const Target &target)
     //
     //  Read input files
     //
-    cube_acceptor.read_density(target, false, "Acceptor");
+    cube_acceptor.read_density(target, "Acceptor");
 
-    cube_donor.read_density(target, false, "Donor");
+    cube_donor.read_density(target, "Donor");
     //
     //   Print acceptor / donor density characteristics
     //
@@ -65,7 +65,7 @@ void Algorithm::acceptor_np(const Target &target)
     //
     np.read_nanoparticle(target);
 
-    cube_acceptor.read_density(target, false, "Acceptor");
+    cube_acceptor.read_density(target, "Acceptor");
     //
     //  Print acceptor / donor density characteristics
     //
@@ -92,9 +92,9 @@ void Algorithm::acceptor_np_donor(const Target &target)
     //
     np.read_nanoparticle(target);
 
-    cube_acceptor.read_density(target, false, "Acceptor");
+    cube_acceptor.read_density(target, "Acceptor");
 
-    cube_donor.read_density(target, false, "Donor");
+    cube_donor.read_density(target, "Donor");
     //
     //  Print acceptor / donor density characteristics
     //

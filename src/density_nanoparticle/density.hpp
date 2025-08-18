@@ -37,7 +37,9 @@ public:
     std::vector<std::array<double, 3>> xyz;
 
     double maxdens = 0.0, volume = 0.0;
-    std::array<double, 3> geom_center{}, geom_center_mol{};
+    
+    std::array<double, 3> geom_center = {0.0, 0.0, 0.0}; ///< Geometric center of the density
+    std::array<double, 3> geom_center_mol = {0.0, 0.0, 0.0}; ///< Geometric center of the molecule
 
     double integral = 0.0;  ///< Integral of the density over the full grid
 
@@ -45,11 +47,10 @@ public:
     /**
      * @brief Reads cube file and loads density data.
      * @param filepath Path to the cube file.
-     * @param rotate Whether to apply coordinate rotation (not yet implemented).
      * @param what_dens Specifies the density role (e.g., "acceptor", "donor").
      */
     //void read_density(const std::string& filepath, bool rotate = false, const std::string& what_dens = "");
-    void read_density(const Target& target, bool rotate = false, const std::string& what_dens = "");
+    void read_density(const Target& target, const std::string& what_dens = "");
 
 
     /** 

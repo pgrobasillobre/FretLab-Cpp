@@ -31,7 +31,7 @@ std::string Density::map_atomic_number_to_label(int Z) const {
 /// @brief Loads a cube file and initializes the density grid and atomic data.
 ///
 //void Density::read_density(const std::string& filepath, bool rotate, const std::string& what_dens) {
-void Density::read_density(const Target& target, bool rotate, const std::string& what_dens) {
+void Density::read_density(const Target& target, const std::string& what_dens) {
 
     // Check density file final purpose: cube integration, acceptor, or donor density.
     std::string filepath;
@@ -104,7 +104,7 @@ void Density::read_density(const Target& target, bool rotate, const std::string&
     // NOTE: reduction, geometry center, and rotation will be added later
     // 
     // debugpgi
-    // Save reducde density of the cube, and calculate associated coordinates
+    // Save reduced density of the cube, and calculate associated coordinates
     //
     if (!target.integrate_density) {
         rho_reduced.resize(Parameters::ncellmax);
@@ -140,6 +140,37 @@ void Density::read_density(const Target& target, bool rotate, const std::string&
     xyz.resize(n_points_reduced);
 
     infile.close();
+
+    // Calculate geometric center of the density and the molecule
+    for (const auto &coord : xyz)
+    {
+        geom_center[0] += coord[0];
+        geom_center[1] += coord[1];
+        geom_center[2] += coord[2];
+    }
+    geom_center[0] /= n_points_reduced;
+    geom_center[1] /= n_points_reduced;
+    geom_center[2] /= n_points_reduced;
+
+    for (int i = 0; i < natoms; ++i)
+    {
+        geom_center_mol[0] += x[i];
+        geom_center_mol[1] += y[i];
+        geom_center_mol[2] += z[i];
+    }
+    geom_center_mol[0] /= natoms;
+    geom_center_mol[1] /= natoms;
+    geom_center_mol[2] /= natoms;
+
+    // Check both centers are the same up to a threshold of 0.3)
+    if (std::abs(geom_center[0] - geom_center_mol[0]) > 0.3 ||
+        std::abs(geom_center[1] - geom_center_mol[1]) > 0.3 ||
+        std::abs(geom_center[2] - geom_center_mol[2]) > 0.3) {
+        throw std::runtime_error("Geometric center of the density and molecule do not match.");
+    }
+
+    // Rotate acceptor and/or donor density if requested
+    
 }
 //----------------------------------------------------------------------
 ///
