@@ -8,26 +8,28 @@
 #include "algorithm.hpp"
 
 //---------------------------------------------------------------------------
-//                     ______          __  __          __          
-//                    / ____/_______  / /_/ /   ____ _/ /__         
+//                     ______          __  __          __
+//                    / ____/_______  / /_/ /   ____ _/ /__
 //                   / /_  / ___/ _ \/ __/ /   / __ '/__   /
-//                  / __/ / /  /  __/ /_/ /___/ /_/ / /_/ /        
-//                 /_/   /_/   \___/\__/_____/\__,_/_.___/         
+//                  / __/ / /  /  __/ /_/ /___/ /_/ / /_/ /
+//                 /_/   /_/   \___/\__/_____/\__,_/_.___/
 //
 //---------------------------------------------------------------------------
 //
 //                       Program by Pablo Grobas Illobre
-//                             
+//
 //                         For any problem write to:
 //                         pgrobasillobre@gmail.com
-//   
+//
 //---------------------------------------------------------------------------
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[])
+{
 
     Output out;
 
-    try {
+    try
+    {
         // Instantiate components
         Timer timer;
         Input inp;
@@ -47,26 +49,31 @@ int main(int argc, char* argv[]) {
 
         inp.read(target);
         inp.print_input_info(out, target);
-        
+
         // Initialize algorithm instance with output and target references.
         Algorithm algorithm(out, target);
 
-        switch (target.mode) {
-            case TargetMode::IntegrateCube:
+        switch (target.mode)
+        {
+        case TargetMode::IntegrateCube:
             algorithm.integrate_density(target);
             break;
 
-            case TargetMode::Acceptor_Donor:
+        case TargetMode::Acceptor_Donor:
             algorithm.acceptor_donor(target);
             break;
 
-            case TargetMode::Acceptor_NP:
+        case TargetMode::Acceptor_NP:
             algorithm.acceptor_np(target);
             break;
 
+        case TargetMode::Acceptor_NP_Donor:
+            algorithm.acceptor_np_donor(target);
+            break;
+
             case TargetMode::None:
-            default:
-                throw std::runtime_error("No valid calculation target specified in input.");
+        default:
+            throw std::runtime_error("No valid calculation target specified in input.");
         }
 
         // Finalize timing and output
@@ -74,12 +81,12 @@ int main(int argc, char* argv[]) {
         timer.conclude(out);
 
         out.close();
-
-    } catch (const std::exception& e) {
+    }
+    catch (const std::exception &e)
+    {
         out.stream() << " Error: " << e.what() << std::endl;
         return 1;
     }
 
     return 0;
 }
-

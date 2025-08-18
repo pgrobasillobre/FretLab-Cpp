@@ -8,14 +8,16 @@
 
 /// @namespace Parameters
 /// @brief Namespace containing global constants and header labels.
-namespace Parameters {
+namespace Parameters
+{
 
     // Physical constants
     constexpr double pi = 3.14159265358979323846;
-    constexpr double ToBohr = 1.8897261254578281;  // Conversion from Angstrom to Bohr
-    constexpr double ToAng = 1.0 / ToBohr;         // Conversion from Bohr to Angstrom
+    constexpr double sqrt_pi = 1.77245385090551602730; // Square root of pi
+    constexpr double ToBohr = 1.8897261254578281;      // Conversion from Angstrom to Bohr
+    constexpr double ToAng = 1.0 / ToBohr;             // Conversion from Bohr to Angstrom
 
-    constexpr double QMscrnFact = 0.2;             // Screening factor for Coulomb integrals
+    constexpr double QMscrnFact = 0.2; // Screening factor for Coulomb integrals
 
     // Constraint for reduce density file
     constexpr int ncellmax = 10000000;
@@ -33,4 +35,3 @@ namespace Parameters {
 } // namespace Parameters
 
 #endif // PARAMETERS_HPP
-

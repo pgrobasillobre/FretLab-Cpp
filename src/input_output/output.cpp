@@ -159,8 +159,8 @@ void Output::print_nanoparticle(const Nanoparticle &np)
     log_stream << std::string(23, ' ') << "Nanoparticle Model   : " << np.nanoparticle_model << "\n\n";
     log_stream << sticks << "\n\n";
     log_stream << std::string(28, ' ') << "Nanoparticle Geometry (Å)                    \n \n";
-    log_stream << " " << sticks << "\n \n";
-    log_stream << std::string(13, ' ') << "Atom" << std::string(15, ' ') << "X" << std::string(19, ' ') << "Y" << std::string(19, ' ') << "Z" << "\n";
+    log_stream << " " << sticks << "\n ";
+    log_stream << std::string(12, ' ') << "Atom" << std::string(15, ' ') << "X" << std::string(19, ' ') << "Y" << std::string(19, ' ') << "Z" << "\n";
     log_stream << " " << sticks << "\n \n";
 
     // Print nanoparticle properties
@@ -249,6 +249,35 @@ void Output::print_results_integrals(const Target &target, const Integrals &inte
         log_stream << std::string(5, ' ') << "Acceptor-NP Interaction : " << std::fixed << std::setw(25) << std::setprecision(16) << integrals.overlap_acceptor_nanoparticle[0] << " + " << integrals.overlap_acceptor_nanoparticle[1] << " i  a.u.\n\n";
         log_stream << " " << sticks << "\n\n";
         log_stream.flush();
+
+        break;
+
+    case TargetMode::Acceptor_NP_Donor:
+
+        log_stream << std::string(5, ' ') << "Acceptor-Donor Coulomb  : " << std::fixed << std::setw(25) << std::setprecision(16) << integrals.coulomb_acceptor_donor << "  a.u.\n";
+        if (target.calc_overlap_int)
+        {
+            log_stream << std::string(5, ' ') << "Acceptor-Donor Overlap  : " << std::fixed << std::setw(25) << std::setprecision(16) << integrals.overlap_acceptor_donor << "  a.u.\n";
+        }
+
+        log_stream << std::string(5, ' ') << "Acceptor-NP Interaction : " << std::fixed << std::setw(25) << std::setprecision(16) << integrals.overlap_acceptor_nanoparticle[0] << " + " << integrals.overlap_acceptor_nanoparticle[1] << " i  a.u.\n";
+        log_stream.flush();
+
+        v_tot[0] = integrals.coulomb_acceptor_donor + integrals.overlap_acceptor_donor + integrals.overlap_acceptor_nanoparticle[0];
+        v_tot[1] = integrals.overlap_acceptor_nanoparticle[1];
+
+        v_mod = std::sqrt(std::inner_product(v_tot.begin(), v_tot.end(), v_tot.begin(), 0.0));
+
+        log_stream << std::string(37, ' ') << std::string(26, '-') << "\n";
+        log_stream << std::string(5, ' ') << "Total Potential         : " << std::fixed << std::setw(25) << std::setprecision(16) << v_tot[0] << " + " << v_tot[1] << " i  a.u.\n\n";
+        log_stream << std::string(5, ' ') << "Total Potential Modulus : " << std::fixed << std::setw(25) << std::setprecision(16) << v_mod << "  a.u.\n\n";
+
+        log_stream << std::string(5, ' ') << "Keet :" << std::fixed << std::setw(25) << std::setprecision(16)
+                   << 2.0 * Parameters::pi * (v_mod * v_mod) * target.spectral_overlap << "  a.u.\n\n";
+
+        log_stream << " " << sticks << "\n\n";
+        log_stream.flush();
+
         break;
 
     case TargetMode::None:

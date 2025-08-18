@@ -32,6 +32,11 @@ public:
     ///
     void acceptor_np(const Target &target);
 
+    ///
+    /// @brief Compute electronic energy transfer rate between donor and acceptor mediated by nanoparticle.
+    ///
+    void acceptor_np_donor(const Target &target);
+
 private:
     Output &out;
     Target &target;
