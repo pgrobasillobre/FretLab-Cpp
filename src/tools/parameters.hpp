@@ -14,6 +14,12 @@ namespace Parameters
     // Physical constants
     constexpr double pi = 3.14159265358979323846;
     constexpr double sqrt_pi = 1.77245385090551602730; // Square root of pi
+
+    constexpr double to_radians = pi / 180.0; 
+    constexpr double to_degrees = 1.0 / to_radians; 
+
+    constexpr double angle_thres = 0.1 * to_radians; // Threshold for angle comparison in radians = 6 degrees
+
     constexpr double ToBohr = 1.8897261254578281;      // Conversion from Angstrom to Bohr
     constexpr double ToAng = 1.0 / ToBohr;             // Conversion from Bohr to Angstrom
 

@@ -20,23 +20,35 @@ struct Target
     bool is_acceptor_density_present = false;
     bool is_acceptor_transition_dipole_present = false;
     bool is_acceptor_transition_dipole_align_present = false;
+    bool rotate_acceptor = false;
 
     std::string acceptor_density_file;       ///< File for acceptor density (full path)
     std::string acceptor_density_input_file; /// File for acceptor density as named in input
 
     std::array<double, 3> acceptor_transdip = {0.0, 0.0, 0.0}; ///< Transition dipole moment of the acceptor
+    std::array<double, 3> acceptor_transdip_rot = {0.0, 0.0, 0.0}; ///< Rotated transition dipole moment of the donor
     std::array<double, 3> acceptor_ref_vector = {0.0, 0.0, 0.0}; ///< Reference vector for acceptor alignment
+
+    double acceptor_density_rotation_angle = 0.0;
+    double acceptor_density_rotation_angle_check = 0.0;
+
 
     // Donor
     bool is_donor_density_present = false;
     bool is_donor_transition_dipole_present = false;
     bool is_donor_transition_dipole_align_present = false;
+    bool rotate_donor = false;
 
     std::string donor_density_file;       ///< File for donor density (full path)
     std::string donor_density_input_file; /// File for donor density as named in input
 
     std::array<double, 3> donor_transdip = {0.0, 0.0, 0.0}; ///< Transition dipole moment of the donor
+    std::array<double, 3> donor_transdip_rot = {0.0, 0.0, 0.0}; ///< Rotated transition dipole moment of the donor
     std::array<double, 3> donor_ref_vector = {0.0, 0.0, 0.0}; ///< Reference vector for donor alignment 
+
+    double donor_density_rotation_angle = 0.0;
+    double donor_density_rotation_angle_check = 0.0;
+
 
     // Nanoparticle
     bool is_nanoparticle_present = false;

@@ -94,8 +94,26 @@ void Output::print_banner()
 ///
 /// @brief Fills the output file with density information.
 ///
-void Output::print_density(const std::string &filepath, const Density &cube, std::optional<std::string> header)
+void Output::print_density(const Target &target, const Density &cube, std::optional<std::string> header)
 {
+
+    std::string acceptor_header = Parameters::acceptor_header;
+    std::string donor_header = Parameters::donor_header;
+    std::string filepath;
+
+    if (header==acceptor_header)
+    {
+        std::string filepath = target.acceptor_density_file;
+    }
+    else if (header==donor_header)  
+    {
+        std::string filepath = target.donor_density_file;
+    }
+    else
+    {
+        std::string filepath = target.density_file_integration;
+    }
+    
 
     // Extract the filename from the full path
     std::string filename = std::filesystem::path(filepath).filename().string();
@@ -127,9 +145,6 @@ void Output::print_density(const std::string &filepath, const Density &cube, std
         log_stream << "     ---> Reduced density points: " << cube.n_points_reduced << "\n \n"; // Integrate cube case
     }
 
-    // If (target_%name_ .ne. "integrate_density") then
-    //    Write(out_%iunit,*)     "    ---> Reduced density points:", cube%n_points_reduced
-    // Endif
 
     log_stream << std::string(3, ' ') << "Associated molecular coordinates (Å): \n \n";
     for (int i = 0; i < cube.natoms; ++i)
@@ -138,6 +153,47 @@ void Output::print_density(const std::string &filepath, const Density &cube, std
                               cube.x[i] * Parameters::ToAng,
                               cube.y[i] * Parameters::ToAng,
                               cube.z[i] * Parameters::ToAng);
+    }
+
+
+    // Print rotated transition dipole and angle, if requested    
+    if (header==acceptor_header && target.rotate_acceptor) 
+        {
+        // INPUT Transition density dipole
+        log_stream << "\n   INPUT   Transition density dipole (x,y,z): "
+            << std::fixed << std::setw(10) << std::setprecision(5) << target.acceptor_transdip[0] << " "
+            << std::setw(10) << target.acceptor_transdip[1] << " "
+            << std::setw(10) << target.acceptor_transdip[2] << "\n\n";
+
+        // ROTATED Transition density dipole
+        log_stream << "   ROTATED Transition density dipole (x,y,z): "
+            << std::fixed << std::setw(10) << std::setprecision(5) << target.acceptor_transdip_rot[0] << " "
+            << std::setw(10) << target.acceptor_transdip_rot[1] << " "
+            << std::setw(10) << target.acceptor_transdip_rot[2] << "\n\n";
+
+        // Alignment angle
+        log_stream << "   Alignment angle: "
+            << std::fixed << std::setw(8) << std::setprecision(3) << target.acceptor_density_rotation_angle_check * Parameters::to_degrees
+            << " °\n";
+        }
+    else if (header==donor_header && target.rotate_donor)
+    {
+        // INPUT Transition density dipole
+        log_stream << "\n   INPUT   Transition density dipole (x,y,z): "
+            << std::fixed << std::setw(10) << std::setprecision(5) << target.donor_transdip[0] << " "
+            << std::setw(10) << target.donor_transdip[1] << " "
+            << std::setw(10) << target.donor_transdip[2] << "\n\n";
+
+        // ROTATED Transition density dipole
+        log_stream << "   ROTATED Transition density dipole (x,y,z): "
+            << std::fixed << std::setw(10) << std::setprecision(5) << target.donor_transdip_rot[0] << " "
+            << std::setw(10) << target.donor_transdip_rot[1] << " "
+            << std::setw(10) << target.donor_transdip_rot[2] << "\n\n";
+
+        // Alignment angle
+        log_stream << "   Alignment angle: "
+            << std::fixed << std::setw(8) << std::setprecision(3) << target.donor_density_rotation_angle_check * Parameters::to_degrees
+            << " °\n";
     }
 
     if (cube.integral > 0.0)
@@ -284,4 +340,34 @@ void Output::print_results_integrals(const Target &target, const Integrals &inte
     default:
         throw std::runtime_error("No valid calculation target specified in input.");
     }
+}
+//----------------------------------------------------------------------
+///
+/// @brief Print transition dipole in nmd format
+///
+void Output::print_transdip_nmd(const std::string infile, 
+                                const std::array<double, 3>& transdip, 
+                                const std::array<double, 3>& center) const
+{
+
+    double ToAng = Parameters::ToAng;
+
+    std::ofstream nmdfile(infile + ".nmd", std::ios::out);
+    if (!nmdfile) {
+        throw std::runtime_error("Cannot open file: " + infile + ".nmd");
+    }
+
+    nmdfile << "coordinates  "       
+        << std::fixed << std::setprecision(5)
+        << std::setw(10) << center[0] * ToAng << "  "
+        << std::setw(10) << center[1] * ToAng << "  "
+        << std::setw(10) << center[2] * ToAng << '\n';
+
+
+    nmdfile << "mode 1"
+        << std::fixed << std::setprecision(16)
+        << std::setw(25) << transdip[0] << "  "
+        << std::setw(25) << transdip[1] << "  "
+        << std::setw(25) << transdip[2] << '\n';
+
 }

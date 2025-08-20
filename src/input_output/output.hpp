@@ -42,16 +42,18 @@ public:
     void print_banner();
 
     /// @brief Fills the output file with density information.
-    void print_density(
-        const std::string &filepath,
-        const Density &cube,
-        std::optional<std::string> header = std::nullopt);
-
+    void print_density(const Target &target, const Density &cube, std::optional<std::string> header = std::nullopt);
+        
     /// @brief Prints nanoparticle information to the output file.
     void print_nanoparticle(const Nanoparticle &np);
 
     /// @brief Prints integrals' results
     void print_results_integrals(const Target &target, const Integrals &integrals);
+
+    /// @brief Print transition dipole in nmd format
+    void print_transdip_nmd(const std::string infile, 
+                            const std::array<double, 3>& transdip, 
+                            const std::array<double, 3>& center) const;
 
     /// @brief Horizontal line (80 dashes) separation output sections
     const std::string sticks = std::string(80, '-');

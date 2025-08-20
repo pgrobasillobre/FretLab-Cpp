@@ -18,33 +18,34 @@ Algorithm::Algorithm(Output &out, Target &target) : out(out), target(target) {}
 ///
 /// @brief Integrates the density of the input cube file.
 ///
-void Algorithm::integrate_density(const Target &target)
+void Algorithm::integrate_density(Target &target)
 {
 
-    cube.read_density(target, "Cube");
+    cube.read_density(target, out, "Cube");
 
     cube.int_density();
 
-    out.print_density(target.density_file_integration, cube);
+    out.print_density(target, cube);
 }
 //----------------------------------------------------------------------
 ///
 /// @brief Compute electronic energy transfer rate between donor and acceptor.
 ///
-void Algorithm::acceptor_donor(const Target &target)
+void Algorithm::acceptor_donor(Target &target)
 {
     //
     //  Read input files
     //
-    cube_acceptor.read_density(target, "Acceptor");
+    cube_acceptor.read_density(target, out, "Acceptor");
 
-    cube_donor.read_density(target, "Donor");
+    cube_donor.read_density(target, out, "Donor");
     //
     //   Print acceptor / donor density characteristics
     //
-    out.print_density(target.acceptor_density_file, cube_acceptor, Parameters::acceptor_header);
+    out.print_density(target, cube_acceptor, Parameters::acceptor_header);
+                        
+    out.print_density(target, cube_donor, Parameters::donor_header);
 
-    out.print_density(target.donor_density_file, cube_donor, Parameters::donor_header);
     //
     //  Compute integrals
     //
@@ -58,20 +59,20 @@ void Algorithm::acceptor_donor(const Target &target)
 ///
 /// @brief Compute acceptor - nanoparticle coupling.
 ///
-void Algorithm::acceptor_np(const Target &target)
+void Algorithm::acceptor_np(Target &target)
 {
     //
     //  Read input files
     //
     np.read_nanoparticle(target);
 
-    cube_acceptor.read_density(target, "Acceptor");
+    cube_acceptor.read_density(target, out, "Acceptor");
     //
     //  Print acceptor / donor density characteristics
     //
     out.print_nanoparticle(np);
 
-    out.print_density(target.acceptor_density_file, cube_acceptor, Parameters::acceptor_header);
+    out.print_density(target, cube_acceptor, Parameters::acceptor_header);
     //
     //  Compute integrals
     //
@@ -85,24 +86,24 @@ void Algorithm::acceptor_np(const Target &target)
 ///
 /// @brief Compute electronic energy transfer rate between donor and acceptor mediated by nanoparticle.
 ///
-void Algorithm::acceptor_np_donor(const Target &target)
+void Algorithm::acceptor_np_donor(Target &target)
 {
     //
     //  Read input files
     //
     np.read_nanoparticle(target);
 
-    cube_acceptor.read_density(target, "Acceptor");
+    cube_acceptor.read_density(target, out, "Acceptor");
 
-    cube_donor.read_density(target, "Donor");
+    cube_donor.read_density(target, out, "Donor");
     //
     //  Print acceptor / donor density characteristics
     //
     out.print_nanoparticle(np);
 
-    out.print_density(target.acceptor_density_file, cube_acceptor, Parameters::acceptor_header);
+    out.print_density(target, cube_acceptor, Parameters::acceptor_header);
 
-    out.print_density(target.donor_density_file, cube_donor, Parameters::donor_header);
+    out.print_density(target,cube_donor, Parameters::donor_header);
     //
     //  Compute integrals
     //

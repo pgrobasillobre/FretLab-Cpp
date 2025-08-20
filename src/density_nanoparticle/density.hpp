@@ -7,6 +7,7 @@
 #include <vector>
 #include <array>
 
+class Output; // Forward declaration
 //----------------------------------------------------------------------
 ///
 /// @class Density
@@ -14,6 +15,7 @@
 ///
 class Density {
 public:
+
     // Descriptive headers from the cube file
     std::string str1, str2;
 
@@ -49,8 +51,7 @@ public:
      * @param filepath Path to the cube file.
      * @param what_dens Specifies the density role (e.g., "acceptor", "donor").
      */
-    //void read_density(const std::string& filepath, bool rotate = false, const std::string& what_dens = "");
-    void read_density(const Target& target, const std::string& what_dens = "");
+    void read_density(Target& target, const Output& out, const std::string& what_dens = "");
 
 
     /** 
@@ -60,12 +61,29 @@ public:
 
 
 private:
+
     /**
      * @brief Maps atomic number to corresponding element label.
      * @param Z Atomic number
      * @return Element symbol as a string
      */
     std::string map_atomic_number_to_label(int Z) const;
+
+
+    ///
+    /// @brief Rotates the transition dipole moment based on the reference vector.
+    ///
+    void rotate_transition_dipole(Target &target, const Output & out, const std::string& what_dens);
+
+    ///
+    /// @brief Compute angle between two vectors.
+    ///
+    double compute_angle_between_vectors(const std::array<double, 3>& vec1, const std::array<double, 3>& vec2) const;
+
+    ///
+    /// @brief Rotate vector based on angle and rotation axis.
+    ///
+    std::array<double, 3> rotate_vector(const std::array<double, 3>& vec, const double angle, const std::string& axis) const;
 
 };
 

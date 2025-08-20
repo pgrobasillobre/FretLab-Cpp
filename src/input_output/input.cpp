@@ -216,6 +216,8 @@ void Input::read(Target &target)
     {
         target.is_acceptor_transition_dipole_align_present = true;
         check_and_store_transition_dipole(value, target.acceptor_ref_vector);
+
+        target.rotate_acceptor = true;
     };
     // ========
     handlers["donor density"] = [&](const std::string &value)
@@ -234,6 +236,9 @@ void Input::read(Target &target)
     {
         target.is_donor_transition_dipole_align_present = true;
         check_and_store_transition_dipole(value, target.donor_ref_vector);
+
+        target.rotate_donor = true;
+
     };
     // ========
     handlers["nanoparticle"] = [&](const std::string &value)

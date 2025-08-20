@@ -25,11 +25,11 @@ void Nanoparticle::read_nanoparticle(const Target &target)
   }
 
   // Check if FRET quantities are present
-  bool is_fret_quantities_present;
+  bool is_fret_quantities_present = false;
   is_fret_quantities_present = go_to_string(infile, Parameters::fret_start);
 
   // Check if FRET end marker is present
-  bool is_fret_end_marker_present;
+  bool is_fret_end_marker_present = false;
   is_fret_end_marker_present = go_to_string(infile, Parameters::fret_end);
 
   // Rewind and come back to fret_start
