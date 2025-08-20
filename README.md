@@ -1,4 +1,4 @@
-# FretLab – Electronic Energy Transfer Computation
+# FretLab: an Open Source Code for Electronic Energy Transfer Computation
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/pgrobasillobre/FretLab-Cpp/main/docs/_static/FretLab.png" width="600">
