@@ -85,6 +85,47 @@ std::array<double, 3> Density::rotate_vector(const std::array<double, 3>& vec, c
 }
 //----------------------------------------------------------------------
 ///
+/// @brief Rotate density xyz coordinates based on angle and rotation axis.
+///
+std::vector<std::array<double, 3>> Density::rotate_density(const double angle, const std::string& axis) const {
+
+    double cos_angle = std::cos(angle);
+    double sin_angle = std::sin(angle);
+
+    std::vector<std::array<double, 3>> xyz_rot(n_points_reduced, {0.0, 0.0, 0.0});
+    
+    if (axis == "x") {
+        for (int i = 0; i < n_points_reduced; ++i)
+        {
+            xyz_rot[i][0] = xyz[i][0];
+            xyz_rot[i][1] = xyz[i][1] * cos_angle - xyz[i][2] * sin_angle;
+            xyz_rot[i][2] = xyz[i][1] * sin_angle + xyz[i][2] * cos_angle;
+        }
+    }
+    else if (axis == "y") {
+        for (int i = 0; i < n_points_reduced; ++i)
+        {
+            xyz_rot[i][0] = xyz[i][0] * cos_angle + xyz[i][2] * sin_angle;
+            xyz_rot[i][1] = xyz[i][1];
+            xyz_rot[i][2] = -xyz[i][0] * sin_angle + xyz[i][2] * cos_angle;
+        }
+    }
+    else if (axis == "z") {
+        for (int i = 0; i < n_points_reduced; ++i)
+        {
+            xyz_rot[i][0] = xyz[i][0] * cos_angle - xyz[i][1] * sin_angle;
+            xyz_rot[i][1] = xyz[i][0] * sin_angle + xyz[i][1] * cos_angle;
+            xyz_rot[i][2] = xyz[i][2];
+        }
+    }
+    else {
+        throw std::runtime_error("Unknown rotation axys: " + axis);
+    }
+    
+    return xyz_rot;
+}
+//----------------------------------------------------------------------
+///
 /// @brief Loads a cube file and initializes the density grid and atomic data.
 ///
 void Density::read_density(Target& target, const Output &out, const std::string& what_dens) {
@@ -157,9 +198,7 @@ void Density::read_density(Target& target, const Output &out, const std::string&
         }
     }
 
-    // NOTE: reduction, geometry center, and rotation will be added later
-    // 
-    // debugpgi
+    //
     // Save reduced density of the cube, and calculate associated coordinates
     //
     if (!target.integrate_density) {
@@ -226,10 +265,12 @@ void Density::read_density(Target& target, const Output &out, const std::string&
     }
 
     // Rotate acceptor and/or donor density based on the transition dipole alignment vector, if requested
+    //   1. Compute angle between the transition dipole and the reference vector
+    //   2. Rotate cube coordinates
     if (target.rotate_acceptor || target.rotate_donor)
     {
-        // Compute angle between the transition dipole and the reference vector
         rotate_transition_dipole(target, out, what_dens);    
+        rotate_cube_coordinates(target, out, what_dens);
     } 
 }
 //----------------------------------------------------------------------
@@ -350,3 +391,53 @@ void Density::rotate_transition_dipole(Target &target, const Output & out, const
     }
 }
 //---------------------------------------------------------------------- 
+///
+/// @brief Rotates the cube coordinates based on theta angle.
+///
+void Density::rotate_cube_coordinates(const Target &target, const Output & out, const std::string& what_dens)  {
+
+    if (target.debug >= 1) out.print_cube_coordinates(what_dens, n_points_reduced, xyz);
+
+    // Save angle
+    double angle = 0.0;
+
+    if (what_dens == "Acceptor") {
+        angle = target.acceptor_density_rotation_angle;
+    }
+    else if (what_dens == "Donor") {
+        angle = target.donor_density_rotation_angle;
+    }
+    else {
+        throw std::runtime_error("Unknown density type for transition dipole rotation: " + what_dens);
+    }
+
+    //
+    // Translate density center to the origin of coordinates
+    //
+    for (int i = 0; i < n_points_reduced; ++i)
+    {
+        xyz[i][0] = xyz[i][0] - geom_center[0];
+        xyz[i][1] = xyz[i][1] - geom_center[1];
+        xyz[i][2] = xyz[i][2] - geom_center[2];       
+    }
+
+    //
+    // Rotate translated density
+    //
+    std::vector<std::array<double, 3>> xyz_rot(n_points_reduced, {0.0, 0.0, 0.0});
+
+    xyz_rot = rotate_density(angle, target.rotation_axys);
+
+    //
+    // Translate rotated density to initial position and save
+    //
+    for (int i = 0; i < n_points_reduced; ++i)
+    {
+        xyz[i][0] = xyz_rot[i][0] + geom_center[0];
+        xyz[i][1] = xyz_rot[i][1] + geom_center[1];
+        xyz[i][2] = xyz_rot[i][2] + geom_center[2];       
+    }
+
+    if (target.debug >= 1) out.print_cube_coordinates(what_dens + "_ROTATED_", n_points_reduced, xyz);
+
+}

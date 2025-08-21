@@ -76,6 +76,11 @@ private:
     void rotate_transition_dipole(Target &target, const Output & out, const std::string& what_dens);
 
     ///
+    /// @brief Rotates the cube coordinates based on theta angle.
+    ///
+    void rotate_cube_coordinates(const Target &target, const Output & out, const std::string& what_dens);
+
+        ///
     /// @brief Compute angle between two vectors.
     ///
     double compute_angle_between_vectors(const std::array<double, 3>& vec1, const std::array<double, 3>& vec2) const;
@@ -84,6 +89,12 @@ private:
     /// @brief Rotate vector based on angle and rotation axis.
     ///
     std::array<double, 3> rotate_vector(const std::array<double, 3>& vec, const double angle, const std::string& axis) const;
+
+    ///
+    /// @brief Rotate density xyz coordinates based on angle and rotation axis.
+    ///
+    std::vector<std::array<double, 3>> rotate_density(const double angle, const std::string& axis) const;
+
 
 };
 

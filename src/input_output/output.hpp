@@ -55,6 +55,11 @@ public:
                             const std::array<double, 3>& transdip, 
                             const std::array<double, 3>& center) const;
 
+    /// @brief Print cube density coordinates
+    void print_cube_coordinates(const std::string what_dens,
+                                const int n_points,
+                                const std::vector<std::array<double, 3>>& xyz) const;
+    
     /// @brief Horizontal line (80 dashes) separation output sections
     const std::string sticks = std::string(80, '-');
 
@@ -70,7 +75,7 @@ private:
     void print_formatted_line1(std::ostream &out, int i, double a, double b, double c);
 
     /// @brief Prints a formatted line with atom information to the output stream.
-    void print_formatted_line2(std::ostream &out, const std::string atom, double x, double y, double z);
+    void print_formatted_line2(std::ostream &out, const std::string atom, double x, double y, double z) const;
 
     /// @brief Prints a formatted line with nanoparticle information to the output stream.
     void print_formatted_line3(std::ostream &out, const std::string atom, double x, double y, double z);
@@ -78,7 +83,7 @@ private:
     // Define formats for output
     std::string format1 = "   {:5d} {:15.7E} {:15.7E} {:15.7E}\n";
 
-    std::ofstream log_stream; ///< The output file stream
+    mutable std::ofstream log_stream; ///< The output file stream (mutable to allow writing in const functions, e.g. logging or debug output)
 };
 
 #endif

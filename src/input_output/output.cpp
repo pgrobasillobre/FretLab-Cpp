@@ -244,7 +244,7 @@ void Output::print_formatted_line1(std::ostream &out, int i, double a, double b,
 ///
 /// @brief Prints a formatted line with atom information to the output stream.
 //
-void Output::print_formatted_line2(std::ostream &out, const std::string atom, double x, double y, double z)
+void Output::print_formatted_line2(std::ostream &out, const std::string atom, double x, double y, double z) const
 {
     char line[100];
     std::snprintf(line, sizeof(line), "       %-2s  %12.6f  %12.6f  %12.6f\n", atom.c_str(), x, y, z);
@@ -369,5 +369,33 @@ void Output::print_transdip_nmd(const std::string infile,
         << std::setw(25) << transdip[0] << "  "
         << std::setw(25) << transdip[1] << "  "
         << std::setw(25) << transdip[2] << '\n';
-
 }
+//----------------------------------------------------------------------
+///
+/// @brief Print cube density coordinates
+///
+void Output::print_cube_coordinates(const std::string what_dens,
+                                    const int n_points,
+                                    const std::vector<std::array<double, 3>>& xyz) const
+{
+    double ToAng = Parameters::ToAng;
+    std::string infile = "debug/" + what_dens + "_cube_points.xyz";
+
+    std::ofstream cubefile(infile, std::ios::out);
+    if (!cubefile) {
+        throw std::runtime_error("Cannot open file: " + infile + ".xyz");
+    }
+
+    cubefile << n_points;
+    cubefile << "\ncube coordinates\n";
+
+    for (int i = 0; i < n_points; ++i)
+    {
+        print_formatted_line2(cubefile, "H",
+                              xyz[i][0] * ToAng,
+                              xyz[i][1] * ToAng,
+                              xyz[i][2] * ToAng);
+    }
+}
+//----------------------------------------------------------------------
+
