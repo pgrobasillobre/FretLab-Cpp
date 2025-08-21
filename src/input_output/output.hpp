@@ -3,6 +3,7 @@
 
 #include "density.hpp"
 #include "integrals.hpp"
+#include "nanoparticle.hpp"
 
 #include <optional>
 #include <string>
@@ -60,7 +61,7 @@ public:
                                 const std::vector<std::array<double, 3>>& xyz) const;
 
     /// @brief Print nanoparticle coordinates and dipoles, if present
-    void print_np_coords_dipoles(int& natoms) const;
+    void print_np_coords_dipoles(const std::string infile, const Nanoparticle& np) const;
     
     /// @brief Horizontal line (80 dashes) separation output sections
     const std::string sticks = std::string(80, '-');

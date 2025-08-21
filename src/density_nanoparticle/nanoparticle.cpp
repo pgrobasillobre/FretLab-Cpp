@@ -101,6 +101,11 @@ void Nanoparticle::read_nanoparticle(const Target &target, const Output &out)
 //----------------------------------------------------------------------
 void Nanoparticle::rotate_np_coords_and_dipoles(const Target &target, const Output &out)
 {
+  //
+  // Print rotated nanoparticle coordinates and dipoles for debug
+  //
+  if (target.debug >= 1) out.print_np_coords_dipoles("debug/np",*this);
+
   // Rotate with the same angle of the donor, which has induced the charges and dipoles
   double angle = target.donor_density_rotation_angle;
   
@@ -137,9 +142,9 @@ void Nanoparticle::rotate_np_coords_and_dipoles(const Target &target, const Outp
   if (charges_and_dipoles) rotate_np_dipoles(angle, target.rotation_axys);
 
   //
-  // Print nanoparticle coordinates and dipoles for debug
+  // Print rotated nanoparticle coordinates and dipoles for debug
   //
-  if (target.debug >= 1) out.print_np_coords_dipoles(natoms);
+  if (target.debug >= 1) out.print_np_coords_dipoles("debug/np_rot",*this);
 }
 //----------------------------------------------------------------------
 ///

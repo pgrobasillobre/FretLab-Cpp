@@ -398,13 +398,38 @@ void Output::print_cube_coordinates(const std::string what_dens,
     }
 }
 //----------------------------------------------------------------------
-//----------------------------------------------------------------------
 ///
-/// @brief Print cube density coordinates
+/// @brief Print nanoparticle coordinates and dipoles, if present
 ///
-void Output::print_np_coords_dipoles(int& natoms) const
+void Output::print_np_coords_dipoles(const std::string infile , const Nanoparticle& np) const
 {
-    
+    double ToAng = Parameters::ToAng;
+
+    std::ofstream npfile(infile + ".xyz", std::ios::out);
+    if (!npfile) {
+        throw std::runtime_error("Cannot open file: " + infile + ".xyz");
+    }
+
+    npfile << np.natoms << "\n";
+    npfile << "NP coordinates\n";
+ 
+    for (int i = 0; i < np.natoms; ++i)
+    {
+        print_formatted_line2(npfile, "Xx",
+                              np.xyz[i][0] * ToAng,
+                              np.xyz[i][1] * ToAng,
+                              np.xyz[i][2] * ToAng);
+    }
+
+    npfile.close();
+
+    //
+    // Print dipoles
+    //
+    if (np.charges_and_dipoles) 
+    {
+
+    }
 
 }
 //----------------------------------------------------------------------
