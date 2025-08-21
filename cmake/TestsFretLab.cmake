@@ -15,4 +15,4 @@ add_FretLab_runtest(acceptor_np_charges                              "FretLab;Ac
 add_FretLab_runtest(acceptor_np_charges_donor_coulomb                "FretLab;Acceptor - Nanoparticle (charges) - Donor Interaction;")
 add_FretLab_runtest(acceptor_np_charges_dipoles_donor_coulomb        "FretLab;Acceptor - Nanoparticle (charges + dipoles) - Donor Interaction;")
 add_FretLab_runtest(acceptor_np_charges_donor_with_overlap_integral  "FretLab;Acceptor - Nanoparticle (charges) - Donor Interaction + Overlap;")
-
+add_FretLab_runtest(acceptor_np_charges_dipoles_donor_rotate_coulomb "FretLab;Acceptor - Nanoparticle (charges) - Donor Interaction + Rotation;")
