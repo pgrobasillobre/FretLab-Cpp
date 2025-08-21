@@ -424,10 +424,62 @@ void Output::print_np_coords_dipoles(const std::string infile , const Nanopartic
     npfile.close();
 
     //
-    // Print dipoles
+    // Print dipoles, if present
     //
     if (np.charges_and_dipoles) 
     {
+
+        //
+        // Real part
+        //
+        std::ofstream dip_re(infile + "_re.nmd", std::ios::out);
+        if (!dip_re) {
+        throw std::runtime_error("Cannot open file: " + infile + ".nmd");
+        }
+
+        dip_re << "coordinates";
+        for (int i = 0; i < np.natoms; ++i)
+        {
+            char line[100];
+            std::snprintf(line, sizeof(line), "%10.5f  %10.5f  %10.5f  ", np.xyz[i][0] * ToAng, np.xyz[i][1] * ToAng, np.xyz[i][2]* ToAng);
+            dip_re << line;
+        }
+        dip_re << "\nmode 1";
+        for (int i = 0; i < np.natoms; ++i)
+        {
+            char line[100];
+            std::snprintf(line, sizeof(line), "%10.5f  %10.5f  %10.5f  ", np.mu[i][0], np.mu[i][1], np.mu[i][2]);
+            dip_re << line;
+        }
+        dip_re << "\n";
+        dip_re.close();
+
+        //
+        // Imaginary part
+        //
+        std::ofstream dip_im(infile + "_im.nmd", std::ios::out);
+        if (!dip_im) {
+        throw std::runtime_error("Cannot open file: " + infile + ".nmd");
+        }
+
+        dip_im << "coordinates";
+        for (int i = 0; i < np.natoms; ++i)
+        {
+            char line[100];
+            std::snprintf(line, sizeof(line), "%10.5f  %10.5f  %10.5f  ", np.xyz[i][0] * ToAng, np.xyz[i][1] * ToAng, np.xyz[i][2]* ToAng);
+            dip_im << line;
+        }
+        dip_im << "\nmode 1";
+        for (int i = 0; i < np.natoms; ++i)
+        {
+            char line[100];
+            std::snprintf(line, sizeof(line), "%10.5f  %10.5f  %10.5f  ", np.mu[i][3], np.mu[i][4], np.mu[i][5]);
+            dip_im << line;
+        }
+        dip_im << "\n";
+        dip_im.close();
+
+
 
     }
 

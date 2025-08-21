@@ -11,5 +11,3 @@ acceptor transition dipole align with:  -3.35900043  -0.00785707  -21.16058504
 !
 donor transition dipole:  3.0611  -0.51326  0.0
 donor transition dipole align with:  -25.69541461  2.37414333  -21.16058504
-!
-debug: 1

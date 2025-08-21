@@ -203,6 +203,7 @@ void Nanoparticle::rotate_np_dipoles(const double angle, const std::string& axis
     if (axis == "x") {
         for (int i = 0; i < natoms; ++i)
         {
+            // Real part
             x_tmp = mu[i][0];
             y_tmp = mu[i][1] * cos_angle - mu[i][2] * sin_angle;
             z_tmp = mu[i][1] * sin_angle + mu[i][2] * cos_angle;
@@ -210,11 +211,21 @@ void Nanoparticle::rotate_np_dipoles(const double angle, const std::string& axis
             mu[i][0] = x_tmp;
             mu[i][1] = y_tmp;
             mu[i][2] = z_tmp;
+
+            // Imaginary part
+            x_tmp = mu[i][3];
+            y_tmp = mu[i][4] * cos_angle - mu[i][5] * sin_angle;
+            z_tmp = mu[i][4] * sin_angle + mu[i][5] * cos_angle;
+
+            mu[i][3] = x_tmp;
+            mu[i][4] = y_tmp;
+            mu[i][5] = z_tmp;
         }
     }
     else if (axis == "y") {
         for (int i = 0; i < natoms; ++i)
         {
+            // Real part
             x_tmp = mu[i][0] * cos_angle + mu[i][2] * sin_angle;
             y_tmp = mu[i][1];
             z_tmp = -mu[i][0] * sin_angle + mu[i][2] * cos_angle;
@@ -222,11 +233,21 @@ void Nanoparticle::rotate_np_dipoles(const double angle, const std::string& axis
             mu[i][0] = x_tmp;
             mu[i][1] = y_tmp;
             mu[i][2] = z_tmp;
+
+            // Imaginary part
+            x_tmp = mu[i][3] * cos_angle + mu[i][5] * sin_angle;
+            y_tmp = mu[i][4];
+            z_tmp = -mu[i][3] * sin_angle + mu[i][5] * cos_angle;
+
+            mu[i][3] = x_tmp;
+            mu[i][4] = y_tmp;
+            mu[i][5] = z_tmp;
         }
     }
     else if (axis == "z") {
         for (int i = 0; i < natoms; ++i)
         {
+            // Real part
             x_tmp = mu[i][0] * cos_angle - mu[i][1] * sin_angle;
             y_tmp = mu[i][0] * sin_angle + mu[i][1] * cos_angle;
             z_tmp = mu[i][2];
@@ -234,6 +255,15 @@ void Nanoparticle::rotate_np_dipoles(const double angle, const std::string& axis
             mu[i][0] = x_tmp;
             mu[i][1] = y_tmp;
             mu[i][2] = z_tmp;
+
+            // Imaginary part
+            x_tmp = mu[i][3] * cos_angle - mu[i][4] * sin_angle;
+            y_tmp = mu[i][3] * sin_angle + mu[i][4] * cos_angle;
+            z_tmp = mu[i][5];
+
+            mu[i][3] = x_tmp;
+            mu[i][4] = y_tmp;
+            mu[i][5] = z_tmp;
         }
     }
     else {
