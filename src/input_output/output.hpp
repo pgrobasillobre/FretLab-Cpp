@@ -3,7 +3,6 @@
 
 #include "density.hpp"
 #include "integrals.hpp"
-#include "nanoparticle.hpp"
 
 #include <optional>
 #include <string>
@@ -59,6 +58,9 @@ public:
     void print_cube_coordinates(const std::string what_dens,
                                 const int n_points,
                                 const std::vector<std::array<double, 3>>& xyz) const;
+
+    /// @brief Print nanoparticle coordinates and dipoles, if present
+    void print_np_coords_dipoles(int& natoms) const;
     
     /// @brief Horizontal line (80 dashes) separation output sections
     const std::string sticks = std::string(80, '-');

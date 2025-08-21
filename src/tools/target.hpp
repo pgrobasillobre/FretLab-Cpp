@@ -52,6 +52,7 @@ struct Target
 
     // Nanoparticle
     bool is_nanoparticle_present = false;
+    bool rotate_nanoparticle = false;
 
     std::string nanoparticle_file;       ///< File for nanoparticle (full path)
     std::string nanoparticle_input_file; /// File for nanoparticle as named in input

@@ -321,8 +321,10 @@ void Input::read(Target &target)
             throw std::runtime_error("Unknown input keyword: '" + key + "'");
         }
     }
+    // Step 6: Determine if nanoparticle must be rotated, if present.
+    if (target.is_nanoparticle_present) target.rotate_nanoparticle = target.rotate_donor;
 
-    // Step 6: Determine the target calculation based on input.
+    // Step 7: Determine the target calculation based on input.
     get_target(target);
 }
 //----------------------------------------------------------------------

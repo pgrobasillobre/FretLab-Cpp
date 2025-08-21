@@ -64,9 +64,9 @@ void Algorithm::acceptor_np(Target &target)
     //
     //  Read input files
     //
-    np.read_nanoparticle(target);
-
     cube_acceptor.read_density(target, out, "Acceptor");
+
+    np.read_nanoparticle(target, out);
     //
     //  Print acceptor / donor density characteristics
     //
@@ -91,11 +91,11 @@ void Algorithm::acceptor_np_donor(Target &target)
     //
     //  Read input files
     //
-    np.read_nanoparticle(target);
-
     cube_acceptor.read_density(target, out, "Acceptor");
 
     cube_donor.read_density(target, out, "Donor");
+
+    np.read_nanoparticle(target, out);
     //
     //  Print acceptor / donor density characteristics
     //

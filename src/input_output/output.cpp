@@ -398,4 +398,14 @@ void Output::print_cube_coordinates(const std::string what_dens,
     }
 }
 //----------------------------------------------------------------------
+//----------------------------------------------------------------------
+///
+/// @brief Print cube density coordinates
+///
+void Output::print_np_coords_dipoles(int& natoms) const
+{
+    
+
+}
+//----------------------------------------------------------------------
 

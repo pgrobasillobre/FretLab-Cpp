@@ -7,6 +7,7 @@
 #include <vector>
 #include <array>
 
+class Output; // Forward declaration
 //----------------------------------------------------------------------
 ///
 /// @class Nanoparticle
@@ -29,8 +30,20 @@ public:
 
   std::vector<std::array<double, 3>> xyz;  // XYZ coordinates
 
-  // void read_density(const std::string& filepath, bool rotate = false, const std::string& what_dens = "");
-  void read_nanoparticle(const Target &target);
+  /// @brief Loads nanoparticle coordinates and charges (optional: + dipoles) 
+  void read_nanoparticle(const Target &target, const Output &out);
+
+private:
+
+  /// @brief  Rotate nanoparticle coordinate and dipoles
+  void rotate_np_coords_and_dipoles(const Target &target, const Output &out);
+
+  /// @brief Rotate nanoparticle dipoles, if present
+  void rotate_np_dipoles(const double angle, const std::string& axis);
+
+  /// @brief Rotate nanoparticle xyz coordinates based on angle and rotation axis.
+  std::vector<std::array<double, 3>> rotate_np_coords(const double angle, const std::string& axis) const;
+
 };
 
 #endif // NANOPARTICCLE_HPP

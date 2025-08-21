@@ -1,19 +1,20 @@
 #include "nanoparticle.hpp"
+#include "output.hpp"
 #include "target.hpp"
 #include "parameters.hpp"
 #include "string_manipulation.hpp"
 
 #include <iostream>
+#include <cmath>
 #include <fstream>
 #include <sstream>
 #include <iomanip>
 
 //----------------------------------------------------------------------
 ///
-/// @brief Loads a cube file and initializes the density grid and atomic data.
+/// @brief Loads nanoparticle coordinates and charges (optional: + dipoles)
 ///
-// void Density::read_density(const std::string& filepath, bool rotate, const std::string& what_dens) {
-void Nanoparticle::read_nanoparticle(const Target &target)
+void Nanoparticle::read_nanoparticle(const Target &target, const Output &out)
 {
   // Check file existance.
   std::string filepath = target.nanoparticle_file;
@@ -93,4 +94,144 @@ void Nanoparticle::read_nanoparticle(const Target &target)
   geom_center[0] /= natoms;
   geom_center[1] /= natoms;
   geom_center[2] /= natoms;
+
+  // Rotate nanoparticle, if required.
+  if (target.rotate_nanoparticle) rotate_np_coords_and_dipoles(target, out);
+}
+//----------------------------------------------------------------------
+void Nanoparticle::rotate_np_coords_and_dipoles(const Target &target, const Output &out)
+{
+  // Rotate with the same angle of the donor, which has induced the charges and dipoles
+  double angle = target.donor_density_rotation_angle;
+  
+  //
+  // Translate density center to the origin of coordinates
+  //
+  for (int i = 0; i < natoms; ++i)
+  {
+    xyz[i][0] = xyz[i][0] - geom_center[0];
+    xyz[i][1] = xyz[i][1] - geom_center[1];
+    xyz[i][2] = xyz[i][2] - geom_center[2];       
+  }
+  
+  //
+  // Rotate translated density
+  //
+  std::vector<std::array<double, 3>> xyz_rot(natoms, {0.0, 0.0, 0.0});
+
+  xyz_rot = rotate_np_coords(angle, target.rotation_axys);
+
+  //
+  // Translate rotated nanoparticle to initial position and save
+  //
+  for (int i = 0; i < natoms; ++i)
+  {
+    xyz[i][0] = xyz_rot[i][0] + geom_center[0];
+    xyz[i][1] = xyz_rot[i][1] + geom_center[1];
+    xyz[i][2] = xyz_rot[i][2] + geom_center[2];       
+  }
+
+  //
+  // Rotate nanoparticle dipoles, if present
+  //
+  if (charges_and_dipoles) rotate_np_dipoles(angle, target.rotation_axys);
+
+  //
+  // Print nanoparticle coordinates and dipoles for debug
+  //
+  if (target.debug >= 1) out.print_np_coords_dipoles(natoms);
+}
+//----------------------------------------------------------------------
+///
+/// @brief Rotate nanoparticle xyz coordinates based on angle and rotation axis.
+///
+std::vector<std::array<double, 3>> Nanoparticle::rotate_np_coords(const double angle, const std::string& axis) const {
+
+    double cos_angle = std::cos(angle);
+    double sin_angle = std::sin(angle);
+
+    std::vector<std::array<double, 3>> xyz_rot(natoms, {0.0, 0.0, 0.0});
+    
+    if (axis == "x") {
+        for (int i = 0; i < natoms; ++i)
+        {
+            xyz_rot[i][0] = xyz[i][0];
+            xyz_rot[i][1] = xyz[i][1] * cos_angle - xyz[i][2] * sin_angle;
+            xyz_rot[i][2] = xyz[i][1] * sin_angle + xyz[i][2] * cos_angle;
+        }
+    }
+    else if (axis == "y") {
+        for (int i = 0; i < natoms; ++i)
+        {
+            xyz_rot[i][0] = xyz[i][0] * cos_angle + xyz[i][2] * sin_angle;
+            xyz_rot[i][1] = xyz[i][1];
+            xyz_rot[i][2] = -xyz[i][0] * sin_angle + xyz[i][2] * cos_angle;
+        }
+    }
+    else if (axis == "z") {
+        for (int i = 0; i < natoms; ++i)
+        {
+            xyz_rot[i][0] = xyz[i][0] * cos_angle - xyz[i][1] * sin_angle;
+            xyz_rot[i][1] = xyz[i][0] * sin_angle + xyz[i][1] * cos_angle;
+            xyz_rot[i][2] = xyz[i][2];
+        }
+    }
+    else {
+        throw std::runtime_error("Unknown rotation axys: " + axis);
+    }
+    
+    return xyz_rot;
+}
+//----------------------------------------------------------------------
+///
+/// @brief Rotate nanoparticle dipoles, if present
+///
+void Nanoparticle::rotate_np_dipoles(const double angle, const std::string& axis) 
+{
+    double cos_angle = std::cos(angle);
+    double sin_angle = std::sin(angle);
+
+    double x_tmp = 0.0;
+    double y_tmp = 0.0;
+    double z_tmp = 0.0;
+        
+    if (axis == "x") {
+        for (int i = 0; i < natoms; ++i)
+        {
+            x_tmp = mu[i][0];
+            y_tmp = mu[i][1] * cos_angle - mu[i][2] * sin_angle;
+            z_tmp = mu[i][1] * sin_angle + mu[i][2] * cos_angle;
+
+            mu[i][0] = x_tmp;
+            mu[i][1] = y_tmp;
+            mu[i][2] = z_tmp;
+        }
+    }
+    else if (axis == "y") {
+        for (int i = 0; i < natoms; ++i)
+        {
+            x_tmp = mu[i][0] * cos_angle + mu[i][2] * sin_angle;
+            y_tmp = mu[i][1];
+            z_tmp = -mu[i][0] * sin_angle + mu[i][2] * cos_angle;
+
+            mu[i][0] = x_tmp;
+            mu[i][1] = y_tmp;
+            mu[i][2] = z_tmp;
+        }
+    }
+    else if (axis == "z") {
+        for (int i = 0; i < natoms; ++i)
+        {
+            x_tmp = mu[i][0] * cos_angle - mu[i][1] * sin_angle;
+            y_tmp = mu[i][0] * sin_angle + mu[i][1] * cos_angle;
+            z_tmp = mu[i][2];
+
+            mu[i][0] = x_tmp;
+            mu[i][1] = y_tmp;
+            mu[i][2] = z_tmp;
+        }
+    }
+    else {
+        throw std::runtime_error("Unknown rotation axys: " + axis);
+    }    
 }
