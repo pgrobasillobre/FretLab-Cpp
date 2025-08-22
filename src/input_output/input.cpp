@@ -18,14 +18,10 @@
 namespace fs = std::filesystem;
 
 //----------------------------------------------------------------------
-///
-/// @brief Constructor: Initializes the default input file name to "input.inp"
-///
+// Constructor: Set default input filename to "input.inp"
 Input::Input() : input_filename("input.inp") {} // default name
 //----------------------------------------------------------------------
-///
-/// @brief Delegates to private function for parsing command-line arguments.
-///
+// Top-level handler for parsing command line arguments, output, OpenMP settings
 void Input::get_arguments(int argc, char *argv[], Output &out, Target &target)
 {
     try
@@ -89,13 +85,7 @@ void Input::get_arguments(int argc, char *argv[], Output &out, Target &target)
     }
 }
 //----------------------------------------------------------------------
-///
-/// @brief Parses user-supplied command-line arguments and sets the input filename.
-/// Handles three cases:
-/// 1. One argument (input filename)
-/// 2. No arguments (ask user to type filename)
-/// 3. Too many arguments (throws error -- TODO)
-///
+// Parse raw command-line arguments: input file, handle -omp, error checks
 void Input::parse_arguments(int argc, char *argv[], Output &out)
 {
     input_filename.clear();
@@ -143,9 +133,7 @@ void Input::parse_arguments(int argc, char *argv[], Output &out)
     out.out_file_fill(input_filename); // create output filename(s)
 }
 //----------------------------------------------------------------------
-///
-/// @brief Check that files exists and has the supported extension (.inp).
-///
+// Check that the input file exists and has the correct extension
 void Input::check_input_file(const Output &out)
 {
     std::ifstream file(input_filename);
@@ -165,9 +153,7 @@ void Input::check_input_file(const Output &out)
     }
 }
 //----------------------------------------------------------------------
-///
-/// @brief Reads the input file and parses its content.
-///
+// Read and dispatch input file keywords into the Target structure
 void Input::read(Target &target)
 {
 
@@ -328,7 +314,7 @@ void Input::read(Target &target)
     get_target(target);
 }
 //----------------------------------------------------------------------
-// debugpgi
+// Determine the target mode and perform sanity checks
 void Input::get_target(Target &target)
 {
     //
@@ -454,11 +440,7 @@ void Input::get_target(Target &target)
     }
 }
 //----------------------------------------------------------------------
-///
-/// @brief Resolves a file path relative to the input file location.
-/// @param relative_path Path from the input file (may be relative)
-/// @return Absolute path as a string
-///
+// Resolve relative file paths with respect to the input file location
 std::string Input::resolve_relative_to_input(const std::string &relative_path) const
 {
 
@@ -471,10 +453,7 @@ std::string Input::resolve_relative_to_input(const std::string &relative_path) c
     return full_path.string();
 }
 //----------------------------------------------------------------------
-///
-/// @brief Checks if a file exists and throws an error if it does not.
-/// @param path The path to the file to check.
-///
+// Check file existence and throw an error if not found
 void Input::file_exists(const std::string &path) const
 {
     std::ifstream file(path);
@@ -484,12 +463,7 @@ void Input::file_exists(const std::string &path) const
     }
 }
 //----------------------------------------------------------------------
-///
-/// @brief Resolves a file path, checks its existence, and stores both raw and resolved paths.
-/// @param raw_input The file name as written in the input file (may be relative)
-/// @param input_field Reference to the variable that stores the raw input name
-/// @param resolved_field Reference to the variable that stores the resolved full path
-///
+// Resolve and store both the raw and absolute paths of an input file
 void Input::check_and_store_file(
     const std::string &raw_input,
     std::string &input_field,
@@ -502,9 +476,7 @@ void Input::check_and_store_file(
     resolved_field = full_path;
 }
 //----------------------------------------------------------------------
-///
-/// @brief Checks and stores the transition dipole moment from the input.
-///
+// Parse and validate a transition dipole vector from input
 void Input::check_and_store_transition_dipole(const std::string &raw_input,
                                               std::array<double, 
                                               3> &transdip) const
@@ -528,9 +500,7 @@ void Input::check_and_store_transition_dipole(const std::string &raw_input,
     transdip = {x, y, z};
 }
 //----------------------------------------------------------------------
-///
-/// @brief Prints input file information to the output stream.
-///
+// Print a formatted summary of input file contents and selected settings
 void Input::print_input_info(const Output &out, const Target &target)
 {
     const std::string indent = std::string(23, ' ');
