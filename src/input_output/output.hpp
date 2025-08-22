@@ -13,80 +13,114 @@
 #include <string>
 #include <ostream>
 
-//----------------------------------------------------------------------
-/// @class Output
-/// @brief Handles output file naming and writing.
-///
-/// This class is responsible for managing output operations.
 
 class Input; // Forward declaration of Input to avoid circular dependency
+
 //----------------------------------------------------------------------
+/// @class Output
+/// @brief Manages output filenames, streams, and formatted printing.
+/// 
+/// Handles writing of results, densities, and diagnostics. Also provides
+/// access to the main output stream.
 class Output
 {
 public:
-    /// Constructor
+    /// @brief Constructor.
     Output();
 
-    /// @brief Creates the output filename based on the input file name.
+    /// @brief Generates the output filename based on the input filename.
+    /// @param in_file The input filename provided by the user.
     void out_file_fill(const std::string &in_file);
 
     /// @brief Opens the output file for writing.
-    ///
-    /// It throws if the file cannot be opened.
+    /// @throws std::runtime_error if the file cannot be opened.
     void open();
 
     /// @brief Closes the output file stream.
     void close();
 
-    /// @brief Prints FretLab banner.
+    /// @brief Prints a standard FretLab banner to the output stream.
     void print_banner();
 
-    /// @brief Fills the output file with density information.
-    void print_density(const Target &target, const Density &cube, std::optional<std::string> header = std::nullopt);
+    /// @brief Prints cube density data to the output stream.
+    /// @param target The current target object containing input parameters.
+    /// @param cube The Density object containing data to print.
+    /// @param header Optional custom header for the density section.
+    void print_density(const Target &target, 
+                       const Density &cube, 
+                       std::optional<std::string> header = std::nullopt);
         
-    /// @brief Prints nanoparticle information to the output file.
+    /// @brief Prints nanoparticle information.
+    /// @param np Nanoparticle object to print.
     void print_nanoparticle(const Nanoparticle &np);
 
-    /// @brief Prints integrals' results
+    /// @brief Prints results of computed integrals.
+    /// @param target Target configuration.
+    /// @param integrals Integrals object containing computed values.
     void print_results_integrals(const Target &target, const Integrals &integrals);
 
-    /// @brief Print transition dipole in nmd format
+    /// @brief Outputs the transition dipole in NMD-compatible format.
+    /// @param infile Name of the source density file.
+    /// @param transdip Transition dipole vector.
+    /// @param center Geometric center of the system.
     void print_transdip_nmd(const std::string infile, 
                             const std::array<double, 3>& transdip, 
                             const std::array<double, 3>& center) const;
 
-    /// @brief Print cube density coordinates
+    /// @brief Outputs the coordinates of the cube density.
+    /// @param what_dens Label (e.g., "donor", "acceptor").
+    /// @param n_points Number of grid points.
+    /// @param xyz Vector of XYZ coordinates.
     void print_cube_coordinates(const std::string what_dens,
                                 const int n_points,
                                 const std::vector<std::array<double, 3>>& xyz) const;
 
-    /// @brief Print nanoparticle coordinates and dipoles, if present
+    /// @brief Prints nanoparticle coordinates and dipoles, if present.
+    /// @param infile Source file name.
+    /// @param np Nanoparticle object.
     void print_np_coords_dipoles(const std::string infile, const Nanoparticle& np) const;
     
-    /// @brief Horizontal line (80 dashes) separation output sections
+    /// @brief Horizontal separator (80 dashes) used in reports.
     const std::string sticks = std::string(80, '-');
 
-    /// @brief Gets the internal output stream.
-    /// @return Reference to the ofstream object for writing.
+    /// @brief Returns a reference to the output stream.
+    /// @return The file stream used for output.
     std::ofstream &stream() const;
 
-    /// Full path or name of the output file.
+    /// @brief Full path or name of the output file.
     std::string output_filename;
 
 private:
-    /// @brief Prints a formatted line with cube information to the output stream.
+    /// @brief Prints a density point: index and XYZ.
+    /// @param out The output stream to write to.
+    /// @param i Index of the point.
+    /// @param a X-coordinate.
+    /// @param b Y-coordinate.
+    /// @param c Z-coordinate.
     void print_formatted_line1(std::ostream &out, int i, double a, double b, double c);
 
-    /// @brief Prints a formatted line with atom information to the output stream.
+    /// @brief Prints atom name and coordinates (for cube files).
+    /// @param out Output stream.
+    /// @param atom Atom label (e.g., "C").
+    /// @param x X-coordinate.
+    /// @param y Y-coordinate.
+    /// @param z Z-coordinate.
     void print_formatted_line2(std::ostream &out, const std::string atom, double x, double y, double z) const;
 
-    /// @brief Prints a formatted line with nanoparticle information to the output stream.
+    /// @brief Prints atom name and coordinates (for nanoparticles).
+    /// @param out Output stream.
+    /// @param atom Atom label (e.g., "C").
+    /// @param x X-coordinate.
+    /// @param y Y-coordinate.
+    /// @param z Z-coordinate.
     void print_formatted_line3(std::ostream &out, const std::string atom, double x, double y, double z);
 
-    // Define formats for output
+    /// @brief Format string for printing index and coordinates.
     std::string format1 = "   {:5d} {:15.7E} {:15.7E} {:15.7E}\n";
 
-    mutable std::ofstream log_stream; ///< The output file stream (mutable to allow writing in const functions, e.g. logging or debug output)
+    /// @brief File stream used for output (mutable to allow usage in const methods).
+    mutable std::ofstream log_stream; 
 };
 
-#endif
+#endif // OUTPUT_HPP
+//----------------------------------------------------------------------

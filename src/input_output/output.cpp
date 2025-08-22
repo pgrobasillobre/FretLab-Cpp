@@ -14,33 +14,18 @@
 #include <numeric>
 #include <cmath>
 
-/// @brief Constructor for Output.
+// Constructor: Initializes internal fields and file stream.
 Output::Output() {}
 
 //----------------------------------------------------------------------
-///
-/// @brief Creates the output filename based on the input file name.
-///
+// Creates the output filename by replacing `.inp` with `.log`.
+// For example, "test.inp" → "test.log".
 void Output::out_file_fill(const std::string &in_file)
 {
-
-    /// @brief Generate the output filename based on the input filename.
-    ///
-    /// This function removes the last 4 characters of the input filename
-    /// (typically ".inp") and replaces them with ".log". For example:
-    /// - input: "test.inp"
-    /// - output: "test.log"
-    ///
-    /// It also prints the new output filename to the console.
-    ///
-    /// @param in_file Name of the input file
-
     output_filename = in_file.substr(0, in_file.size() - 4) + ".log";
 }
 //----------------------------------------------------------------------
-///
-/// @brief Opens the output file for writing.
-///
+// Opens the output file stream for writing.
 void Output::open()
 {
     log_stream.open(output_filename, std::ios::out);
@@ -50,17 +35,13 @@ void Output::open()
     }
 }
 //----------------------------------------------------------------------
-///
-/// @brief Gets the internal output stream.
-///
+// Returns the internal output stream object used for writing.
 std::ofstream &Output::stream() const
 {
     return const_cast<std::ofstream &>(log_stream);
 }
 //----------------------------------------------------------------------
-///
-/// @brief Closes the output file stream.
-///
+// Closes the output stream if it is open.
 void Output::close()
 {
     if (log_stream.is_open())
@@ -69,9 +50,7 @@ void Output::close()
     }
 }
 //----------------------------------------------------------------------
-///
-/// @brief Prints FretLab banner.
-///
+// Prints a banner for FretLab at the beginning of the output.
 void Output::print_banner()
 {
     const std::string indent = std::string(20, ' ');
@@ -91,9 +70,8 @@ void Output::print_banner()
     log_stream.flush();
 }
 //----------------------------------------------------------------------
-///
-/// @brief Fills the output file with density information.
-///
+// Logs density file information: grid size, atoms, and dipole rotation (if requested).
+// Also prints integral of the density, if present.
 void Output::print_density(const Target &target, const Density &cube, std::optional<std::string> header)
 {
 
@@ -207,9 +185,7 @@ void Output::print_density(const Target &target, const Density &cube, std::optio
     log_stream << " \n " << sticks << "\n\n";
 }
 //----------------------------------------------------------------------
-///
-///
-///
+/// Logs nanoparticle model, geometry, and atomic coordinates.
 void Output::print_nanoparticle(const Nanoparticle &np)
 {
     log_stream << std::string(23, ' ') << "Nanoparticle Model   : " << np.nanoparticle_model << "\n\n";
@@ -231,9 +207,7 @@ void Output::print_nanoparticle(const Nanoparticle &np)
     log_stream << " \n " << sticks << "\n\n";
 }
 //----------------------------------------------------------------------
-///
-/// @brief Prints a formatted line with cube information to the output stream.
-///
+// Prints a single formatted line for grid or voxel information (used in density headers).
 void Output::print_formatted_line1(std::ostream &out, int i, double a, double b, double c)
 {
     char line[100];
@@ -241,9 +215,7 @@ void Output::print_formatted_line1(std::ostream &out, int i, double a, double b,
     out << line;
 }
 // ----------------------------------------------------------------------
-///
-/// @brief Prints a formatted line with atom information to the output stream.
-//
+// Prints a formatted atomic line for XYZ positions (used in CUBE or NMD formats).
 void Output::print_formatted_line2(std::ostream &out, const std::string atom, double x, double y, double z) const
 {
     char line[100];
@@ -251,9 +223,7 @@ void Output::print_formatted_line2(std::ostream &out, const std::string atom, do
     out << line;
 }
 // ----------------------------------------------------------------------
-///
-/// @brief Prints a formatted line with nanoparticle information to the output stream.
-//
+// Prints a formatted atomic line with larger spacing (used for nanoparticle logging).
 void Output::print_formatted_line3(std::ostream &out, const std::string atom, double x, double y, double z)
 {
     char line[100];
@@ -261,9 +231,8 @@ void Output::print_formatted_line3(std::ostream &out, const std::string atom, do
     out << line;
 }
 //----------------------------------------------------------------------
-///
-/// @brief Prints the results of the integrals to the output stream.
-///
+// Logs the computed interaction integrals depending on the selected target mode.
+// Includes: Coulomb, overlap, modulus, and Keet rates.
 void Output::print_results_integrals(const Target &target, const Integrals &integrals)
 {
     std::array<double, 2> v_tot = {0.0, 0.0};
@@ -342,9 +311,7 @@ void Output::print_results_integrals(const Target &target, const Integrals &inte
     }
 }
 //----------------------------------------------------------------------
-///
-/// @brief Print transition dipole in nmd format
-///
+// Writes transition dipole and center to .nmd format (used for visualization).
 void Output::print_transdip_nmd(const std::string infile, 
                                 const std::array<double, 3>& transdip, 
                                 const std::array<double, 3>& center) const
@@ -371,9 +338,7 @@ void Output::print_transdip_nmd(const std::string infile,
         << std::setw(25) << transdip[2] << '\n';
 }
 //----------------------------------------------------------------------
-///
-/// @brief Print cube density coordinates
-///
+// Writes cube point XYZ coordinates to a debug .xyz file.
 void Output::print_cube_coordinates(const std::string what_dens,
                                     const int n_points,
                                     const std::vector<std::array<double, 3>>& xyz) const
@@ -398,9 +363,8 @@ void Output::print_cube_coordinates(const std::string what_dens,
     }
 }
 //----------------------------------------------------------------------
-///
-/// @brief Print nanoparticle coordinates and dipoles, if present
-///
+// Writes nanoparticle atom positions to .xyz file and dipole data to .nmd files.
+// Includes real and imaginary components if available.
 void Output::print_np_coords_dipoles(const std::string infile , const Nanoparticle& np) const
 {
     double ToAng = Parameters::ToAng;
@@ -478,11 +442,7 @@ void Output::print_np_coords_dipoles(const std::string infile , const Nanopartic
         }
         dip_im << "\n";
         dip_im.close();
-
-
-
     }
-
 }
 //----------------------------------------------------------------------
 
