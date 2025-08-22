@@ -11,9 +11,8 @@
 #include <iomanip>
 
 //----------------------------------------------------------------------
-///
-/// @brief Loads nanoparticle coordinates and charges (optional: + dipoles)
-///
+// Load nanoparticle data: coordinates, charges, and optionally dipoles.
+// Performs automatic format detection and rotation if requested.
 void Nanoparticle::read_nanoparticle(const Target &target, const Output &out)
 {
   // Check file existance.
@@ -99,6 +98,8 @@ void Nanoparticle::read_nanoparticle(const Target &target, const Output &out)
   if (target.rotate_nanoparticle) rotate_np_coords_and_dipoles(target, out);
 }
 //----------------------------------------------------------------------
+// Rotate nanoparticle coordinates and dipoles (if present)
+// using donor's rotation parameters.
 void Nanoparticle::rotate_np_coords_and_dipoles(const Target &target, const Output &out)
 {
   //
@@ -147,9 +148,7 @@ void Nanoparticle::rotate_np_coords_and_dipoles(const Target &target, const Outp
   if (target.debug >= 1) out.print_np_coords_dipoles("debug/np_rot",*this);
 }
 //----------------------------------------------------------------------
-///
-/// @brief Rotate nanoparticle xyz coordinates based on angle and rotation axis.
-///
+// Rotate nanoparticle coordinates around specified axis.
 std::vector<std::array<double, 3>> Nanoparticle::rotate_np_coords(const double angle, const std::string& axis) const {
 
     double cos_angle = std::cos(angle);
@@ -188,9 +187,8 @@ std::vector<std::array<double, 3>> Nanoparticle::rotate_np_coords(const double a
     return xyz_rot;
 }
 //----------------------------------------------------------------------
-///
-/// @brief Rotate nanoparticle dipoles, if present
-///
+// Rotate real and imaginary components of each dipole
+// using the same angle/axis as the coordinates.
 void Nanoparticle::rotate_np_dipoles(const double angle, const std::string& axis) 
 {
     double cos_angle = std::cos(angle);
@@ -270,3 +268,4 @@ void Nanoparticle::rotate_np_dipoles(const double angle, const std::string& axis
         throw std::runtime_error("Unknown rotation axys: " + axis);
     }    
 }
+//----------------------------------------------------------------------
