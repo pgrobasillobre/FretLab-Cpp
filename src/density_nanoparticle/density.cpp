@@ -11,9 +11,8 @@
 #include <iomanip>
 
 //----------------------------------------------------------------------
-///
-/// @brief Returns the element label (e.g., "H", "C") for a given atomic number.
-///
+// Map atomic number Z to element label.
+// Returns "X" for unknown/unsupported Z.
 std::string Density::map_atomic_number_to_label(int Z) const {
     static const std::vector<std::string> periodic_table = {
         "", "H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne",
@@ -28,9 +27,8 @@ std::string Density::map_atomic_number_to_label(int Z) const {
     return (Z > 0 && Z < (int)periodic_table.size()) ? periodic_table[Z] : "X";
 }
 //----------------------------------------------------------------------
-///
-/// @brief Compute angle between two vectors.
-///
+// Compute angle between two vectors using dot product formula.
+// Returns angle in radians. Throws if a zero-length vector is given.
 double Density::compute_angle_between_vectors(const std::array<double, 3>& vec1, const std::array<double, 3>& vec2) const {
     double dot_product = vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2];
     double norm1 = std::sqrt(vec1[0] * vec1[0] + vec1[1] * vec1[1] + vec1[2] * vec1[2]);
@@ -52,9 +50,7 @@ double Density::compute_angle_between_vectors(const std::array<double, 3>& vec1,
     return std::acos(division); // Returns angle in radians;
 }
 //----------------------------------------------------------------------
-///
-/// @brief Rotate vector based on angle and rotation axis.
-///
+// Rotate a 3D vector by an angle around a given axis ("x", "y", "z").
 std::array<double, 3> Density::rotate_vector(const std::array<double, 3>& vec, const double angle, const std::string& axis) const {
 
     double cos_angle = std::cos(angle);
@@ -84,9 +80,7 @@ std::array<double, 3> Density::rotate_vector(const std::array<double, 3>& vec, c
     return vec_rot;
 }
 //----------------------------------------------------------------------
-///
-/// @brief Rotate density xyz coordinates based on angle and rotation axis.
-///
+// Rotate all reduced density coordinates by an angle around an axis.
 std::vector<std::array<double, 3>> Density::rotate_density(const double angle, const std::string& axis) const {
 
     double cos_angle = std::cos(angle);
@@ -125,9 +119,8 @@ std::vector<std::array<double, 3>> Density::rotate_density(const double angle, c
     return xyz_rot;
 }
 //----------------------------------------------------------------------
-///
-/// @brief Loads a cube file and initializes the density grid and atomic data.
-///
+// Read cube file, load metadata and density grid, build reduced density
+// representation, and compute geometric centers.
 void Density::read_density(Target& target, const Output &out, const std::string& what_dens) {
 
     // Check density file final purpose: cube integration, acceptor, or donor density.
@@ -274,9 +267,7 @@ void Density::read_density(Target& target, const Output &out, const std::string&
     } 
 }
 //----------------------------------------------------------------------
-///
-/// @brief Integrates the full density grid by summing all density values.
-///
+// Integrate the density grid (sum over all voxels).
 void Density::int_density() {
     for (int i = 0; i < nx; ++i) {
         for (int j = 0; j < ny; ++j) {
@@ -287,9 +278,9 @@ void Density::int_density() {
     }
 }
 //---------------------------------------------------------------------- 
-///
-/// @brief Rotates the transition dipole moment based on the reference vector.
-///
+// Rotate the transition dipole moment of donor/acceptor to align with
+// a reference vector. Handles both acceptor and donor cases, performs
+// consistency checks, and prints debug output if enabled.
 void Density::rotate_transition_dipole(Target &target, const Output & out, const std::string& what_dens) {
     //
     // Move reference vector to the molecular origin of coordinates
@@ -391,9 +382,8 @@ void Density::rotate_transition_dipole(Target &target, const Output & out, const
     }
 }
 //---------------------------------------------------------------------- 
-///
-/// @brief Rotates the cube coordinates based on theta angle.
-///
+// Rotate cube coordinates by saved rotation angle, translate to origin,
+// rotate, then translate back. Used when aligning densities.
 void Density::rotate_cube_coordinates(const Target &target, const Output & out, const std::string& what_dens)  {
 
     if (target.debug >= 1) out.print_cube_coordinates(what_dens, n_points_reduced, xyz);
@@ -441,3 +431,4 @@ void Density::rotate_cube_coordinates(const Target &target, const Output & out, 
     if (target.debug >= 1) out.print_cube_coordinates(what_dens + "_ROTATED_", n_points_reduced, xyz);
 
 }
+//----------------------------------------------------------------------

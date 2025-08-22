@@ -10,6 +10,11 @@
 //----------------------------------------------------------------------
 /// @class Algorithm
 /// @brief High-level driver for electronic energy transfer calculations
+///
+/// @details
+/// The Algorithm class orchestrates the workflow of density integration,
+/// donor–acceptor coupling, nanoparticle–acceptor interactions, and 
+/// nanoparticle-mediated transfer rates. 
 class Algorithm
 {
 public:
