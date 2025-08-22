@@ -10,9 +10,11 @@
 #include <iostream>
 
 //----------------------------------------------------------------------
-///
-/// @brief Computes the Coulomb and overlap integrals between acceptor and donor densities.
-///
+// Donor–acceptor integrals:
+// - int_coulomb: screened Coulomb interaction between reduced densities
+// - int_overlap: optional overlap contribution (scaled by -omega_0)
+//
+// Uses OpenMP for the double loop when available.
 void Integrals::acceptor_donor(const Target &target, const Density &acceptor, const Density &donor)
 {
   int n_acc = acceptor.n_points_reduced;
@@ -67,9 +69,12 @@ void Integrals::acceptor_donor(const Target &target, const Density &acceptor, co
     overlap_acceptor_donor = -target.omega_0 * int_overlap;
 }
 //----------------------------------------------------------------------
-///
-/// @brief Computes the nanoparticle-acceptor coupling integral.
-///
+// Acceptor–nanoparticle coupling:
+// - charges-only model: uses mm_q (real, imag)
+// - charges+dipoles model: adds dipolar field contribution via mm_mu
+//
+// Both branches compute real/imag parts and store them in
+// overlap_acceptor_nanoparticle[0] / [1].
 void Integrals::acceptor_np(const Target &target, const Density &acceptor, const Nanoparticle &np)
 {
   const int n_acc = acceptor.n_points_reduced;
