@@ -9,15 +9,11 @@
 #include <iostream>
 
 //----------------------------------------------------------------------
-///
-/// @brief Constructor for Algorithm.
-///
+// Constructor
 Algorithm::Algorithm(Output &out, Target &target) : out(out), target(target) {}
-
 //----------------------------------------------------------------------
-///
-/// @brief Integrates the density of the input cube file.
-///
+// Integrates the density from the input cube file:
+// 1) read -> 2) integrate -> 3) print.
 void Algorithm::integrate_density(Target &target)
 {
 
@@ -28,9 +24,11 @@ void Algorithm::integrate_density(Target &target)
     out.print_density(target, cube);
 }
 //----------------------------------------------------------------------
-///
-/// @brief Compute electronic energy transfer rate between donor and acceptor.
-///
+// Donor–acceptor electronic energy transfer:
+// 1) read both densities
+// 2) print characteristics
+// 3) compute integrals
+// 4) print results
 void Algorithm::acceptor_donor(Target &target)
 {
     //
@@ -56,9 +54,11 @@ void Algorithm::acceptor_donor(Target &target)
     out.print_results_integrals(target, integrals);
 }
 //----------------------------------------------------------------------
-///
-/// @brief Compute acceptor - nanoparticle coupling.
-///
+// Acceptor–nanoparticle coupling:
+// 1) read acceptor density + nanoparticle
+// 2) print characteristics
+// 3) compute integrals
+// 4) print results
 void Algorithm::acceptor_np(Target &target)
 {
     //
@@ -83,9 +83,11 @@ void Algorithm::acceptor_np(Target &target)
     out.print_results_integrals(target, integrals);
 }
 //----------------------------------------------------------------------
-///
-/// @brief Compute electronic energy transfer rate between donor and acceptor mediated by nanoparticle.
-///
+// Nanoparticle-mediated donor–acceptor electronic energy transfer:
+// 1) read acceptor + donor + nanoparticle
+// 2) print characteristics
+// 3) compute integrals (DA and A–NP)
+// 4) print results
 void Algorithm::acceptor_np_donor(Target &target)
 {
     //
@@ -97,7 +99,7 @@ void Algorithm::acceptor_np_donor(Target &target)
 
     np.read_nanoparticle(target, out);
     //
-    //  Print acceptor / donor density characteristics
+    //  Print nanoparticle / acceptor / donor density characteristics
     //
     out.print_nanoparticle(np);
 
