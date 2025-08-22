@@ -6,8 +6,8 @@
 #include <istream>
 #include <string_view>
 
-// debugpgi
 //----------------------------------------------------------------------
+// Converts a string to a double-precision floating point number.
 void String_manipulation::string_to_float(const std::string &str, double &out)
 {
     try
@@ -24,6 +24,7 @@ void String_manipulation::string_to_float(const std::string &str, double &out)
     }
 }
 //----------------------------------------------------------------------
+// Moves the stream cursor to the line immediately after a specified marker string.
 void String_manipulation::string_to_int(const std::string &str, int &out)
 {
     try

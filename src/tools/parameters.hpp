@@ -3,11 +3,11 @@
 
 #include <string>
 
-// debugpgi
-/// @brief Defines physical constants and header strings used across the application.
-
-/// @namespace Parameters
-/// @brief Namespace containing global constants and header labels.
+/// @brief Defines global physical constants and header strings used throughout the application.
+/// 
+/// Contains the Parameters namespace, which centralizes physical constants,
+/// unit conversions, numerical thresholds, and string headers relevant to
+/// density parsing and output formatting in the FretLab codebase.
 namespace Parameters
 {
 
