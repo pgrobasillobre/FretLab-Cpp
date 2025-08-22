@@ -3,6 +3,7 @@
 
 #include <string>
 
+//----------------------------------------------------------------------
 /// @brief Defines global physical constants and header strings used throughout the application.
 /// 
 /// Contains the Parameters namespace, which centralizes physical constants,
@@ -41,3 +42,4 @@ namespace Parameters
 } // namespace Parameters
 
 #endif // PARAMETERS_HPP
+//----------------------------------------------------------------------
