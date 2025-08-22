@@ -6,25 +6,12 @@
 #include <ctime>
 
 //----------------------------------------------------------------------
-///
-/// @brief Initializes the timer module by setting up default timers.
-///
-/// Adds the "total" timer to the internal map. This is analogous to
-/// initializing the `strings_timer` array in the original Fortran code.
+// Initialize default timers (e.g., "total")
 void Timer::initialize() {
     timers["total"] = TimeData{};
 }
 //----------------------------------------------------------------------
-///
-/// @brief Starts timing for a specified named section.
-///
-/// If the timer has already been initialized, this function will record
-/// the current time as the start time. If the timer has not been initialized,
-/// a runtime exception will be thrown.
-///
-/// @param name The name of the timer to start (must already exist).
-///
-/// @throws std::runtime_error if the timer name is not found.
+// Start the timer with the given name
 void Timer::start(const std::string& name) {
     auto it = timers.find(name);
     if (it != timers.end()) {
@@ -35,14 +22,7 @@ void Timer::start(const std::string& name) {
     }
 }
 //----------------------------------------------------------------------
-///
-/// @brief Finishes timing for a specified named section.
-///
-/// Records the current high-resolution end time. If the timer was
-/// not initialized or not started, a runtime error is thrown.
-///
-/// @param name The name of the timer to finish.
-/// @throws std::runtime_error if the timer name is not found or not started.
+// Finish the timer with the given name
 void Timer::finish(const std::string& name) {
     auto it = timers.find(name);
     if (it != timers.end() && it->second.started) {
@@ -53,13 +33,7 @@ void Timer::finish(const std::string& name) {
     }
 }
 //----------------------------------------------------------------------
-///
-/// @brief Prints a summary report of all timers to the provided output stream.
-///
-/// Outputs elapsed wall-clock time for each completed timer, along with
-/// current date and time of program termination. Incomplete timers are noted.
-///
-/// @param out Output instance to print the report (default is std::cout).
+// Print timer results and termination message
 void Timer::conclude(const Output& out) {
     using namespace std::chrono;
 

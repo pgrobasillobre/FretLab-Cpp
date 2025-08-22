@@ -22,7 +22,15 @@
 //                         pgrobasillobre@gmail.com
 //
 //---------------------------------------------------------------------------
-
+/// @file main.cpp
+/// @brief Main entry point of the FretLab program.
+///
+/// This function sets up and coordinates the key components:
+/// - Parses command-line arguments
+/// - Reads and checks input
+/// - Dispatches the appropriate computational algorithm based on the target
+/// - Manages performance timing
+/// - Handles error reporting and output
 int main(int argc, char *argv[])
 {
 
